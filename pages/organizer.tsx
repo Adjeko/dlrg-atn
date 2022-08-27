@@ -3,7 +3,6 @@ import { CalendarIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
 import React, { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { QrReader } from 'react-qr-reader';
 import QRCode from "react-qr-code";
 
 
@@ -121,7 +120,7 @@ const Organizer = () => {
 				<ul role="list" className="divide-y divide-gray-200">
 					{positions.map((position) => (
 						<li key={position.id}>
-							<a href="#" className="block hover:bg-gray-50">
+							<a href="/course" className="block hover:bg-gray-50">
 								<div className="flex items-center px-4 py-4 sm:px-6">
 									<div className="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
 										<div className="truncate">
@@ -200,12 +199,12 @@ const Organizer = () => {
 									<div>
 										<div className="mt-3 text-center sm:mt-5">
 											<Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-												Präsentiere den QR-Code
+												Neuer Kurs
 											</Dialog.Title>
 											<div className="mt-2">
-												{/* QR-Code */}
+												{/* Neuen Kurs anlegen Dialog */}
 												<>
-													<QRCode value="hey" />
+													
 												</>
 											</div>
 										</div>
