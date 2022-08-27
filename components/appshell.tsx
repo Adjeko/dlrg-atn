@@ -207,36 +207,17 @@ const AppShell = (props : any) => {
                             </div>
                           </div>
                           <div className="px-2 mt-3 space-y-1">
-                            <a
-                              href="#"
-                              className="block px-3 py-2 text-base font-medium text-gray-900 rounded-md hover:bg-gray-100 hover:text-gray-800"
-                            >
-                              Home
-                            </a>
-                            <a
-                              href="#"
-                              className="block px-3 py-2 text-base font-medium text-gray-900 rounded-md hover:bg-gray-100 hover:text-gray-800"
-                            >
-                              Profile
-                            </a>
-                            <a
-                              href="#"
-                              className="block px-3 py-2 text-base font-medium text-gray-900 rounded-md hover:bg-gray-100 hover:text-gray-800"
-                            >
-                              Resources
-                            </a>
-                            <a
-                              href="#"
-                              className="block px-3 py-2 text-base font-medium text-gray-900 rounded-md hover:bg-gray-100 hover:text-gray-800"
-                            >
-                              Company Directory
-                            </a>
-                            <a
-                              href="#"
-                              className="block px-3 py-2 text-base font-medium text-gray-900 rounded-md hover:bg-gray-100 hover:text-gray-800"
-                            >
-                              Openings
-                            </a>
+                            {navigation.map((item) => (
+                              <a
+                                key={item.name + "hamburger"}
+                                href={item.href}
+                                className={classNames("block px-3 py-2 text-base font-medium text-gray-900 rounded-md hover:bg-gray-100 hover:text-gray-800"
+                                )}
+                                aria-current={item.current ? 'page' : undefined}
+                              >
+                                {item.name}
+                              </a>
+                            ))}
                           </div>
                         </div>
                         <div className="pt-4 pb-2">
