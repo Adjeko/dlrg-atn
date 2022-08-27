@@ -3,7 +3,7 @@ import { CalendarIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
 import React, { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import QRCode from "react-qr-code";
+import Link from "next/link"
 
 
 const positions = [
@@ -120,7 +120,7 @@ const Organizer = () => {
 				<ul role="list" className="divide-y divide-gray-200">
 					{positions.map((position) => (
 						<li key={position.id}>
-							<a href="/course" className="block hover:bg-gray-50">
+							<Link href="/course" className="block hover:bg-gray-50">
 								<div className="flex items-center px-4 py-4 sm:px-6">
 									<div className="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
 										<div className="truncate">
@@ -154,7 +154,7 @@ const Organizer = () => {
 										<ChevronRightIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
 									</div>
 								</div>
-							</a>
+							</Link>
 						</li>
 					))}
 				</ul>
@@ -206,11 +206,11 @@ const Organizer = () => {
 												<>
 													<form className="space-y-8 divide-y divide-gray-200">
 														<div className="space-y-8 divide-y divide-gray-200">
-															
+
 															<div className="pt-8">
-																
+
 																<div className="grid grid-cols-1 mt-6 gap-y-6 gap-x-4 sm:grid-cols-6">
-																	
+
 																	<div className="sm:col-span-4">
 																		<label htmlFor="email" className="block text-sm font-medium text-gray-700">
 																			Kursname
