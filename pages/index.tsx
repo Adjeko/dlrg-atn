@@ -86,8 +86,7 @@ const Home: NextPage = () => {
     <AppShell>
       <div>
         {/* Statistiken */}
-        <h3 className="text-lg font-medium leading-6 text-gray-900">Last 30 days</h3>
-        <dl className="grid grid-cols-1 mt-5 overflow-hidden bg-white divide-y divide-gray-200 rounded-lg shadow md:grid-cols-2 md:divide-y-0 md:divide-x">
+        <dl className="grid grid-cols-1 overflow-hidden bg-white divide-y divide-gray-200 rounded-lg shadow md:grid-cols-2 md:divide-y-0 md:divide-x">
           {stats.map((item) => (
             <div key={item.name} className="px-4 py-5 sm:p-6">
               <dt className="text-base font-normal text-gray-900">{item.name}</dt>
@@ -123,14 +122,9 @@ const Home: NextPage = () => {
           ))}
         </dl>
 
-        {/* Divider */}
-        <div className="relative mt-10 mb-6">
-          <div className="absolute inset-0 flex items-center" aria-hidden="true">
-            <div className="w-full border-t border-gray-300" />
-          </div>
-          <div className="relative flex justify-center">
-            <span className="px-3 text-lg font-medium text-gray-900 bg-white">Timeline</span>
-          </div>
+        {/* Timeline Section Header */}
+        <div className="pb-5 mt-10 mb-6 border-b border-gray-200">
+          <h3 className="text-lg font-medium leading-6 text-gray-900">Timeline</h3>
         </div>
 
         {/* Timeline */}
@@ -230,7 +224,7 @@ const Home: NextPage = () => {
                               }
                             }}
                             className="w-full h-full"
-                            constraints={{facingMode: 'environment'}}
+                            constraints={{ facingMode: 'environment' }}
                           />
                           <p>{data}</p>
                         </>
