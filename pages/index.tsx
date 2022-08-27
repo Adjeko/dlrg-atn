@@ -1,7 +1,49 @@
+/*
+  This example requires Tailwind CSS v2.0+ 
+  
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ],
+  }
+  ```
+*/
+import { Fragment } from 'react'
+import { Menu, Popover, Transition } from '@headlessui/react'
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+
+const user = {
+  name: 'Tom Cook',
+  email: 'tom@example.com',
+  imageUrl:
+    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+}
+const navigation = [
+  { name: 'Home', href: '#', current: true },
+  { name: 'Profile', href: '#', current: false },
+  { name: 'Resources', href: '#', current: false },
+  { name: 'Company Directory', href: '#', current: false },
+  { name: 'Openings', href: '#', current: false },
+]
+const userNavigation = [
+  { name: 'Your Profile', href: '#' },
+  { name: 'Settings', href: '#' },
+  { name: 'Sign out', href: '#' },
+]
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
+
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
   return (
