@@ -4,9 +4,8 @@ import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid'
 import { CheckIcon, HandThumbUpIcon, UserIcon } from '@heroicons/react/20/solid'
 
 const stats = [
-  { name: 'Total Subscribers', stat: '71,897', previousStat: '70,946', change: '12%', changeType: 'increase' },
-  { name: 'Avg. Open Rate', stat: '58.16%', previousStat: '56.14%', change: '2.02%', changeType: 'increase' },
-  // { name: 'Avg. Click Rate', stat: '24.57%', previousStat: '28.62%', change: '4.05%', changeType: 'decrease' },
+  { name: 'Anzahl an Fortbildungen', stat: '5' , previousStat: '7', change: `${(Math.round(5/7*100 * 100) / 100).toFixed(2)}%`, changeType: 'increase' },
+  { name: 'Fortbildungsstunden', stat: '14h', previousStat: '20h', change: `${14/20*100}%`, changeType: 'increase' },
 ]
 
 const timeline = [
