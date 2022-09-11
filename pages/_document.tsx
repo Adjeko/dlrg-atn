@@ -47,10 +47,6 @@ class BaseDocument extends Document {
           <meta property="og:url" content="https://dlrg.adjeko.de" />
           <meta property="og:image" content="https://dlrg.adjeko.de/icons/apple-touch-icon.png" />
 
-          <meta
-            name='viewport'
-            content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover'
-          />
         </Head>
         <body className="h-full">
           <Main />
