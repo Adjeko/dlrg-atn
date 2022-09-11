@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Client, Account } from 'appwrite';
 
 const Register = () => {
 
@@ -7,6 +8,23 @@ const Register = () => {
 	const [confPsswd, setConfPsswd] = useState("");
 
 	function onSubmit(e) {
+
+		const client = new Client();
+
+		// Init your Web SDK
+		client
+			.setEndpoint('https://dlrgbase.adjeko.de/v1') // Your API Endpoint
+			.setProject('631647caed6fad5f68cb') // Your project ID
+			;
+
+		const account = new Account(client);
+
+		account.create('unique()', email, psswd, 'Adjeko Test')
+			.then(response => {
+				alert(response);
+			}, error => {
+				alert(error);
+			});
 		e.preventDefault();
 	}
 
