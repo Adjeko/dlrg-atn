@@ -11,14 +11,16 @@ const OnBoarding = () => {
   const appwriteAccount = useDLRGStore((state) => state.appwriteAccount);
   const user = useDLRGStore((state) => state.user);
 
+  const appDatabase = useDLRGStore((state) => state.appDatabase);
+
   const router = useRouter()
 
   function onSubmit(e) {
 		e.preventDefault();
 
     appwriteAccount.updateName(firstname + " " + lastname);
-    let newPrefs = {"test": "HalloWelt", "organizer": "true"};
-    appwriteAccount.updatePrefs(newPrefs).then(response => {alert(JSON.stringify(response))}, error => {alert(error)});
+    let profile = {userId: user.$id, firstname: firstname, lastname: lastname, isOrganizer: false}
+    appDatabase.createDocument('63276283cb336e0e745c', user.$id, profile)
 		
 		router.push("/");
 	}

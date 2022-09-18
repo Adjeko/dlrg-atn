@@ -1,4 +1,4 @@
-import { Account, Client, Models } from 'appwrite'
+import { Account, Client, Databases, Models } from 'appwrite'
 import create from 'zustand'
 
 interface dlrgState {
@@ -7,6 +7,9 @@ interface dlrgState {
 
     appwriteAccount: Account,
     setAppwriteAccount: (account: Account) => void,
+
+    appDatabase: Databases,
+    setAppDatabase: (database: Databases) => void,
 
     session: Models.Session,
     setSession: (session: Models.Session) => void,
@@ -22,6 +25,9 @@ export const useDLRGStore = create<dlrgState>((set) => ({
 
     appwriteAccount: null,
     setAppwriteAccount: (account) => set((state) => ({appwriteAccount: state.appwriteAccount = account})),
+
+    appDatabase: null,
+    setAppDatabase: (database) => set((state) => ({appDatabase: state.appDatabase = database})),
 
     session: null,
     setSession: (session) => set((state) => ({session: state.session = session})),
