@@ -1,6 +1,34 @@
+import { useState } from "react";
+import { Client, Account } from 'appwrite';
+import { useDLRGStore } from '../src/useDLRGStore'
+import { useRouter } from "next/router";
 
 const SignIn = () => {
 
+	const [email, setEmail] = useState("");
+	const [psswd, setPsswd] = useState("");
+
+	const router = useRouter()
+
+	const appwriteCLient = useDLRGStore((state) => state.appwriteClient);
+	const setUser = useDLRGStore((state) => state.setUser);
+	const setSession = useDLRGStore((state) => state.setSession);
+
+	function onSubmit(e) {
+		e.preventDefault();
+		const account = new Account(appwriteCLient);
+
+		account.createEmailSession(email, psswd)
+			.then(response => {
+				setSession(response)
+
+				account.get().then(response => {
+					setUser(response)
+				}, error => {})
+			}, error => {});
+
+		router.push("/onboarding");
+	}
 
 	return (
 		<>
@@ -21,7 +49,7 @@ const SignIn = () => {
 
 				<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
 					<div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-						<form className="space-y-6" action="#" method="POST">
+						<form className="space-y-6" action="/onboarding" method="POST">
 							<div>
 								<label htmlFor="email" className="block text-sm font-medium text-gray-700">
 									Email address
@@ -34,6 +62,7 @@ const SignIn = () => {
 										autoComplete="email"
 										required
 										className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+										onChange={(e) => setEmail(e.target.value)}
 									/>
 								</div>
 							</div>
@@ -50,6 +79,7 @@ const SignIn = () => {
 										autoComplete="current-password"
 										required
 										className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+										onChange={(e) => setPsswd(e.target.value)}
 									/>
 								</div>
 							</div>
@@ -78,6 +108,7 @@ const SignIn = () => {
 								<button
 									type="submit"
 									className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+									onClick={onSubmit}
 								>
 									Sign in
 								</button>

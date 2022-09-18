@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Client, Account } from 'appwrite';
 import { useDLRGStore } from '../src/useDLRGStore'
+import { useRouter } from "next/router";
 
 const Register = () => {
 
@@ -8,19 +9,27 @@ const Register = () => {
 	const [psswd, setPsswd] = useState("");
 	const [confPsswd, setConfPsswd] = useState("");
 
+	const router = useRouter()
+
 	const appwriteCLient = useDLRGStore((state) => state.appwriteClient);
-  const setUser = useDLRGStore((state) => state.setUser);
+	const setUser = useDLRGStore((state) => state.setUser);
+	const setSession = useDLRGStore((state) => state.setSession);
 
 	function onSubmit(e) {
-
+		e.preventDefault()
 		const account = new Account(appwriteCLient);
 
 		account.create('unique()', email, psswd, '')
 			.then(response => {
 				setUser(response)
-			}, error => {
-				alert(error);
-			});
+				
+				account.createEmailSession(email, psswd)
+					.then(response => {
+						setSession(response)
+					}, error => {					});
+			}, error => {			});
+
+		router.push("/onboarding");
 	}
 
 	return (
@@ -43,7 +52,7 @@ const Register = () => {
 
 				<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
 					<div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-						<form className="space-y-6" action="/onboarding" method="POST">
+						<form className="space-y-6" method="POST" onSubmit={onSubmit}>
 							<div>
 								<label htmlFor="email" className="block text-sm font-medium text-gray-700">
 									Email address
@@ -113,7 +122,6 @@ const Register = () => {
 								<button
 									type="submit"
 									className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-									onClick={onSubmit}
 								>
 									Register
 								</button>
