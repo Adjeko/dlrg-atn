@@ -13,9 +13,8 @@ const SignIn = () => {
 					/>
 					<h2 className="mt-6 text-3xl font-bold tracking-tight text-center text-gray-900">Sign in to your account</h2>
 					<p className="mt-2 text-sm text-center text-gray-600">
-						Or{' '}
-						<a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-							start your 14-day free trial
+						<a href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+							Registriere dich hier
 						</a>
 					</p>
 				</div>

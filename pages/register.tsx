@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Client, Account } from 'appwrite';
+import { useDLRGStore } from '../src/useDLRGStore'
 
 const Register = () => {
 
@@ -7,25 +8,19 @@ const Register = () => {
 	const [psswd, setPsswd] = useState("");
 	const [confPsswd, setConfPsswd] = useState("");
 
+	const appwriteCLient = useDLRGStore((state) => state.appwriteClient);
+  const setUser = useDLRGStore((state) => state.setUser);
+
 	function onSubmit(e) {
 
-		const client = new Client();
+		const account = new Account(appwriteCLient);
 
-		// Init your Web SDK
-		client
-			.setEndpoint('https://dlrgbase.adjeko.de/v1') // Your API Endpoint
-			.setProject('631647caed6fad5f68cb') // Your project ID
-			;
-
-		const account = new Account(client);
-
-		account.create('unique()', email, psswd, 'Adjeko Test')
+		account.create('unique()', email, psswd, '')
 			.then(response => {
-				alert(response);
+				setUser(response)
 			}, error => {
 				alert(error);
 			});
-		e.preventDefault();
 	}
 
 	return (
@@ -48,7 +43,7 @@ const Register = () => {
 
 				<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
 					<div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-						<form className="space-y-6" action="#" method="POST">
+						<form className="space-y-6" action="/onboarding" method="POST">
 							<div>
 								<label htmlFor="email" className="block text-sm font-medium text-gray-700">
 									Email address
@@ -109,7 +104,7 @@ const Register = () => {
 										className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
 									/>
 									<label htmlFor="remember-me" className="block ml-2 text-sm text-gray-900">
-										I accept the Terms and Conditions
+										Ich akzeptiere die AGBs
 									</label>
 								</div>
 							</div>
