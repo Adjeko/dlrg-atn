@@ -13,8 +13,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   client
     .setEndpoint('https://dlrgbase.adjeko.de/v1') // Your API Endpoint
     .setProject('631647caed6fad5f68cb'); // Your project ID
+  const account = new Account(client);
+
   const setAppwriteClient = useDLRGStore((state) => state.setAppwriteClient);
   setAppwriteClient(client);
+  const setAppwriteAccount = useDLRGStore((state) => state.setAppwriteAccount);
+  setAppwriteAccount(account);
 
   return (
     <>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Client, Account } from 'appwrite';
 import { useDLRGStore } from '../src/useDLRGStore'
 import { useRouter } from "next/router";
 
@@ -10,19 +9,18 @@ const SignIn = () => {
 
 	const router = useRouter()
 
-	const appwriteCLient = useDLRGStore((state) => state.appwriteClient);
+	const appwriteAccount = useDLRGStore((state) => state.appwriteAccount);
 	const setUser = useDLRGStore((state) => state.setUser);
 	const setSession = useDLRGStore((state) => state.setSession);
 
 	function onSubmit(e) {
 		e.preventDefault();
-		const account = new Account(appwriteCLient);
 
-		account.createEmailSession(email, psswd)
+		appwriteAccount.createEmailSession(email, psswd)
 			.then(response => {
 				setSession(response)
 
-				account.get().then(response => {
+				appwriteAccount.get().then(response => {
 					setUser(response)
 				}, error => {})
 			}, error => {});

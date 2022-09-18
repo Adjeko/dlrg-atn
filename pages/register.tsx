@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Client, Account } from 'appwrite';
 import { useDLRGStore } from '../src/useDLRGStore'
 import { useRouter } from "next/router";
 
@@ -11,19 +10,18 @@ const Register = () => {
 
 	const router = useRouter()
 
-	const appwriteCLient = useDLRGStore((state) => state.appwriteClient);
+	const appwriteAccount = useDLRGStore((state) => state.appwriteAccount);
 	const setUser = useDLRGStore((state) => state.setUser);
 	const setSession = useDLRGStore((state) => state.setSession);
 
 	function onSubmit(e) {
-		e.preventDefault()
-		const account = new Account(appwriteCLient);
+		e.preventDefault();
 
-		account.create('unique()', email, psswd, '')
+		appwriteAccount.create('unique()', email, psswd, '')
 			.then(response => {
 				setUser(response)
 				
-				account.createEmailSession(email, psswd)
+				appwriteAccount.createEmailSession(email, psswd)
 					.then(response => {
 						setSession(response)
 					}, error => {					});
