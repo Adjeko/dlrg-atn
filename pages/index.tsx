@@ -3,9 +3,11 @@ import type { NextPage } from 'next'
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid'
 import { CheckIcon, HandThumbUpIcon, UserIcon } from '@heroicons/react/20/solid'
 import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
-import React, { Fragment, useRef, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { QrReader } from 'react-qr-reader';
+import { useDLRGStore } from "../src/useDLRGStore"
+import { useRouter } from "next/router"
 
 const stats = [
   { name: 'Anzahl an Fortbildungen', stat: '5', previousStat: '7', change: `${(Math.round(5 / 7 * 100 * 100) / 100).toFixed(2)}%`, changeType: 'increase' },
@@ -75,12 +77,22 @@ const Home: NextPage = () => {
   const [data, setData] = useState('No result');
   const cancelButtonRef = useRef(null)
 
+  const user = useDLRGStore((state) => state.user);
+
+  const router = useRouter();
+
   function closeDialog() {
     setOpen(false);
   }
   function openDialog() {
     setOpen(true);
   }
+
+  useEffect(() => {
+    if(user == null) {
+      router.push("/signin");
+    }
+  }, []);
 
   return (
     <AppShell>

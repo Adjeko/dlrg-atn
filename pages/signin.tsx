@@ -19,13 +19,18 @@ const SignIn = () => {
 		appwriteAccount.createEmailSession(email, psswd)
 			.then(response => {
 				setSession(response)
-
+				
 				appwriteAccount.get().then(response => {
 					setUser(response)
-				}, error => {})
-			}, error => {});
 
-		router.push("/onboarding");
+					if(response.name == '') {
+						router.push("/onboarding");
+					}
+					else {
+						router.push("/");
+					}
+				}, error => {alert(error)})
+			}, error => {alert(error)});
 	}
 
 	return (

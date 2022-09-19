@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Client, Account } from 'appwrite';
+import { useEffect, useState } from "react";
+import { Client, Account, Query } from 'appwrite';
 import { useDLRGStore } from '../src/useDLRGStore'
 import { useRouter } from "next/router";
 
@@ -15,10 +15,23 @@ const OnBoarding = () => {
 
   const router = useRouter()
 
+	useEffect(() => {
+		// alert(JSON.stringify(user))
+		if (user != null) {
+			appDatabase.listDocuments('63276283cb336e0e745c', [Query.equal('userId', user.$id)])
+				.then(response => {
+					// alert("LISTE: \n" + JSON.stringify(response.documents[0]))
+				},
+					error => { alert(error) });
+		}
+
+	}, [user]);
+
   function onSubmit(e) {
 		e.preventDefault();
 
-    appwriteAccount.updateName(firstname + " " + lastname);
+    appwriteAccount.updateName(firstname + " " + lastname);		
+
     let profile = {userId: user.$id, firstname: firstname, lastname: lastname, isOrganizer: false}
     appDatabase.createDocument('63276283cb336e0e745c', user.$id, profile)
 		

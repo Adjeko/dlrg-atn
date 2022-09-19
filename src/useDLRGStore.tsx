@@ -1,4 +1,4 @@
-import { Account, Client, Databases, Models } from 'appwrite'
+import { Account, Client, Databases, Models, Query } from 'appwrite'
 import create from 'zustand'
 
 interface dlrgState {
@@ -16,9 +16,11 @@ interface dlrgState {
 
     user: Models.User<Models.Preferences>,
     setUser: (newUser: Models.User<Models.Preferences>) => void,
+
+    profile: any,
 }
 
-export const useDLRGStore = create<dlrgState>((set) => ({
+export const useDLRGStore = create<dlrgState>((set, get) => ({
 
     appwriteClient: null,
     setAppwriteClient: (client) => set((state) => ({appwriteClient: state.appwriteClient = client})),
@@ -35,4 +37,5 @@ export const useDLRGStore = create<dlrgState>((set) => ({
     user: null,
     setUser: (newUser) => set((state) => ({user: state.user = newUser})),
 
+    profile: () => {get().appDatabase.listDocuments('63276283cb336e0e745c', [Query.equal('userId', get().user.$id)])},    
 }))
