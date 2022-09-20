@@ -17,7 +17,8 @@ interface dlrgState {
     user: Models.User<Models.Preferences>,
     setUser: (newUser: Models.User<Models.Preferences>) => void,
 
-    profile: any,
+    profile: Models.Document,
+    setProfile: (newProfile: Models.Document) => void,
 }
 
 export const useDLRGStore = create<dlrgState>((set, get) => ({
@@ -37,5 +38,6 @@ export const useDLRGStore = create<dlrgState>((set, get) => ({
     user: null,
     setUser: (newUser) => set((state) => ({user: state.user = newUser})),
 
-    profile: () => {get().appDatabase.listDocuments('63276283cb336e0e745c', [Query.equal('userId', get().user.$id)])},    
+    profile: null,
+    setProfile: (newProfile) => set((state) => ({profile: state.profile = newProfile})),
 }))

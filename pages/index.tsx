@@ -8,6 +8,8 @@ import { Dialog, Transition } from '@headlessui/react'
 import { QrReader } from 'react-qr-reader';
 import { useDLRGStore } from "../src/useDLRGStore"
 import { useRouter } from "next/router"
+import { Query } from "appwrite"
+import { getProfile } from "../src/appWriteService"
 
 const stats = [
   { name: 'Anzahl an Fortbildungen', stat: '5', previousStat: '7', change: `${(Math.round(5 / 7 * 100 * 100) / 100).toFixed(2)}%`, changeType: 'increase' },
@@ -78,6 +80,7 @@ const Home: NextPage = () => {
   const cancelButtonRef = useRef(null)
 
   const user = useDLRGStore((state) => state.user);
+  const profile = useDLRGStore((state) => state.profile);
 
   const router = useRouter();
 
@@ -94,9 +97,16 @@ const Home: NextPage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if(user != null && profile == null) {
+      getProfile();
+    }
+  }, [user, profile]);
+
   return (
     <AppShell>
       <div>
+        <p>{JSON.stringify(profile)}</p>
         {/* Statistiken */}
         <dl className="grid grid-cols-1 overflow-hidden bg-white divide-y divide-gray-200 rounded-lg shadow md:grid-cols-2 md:divide-y-0 md:divide-x">
           {stats.map((item) => (
