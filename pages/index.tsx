@@ -92,12 +92,6 @@ const Home: NextPage = () => {
   }
 
   useEffect(() => {
-    if(user == null) {
-      router.push("/signin");
-    }
-  }, []);
-
-  useEffect(() => {
     if(user != null && profile == null) {
       getProfile();
     }
