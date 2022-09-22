@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { userService } from 'services';
 import { useDLRGStore } from '../src/useDLRGStore';
 
 export { RouteGuard };
@@ -31,6 +30,8 @@ function RouteGuard({ children }) {
     }, []);
 
     function authCheck(url) {
+
+        const tmpUrl = router.asPath;
         const user = useDLRGStore.getState().user;
         // redirect to login page if accessing a private page and not logged in 
         const publicPaths = ['/signin'];
