@@ -1,9 +1,11 @@
 import AppShell from "../components/appshell"
 import { CalendarIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
-import React, { Fragment, useRef, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import Link from "next/link"
+import { useDLRGStore } from "../src/useDLRGStore"
+import { Models } from "appwrite"
 
 
 const positions = [
@@ -100,12 +102,26 @@ const Organizer = () => {
 	const [open, setOpen] = useState(false)
 	const cancelButtonRef = useRef(null)
 
+	const appwriteDatabase = useDLRGStore((state) => state.appDatabase);
+	const [events, SetEvents] = useState<Models.Document[]>();
+
 	function closeDialog() {
 		setOpen(false);
 	}
 	function openDialog() {
 		setOpen(true);
 	}
+
+	useEffect(() => {
+		const promise = appwriteDatabase.listDocuments('632c679ca801b391db60');
+		promise.then(response => {
+			if(response.total > 0) {
+				SetEvents(response.documents);
+			}
+		}, error => {
+			alert(error);
+		});
+	},[appwriteDatabase]);
 
 
 	return (
@@ -118,7 +134,7 @@ const Organizer = () => {
 			{/* Fortbildungsliste */}
 			<div className="overflow-hidden bg-white shadow sm:rounded-md">
 				<ul role="list" className="divide-y divide-gray-200">
-					{positions.map((position) => (
+					{events?.map((position) => (
 						<li key={position.id}>
 							<Link href="/course" className="block hover:bg-gray-50">
 								<div className="flex items-center px-4 py-4 sm:px-6">
@@ -126,18 +142,20 @@ const Organizer = () => {
 										<div className="truncate">
 											<div className="flex text-sm">
 												<p className="font-medium text-indigo-600 truncate">{position.title}</p>
-												<p className="flex-shrink-0 ml-1 font-normal text-gray-500">in {position.department}</p>
+												{/* <p className="flex-shrink-0 ml-1 font-normal text-gray-500">in {position.department}</p> */}
 											</div>
-											<div className="flex mt-2">
+											{/* Datumse */}
+											{/* <div className="flex mt-2">
 												<div className="flex items-center text-sm text-gray-500">
 													<CalendarIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
 													<p>
 														Closing on <time dateTime={position.closeDate}>{position.closeDateFull}</time>
 													</p>
 												</div>
-											</div>
+											</div> */}
 										</div>
-										<div className="flex-shrink-0 mt-4 sm:mt-0 sm:ml-5">
+										{/* Teilnehmer */}
+										{/* <div className="flex-shrink-0 mt-4 sm:mt-0 sm:ml-5">
 											<div className="flex -space-x-1 overflow-hidden">
 												{position.applicants.map((applicant) => (
 													<img
@@ -148,7 +166,7 @@ const Organizer = () => {
 													/>
 												))}
 											</div>
-										</div>
+										</div> */}
 									</div>
 									<div className="flex-shrink-0 ml-5">
 										<ChevronRightIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
