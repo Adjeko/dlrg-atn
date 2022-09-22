@@ -1,8 +1,9 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Menu, Popover, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
-import type { NextComponentType, NextPage } from 'next'
+import { useDLRGStore } from '../src/useDLRGStore'
+import { getProfile } from '../src/appWriteService'
 
 const user = {
   name: 'Herbert Pietrzyk',
@@ -20,12 +21,22 @@ const userNavigation = [
   { name: 'Sign out', href: '#' },
 ]
 //TODO type anlegen
-function classNames(...classes : any) {
+function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
 //TODO type anlegen
-const AppShell = (props : any) => {
+const AppShell = (props: any) => {
+
+  const userStore = useDLRGStore((state) => state.user);
+  const profile = useDLRGStore((state) => state.profile);
+
+  useEffect(() => {
+    if (userStore != null && profile == null) {
+      getProfile();
+    }
+  }, [userStore, profile]);
+
   return (
     <>
       <div className="min-h-full">
@@ -122,19 +133,24 @@ const AppShell = (props : any) => {
                   <div className="grid items-center grid-cols-3 gap-8">
                     <div className="col-span-2">
                       <nav className="flex space-x-4">
-                        {navigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className={classNames(
-                              item.current ? 'text-white' : 'text-indigo-100',
-                              'text-sm font-medium rounded-md bg-white bg-opacity-0 px-3 py-2 hover:bg-opacity-10'
-                            )}
-                            aria-current={item.current ? 'page' : undefined}
-                          >
-                            {item.name}
-                          </a>
-                        ))}
+                        {navigation.map((item) => {
+                          if (profile != null && profile.isOrganizer) {
+                            return (<a
+                              key={item.name}
+                              href={item.href}
+                              className={classNames(
+                                item.current ? 'text-white' : 'text-indigo-100',
+                                'text-sm font-medium rounded-md bg-white bg-opacity-0 px-3 py-2 hover:bg-opacity-10'
+                              )}
+                              aria-current={item.current ? 'page' : undefined}
+                            >
+                              {item.name}
+                            </a>)
+                          }
+                          else {
+                            return (<></>)
+                          }
+                        })}
                       </nav>
                     </div>
                     <div>
@@ -268,6 +284,7 @@ const AppShell = (props : any) => {
                     Section title
                   </h2>
                   <div className="overflow-hidden bg-white rounded-lg shadow">
+                    <p>{JSON.stringify(profile)}</p>
                     <div className="p-6">{props.children}</div>
                   </div>
                 </section>
