@@ -1,5 +1,6 @@
 import { Account, Client, Databases, Models, Query } from 'appwrite'
 import create from 'zustand'
+import { persist } from 'zustand/middleware';
 
 interface dlrgState {
     appwriteClient: Client,
@@ -21,23 +22,26 @@ interface dlrgState {
     setProfile: (newProfile: Models.Document) => void,
 }
 
-export const useDLRGStore = create<dlrgState>((set, get) => ({
+export const useDLRGStore = create(persist<dlrgState>((set, get) => ({
 
     appwriteClient: null,
-    setAppwriteClient: (client) => set((state) => ({appwriteClient: state.appwriteClient = client})),
+    setAppwriteClient: (client) => set((state) => ({ appwriteClient: state.appwriteClient = client })),
 
     appwriteAccount: null,
-    setAppwriteAccount: (account) => set((state) => ({appwriteAccount: state.appwriteAccount = account})),
+    setAppwriteAccount: (account) => set((state) => ({ appwriteAccount: state.appwriteAccount = account })),
 
     appDatabase: null,
-    setAppDatabase: (database) => set((state) => ({appDatabase: state.appDatabase = database})),
+    setAppDatabase: (database) => set((state) => ({ appDatabase: state.appDatabase = database })),
 
     session: null,
-    setSession: (session) => set((state) => ({session: state.session = session})),
+    setSession: (session) => set((state) => ({ session: state.session = session })),
 
     user: null,
-    setUser: (newUser) => set((state) => ({user: state.user = newUser})),
+    setUser: (newUser) => set((state) => ({ user: state.user = newUser })),
 
     profile: null,
-    setProfile: (newProfile) => set((state) => ({profile: state.profile = newProfile})),
-}))
+    setProfile: (newProfile) => set((state) => ({ profile: state.profile = newProfile })),
+}),
+    {
+        name: 'dlrg'
+    }))

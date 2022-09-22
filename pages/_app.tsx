@@ -24,6 +24,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   const setAppDatabase = useDLRGStore((state) => state.setAppDatabase);
   setAppDatabase(appDatabases);
 
+  const publicRoutes=['/signin', '/register'];
+
+
   return (
     <>
       <Head>
@@ -32,7 +35,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover'
         />
       </Head>
-      <RouteGuard>
+      <RouteGuard publicRoutes={publicRoutes}>
         <Component {...pageProps} />
       </RouteGuard>
     </>

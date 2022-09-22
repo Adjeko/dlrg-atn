@@ -2,50 +2,36 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { useDLRGStore } from '../src/useDLRGStore';
+import { getNotLoadedUser } from '../src/appWriteService';
 
 export { RouteGuard };
 
-function RouteGuard({ children }) {
+function RouteGuard({ publicRoutes, children }) {
     const router = useRouter();
-    const [authorized, setAuthorized] = useState(false);
+    const userStore = useDLRGStore((state) => state.user);
+
+    const [user, setUser] = useState(getNotLoadedUser());
+
+    const pathIsProtected = publicRoutes.indexOf(router.pathname) === -1;
 
     useEffect(() => {
-        // on initial load - run auth check 
-        authCheck(router.asPath);
+        setUser(userStore);
+    }, [userStore]);
 
-        // on route change start - hide page content by setting authorized to false  
-        const hideContent = () => setAuthorized(false);
-        router.events.on('routeChangeStart', hideContent);
+    useEffect(() => {
+        
+        var isLoading = user != null && user.name === "notloaded";      
 
-        // on route change complete - run auth check 
-        router.events.on('routeChangeComplete', authCheck)
-
-        // unsubscribe from events in useEffect return function
-        return () => {
-            router.events.off('routeChangeStart', hideContent);
-            router.events.off('routeChangeComplete', authCheck);
+        if (!isLoading && user == null && pathIsProtected) {
+            // Redirect route, you can point this to /login
+            router.push('/signin');
         }
+    }, [user, pathIsProtected]);
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    function authCheck(url) {
-
-        const tmpUrl = router.asPath;
-        const user = useDLRGStore.getState().user;
-        // redirect to login page if accessing a private page and not logged in 
-        const publicPaths = ['/signin'];
-        const path = url.split('?')[0];
-        if (!user && !publicPaths.includes(path)) {
-            setAuthorized(false);
-            router.push({
-                pathname: '/signin',
-                query: { returnUrl: router.asPath }
-            });
-        } else {
-            setAuthorized(true);
-        }
+    var isLoading = user != null && user.name === "notloaded";     
+    if ((isLoading || user == null) && pathIsProtected) {
+        return <></>;
     }
 
-    return (authorized && children);
+    return children;
 }
