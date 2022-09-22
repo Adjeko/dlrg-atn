@@ -102,8 +102,9 @@ const Organizer = () => {
 	const [open, setOpen] = useState(false)
 	const cancelButtonRef = useRef(null)
 
+	const appwriteClient = useDLRGStore((state) => state.appwriteClient);
 	const appwriteDatabase = useDLRGStore((state) => state.appDatabase);
-	const [events, SetEvents] = useState<Models.Document[]>();
+	const [events, SetEvents] = useState<Models.Document[]>([]);
 
 	const [addEventTitle, SetAddEventTitle] = useState("");
 
@@ -120,7 +121,7 @@ const Organizer = () => {
 
 	function onDialogSave(e) {
 		e.preventDefault();
-		const promise = appwriteDatabase.createDocument('632c679ca801b391db60', "unique()", {title: addEventTitle})
+		const promise = appwriteDatabase.createDocument('632c679ca801b391db60', "unique()", { title: addEventTitle })
 
 		closeDialog();
 	}
@@ -128,13 +129,30 @@ const Organizer = () => {
 	useEffect(() => {
 		const promise = appwriteDatabase.listDocuments('632c679ca801b391db60');
 		promise.then(response => {
-			if(response.total > 0) {
+			if (response.total > 0) {
 				SetEvents(response.documents);
 			}
 		}, error => {
 			alert(error);
 		});
-	},[appwriteDatabase]);
+	}, [appwriteDatabase]);
+
+
+	appwriteClient.subscribe('databases.63273a2203bb8c7524d5.collections.632c679ca801b391db60.documents', response => {
+		if (response.events.includes('databases.*.collections.*.documents.*.create')) {
+			if (events) {
+				SetEvents(events.concat({
+					title: response.payload.title,
+					$id: response.payload.$id,
+					$collection: response.payload.$collection,
+					$createdAt: response.payload.$createdAt,
+					$read: response.payload.$read,
+					$updatedAt: response.payload.$updatedAt,
+					$write: response.payload.$write,
+				}));
+			}
+		}
+	});
 
 
 	return (
