@@ -1,9 +1,12 @@
-import AppShell from "../components/appshell"
+import AppShell from "../../components/appshell"
 import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
-import React, { Fragment, useRef, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { PaperClipIcon } from '@heroicons/react/20/solid'
 import QRCode from "react-qr-code";
+import { useRouter } from "next/router"
+import { useDLRGStore } from "../../src/useDLRGStore"
+import { Models } from "appwrite"
 
 const people = [
 	{
@@ -27,8 +30,15 @@ const people = [
 ]
 
 const Course = () => {
-	const [open, setOpen] = useState(false)
-	const cancelButtonRef = useRef(null)
+	const router = useRouter();
+	const {pid} = router.query;
+	
+	const [open, setOpen] = useState(false);
+	const cancelButtonRef = useRef(null);
+
+	const [event, setEvent] = useState<any>();
+
+	const appwriteDatabase = useDLRGStore((state) => state.appDatabase);
 
 	function closeDialog() {
 		setOpen(false);
@@ -37,20 +47,30 @@ const Course = () => {
 		setOpen(true);
 	}
 
+	useEffect(() => {
+		if (pid) {
+			const promise = appwriteDatabase.getDocument('632c679ca801b391db60', pid);
+			promise.then(response => {
+				setEvent(response);
+			}, error => {
+				alert(error);
+			});
+		}
+	}, [appwriteDatabase, pid]);
+
 	return (
 		<AppShell>
-
 			{/* Kursbeschreibung */}
 			<>
 				<div>
-					<h3 className="text-2xl font-medium leading-6 text-gray-900">Sanitätskurs A</h3>
+					<h3 className="text-2xl font-medium leading-6 text-gray-900">{event.title}</h3>				
 				</div>
 				<div className="mt-5 border-t border-gray-200">
 					<dl className="divide-y divide-gray-200">
 						<div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
 							<dt className="text-sm font-medium text-gray-500">Kursname</dt>
 							<dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-								<span className="flex-grow">Sanitätskurs A</span>
+								<span className="flex-grow">{event.title}</span>
 								<span className="flex-shrink-0 ml-4">
 									<button
 										type="button"
@@ -64,7 +84,7 @@ const Course = () => {
 						<div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
 							<dt className="text-sm font-medium text-gray-500">Veranstalter</dt>
 							<dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-								<span className="flex-grow">Timo Imhof</span>
+								<span className="flex-grow">{event.organizer}</span>
 								<span className="flex-shrink-0 ml-4">
 									<button
 										type="button"
@@ -78,7 +98,7 @@ const Course = () => {
 						<div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
 							<dt className="text-sm font-medium text-gray-500">Email Addresse</dt>
 							<dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-								<span className="flex-grow">timo.imhof@dlrg.de</span>
+								<span className="flex-grow">{event.email}</span>
 								<span className="flex-shrink-0 ml-4">
 									<button
 										type="button"
@@ -92,7 +112,7 @@ const Course = () => {
 						<div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
 							<dt className="text-sm font-medium text-gray-500">Datum</dt>
 							<dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-								<span className="flex-grow"> 01.01.1970 </span>
+								<span className="flex-grow"> {event.date} </span>
 								<span className="flex-shrink-0 ml-4">
 									<button
 										type="button"
@@ -107,9 +127,7 @@ const Course = () => {
 							<dt className="text-sm font-medium text-gray-500">Beschreibung</dt>
 							<dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
 								<span className="flex-grow">
-									Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur
-									qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure
-									nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.
+									{event.description}
 								</span>
 								<span className="flex-shrink-0 ml-4">
 									<button

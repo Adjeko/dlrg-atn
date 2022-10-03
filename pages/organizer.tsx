@@ -104,6 +104,7 @@ const Organizer = () => {
 
 	const appwriteClient = useDLRGStore((state) => state.appwriteClient);
 	const appwriteDatabase = useDLRGStore((state) => state.appDatabase);
+	const user = useDLRGStore((state) => state.user);
 	const [events, SetEvents] = useState<Models.Document[]>([]);
 
 	const [addEventTitle, SetAddEventTitle] = useState("");
@@ -121,7 +122,7 @@ const Organizer = () => {
 
 	function onDialogSave(e) {
 		e.preventDefault();
-		const promise = appwriteDatabase.createDocument('632c679ca801b391db60', "unique()", { title: addEventTitle })
+		const promise = appwriteDatabase.createDocument('632c679ca801b391db60', "unique()", { title: addEventTitle, creator: user.$id })
 
 		closeDialog();
 	}
@@ -167,7 +168,7 @@ const Organizer = () => {
 				<ul role="list" className="divide-y divide-gray-200">
 					{events?.map((position) => (
 						<li key={position.id}>
-							<Link href="/course" className="block hover:bg-gray-50">
+							<Link href={`/course/${position.$id}`} className="block hover:bg-gray-50">
 								<div className="flex items-center px-4 py-4 sm:px-6">
 									<div className="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
 										<div className="truncate">

@@ -284,7 +284,7 @@ const AppShell = (props: any) => {
                     Section title
                   </h2>
                   <div className="overflow-hidden bg-white rounded-lg shadow">
-                    <p>{JSON.stringify(profile)}</p>
+                    {/* CONTENT */}
                     <div className="p-6">{props.children}</div>
                   </div>
                 </section>
