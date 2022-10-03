@@ -36,7 +36,7 @@ const Course = () => {
 	const [open, setOpen] = useState(false);
 	const cancelButtonRef = useRef(null);
 
-	const [event, setEvent] = useState<any>();
+	const [event, setEvent] = useState<any>({title: "", organizer: "", email: "", date: ""});
 
 	const appwriteDatabase = useDLRGStore((state) => state.appDatabase);
 
@@ -63,7 +63,7 @@ const Course = () => {
 			{/* Kursbeschreibung */}
 			<>
 				<div>
-					<h3 className="text-2xl font-medium leading-6 text-gray-900">{event.title}</h3>				
+					<h3 className="text-2xl font-medium leading-6 text-gray-900">{event.title}</h3>
 				</div>
 				<div className="mt-5 border-t border-gray-200">
 					<dl className="divide-y divide-gray-200">
