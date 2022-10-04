@@ -207,7 +207,7 @@ const Course = () => {
 											<div className="flex justify-center mt-2">
 												{/* QR-Code */}
 												<>
-													<QRCode value="hey" />
+													<QRCode value={event.$id} />
 												</>
 											</div>
 										</div>
