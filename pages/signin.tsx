@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDLRGStore } from '../src/useDLRGStore'
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const SignIn = () => {
 
@@ -44,9 +45,9 @@ const SignIn = () => {
 					/>
 					<h2 className="mt-6 text-3xl font-bold tracking-tight text-center text-gray-900">Sign in to your account</h2>
 					<p className="mt-2 text-sm text-center text-gray-600">
-						<a href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+						<Link href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
 							Registriere dich hier
-						</a>
+						</Link>
 					</p>
 				</div>
 

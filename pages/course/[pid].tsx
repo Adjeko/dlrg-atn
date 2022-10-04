@@ -31,7 +31,7 @@ const people = [
 
 const Course = () => {
 	const router = useRouter();
-	const {pid} = router.query;
+	const {pid} = router.query as any;
 	
 	const [open, setOpen] = useState(false);
 	const cancelButtonRef = useRef(null);

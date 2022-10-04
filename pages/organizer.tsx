@@ -139,7 +139,7 @@ const Organizer = () => {
 	}, [appwriteDatabase]);
 
 
-	appwriteClient.subscribe('databases.63273a2203bb8c7524d5.collections.632c679ca801b391db60.documents', response => {
+	appwriteClient.subscribe<any>('databases.63273a2203bb8c7524d5.collections.632c679ca801b391db60.documents', response => {
 		if (response.events.includes('databases.*.collections.*.documents.*.create')) {
 			if (events) {
 				SetEvents(events.concat({
