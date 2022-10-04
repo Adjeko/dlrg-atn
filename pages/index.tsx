@@ -6,6 +6,7 @@ import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
 import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { QrReader } from 'react-qr-reader';
+import { useDLRGStore } from "../src/useDLRGStore"
 
 const stats = [
   { name: 'Anzahl an Fortbildungen', stat: '5', previousStat: '7', change: `${(Math.round(5 / 7 * 100 * 100) / 100).toFixed(2)}%`, changeType: 'increase' },
@@ -72,14 +73,35 @@ function classNames(...classes: any) {
 
 const Home: NextPage = () => {
   const [open, setOpen] = useState(false)
-  const [data, setData] = useState('No result');
+  const [data, setData] = useState('');
   const cancelButtonRef = useRef(null)
+
+  const appwriteDatabase = useDLRGStore((state) => state.appDatabase);
+  const profile = useDLRGStore((state) => state.profile);
 
   function closeDialog() {
     setOpen(false);
   }
   function openDialog() {
     setOpen(true);
+  }
+  function onQRReaderResult(result, error) {
+    if (!!result) {
+      setData(result?.getText());
+
+      //first put the event in the profiles event attribute
+      let tmpProfile = profile;
+      tmpProfile.events.push(result?.getText());
+      appwriteDatabase.updateDocument(profile.$collection, profile.$id, tmpProfile);
+
+      //then put this profiles Id into the participants attribute in the event
+
+      closeDialog();
+    }
+    
+    if (!!error) {
+      setData(error.message);
+    }
   }
 
   return (
@@ -215,13 +237,7 @@ const Home: NextPage = () => {
                         <>
                           <QrReader
                             onResult={(result, error) => {
-                              if (!!result) {
-                                setData(result?.getText());
-                              }
-
-                              if (!!error) {
-                                setData(error.message);
-                              }
+                              onQRReaderResult(result, error);
                             }}
                             className="w-full h-full"
                             constraints={{ facingMode: 'environment' }}
