@@ -19,6 +19,8 @@ const Home: NextPage = () => {
   const [data, setData] = useState('');
   const cancelButtonRef = useRef(null)
 
+  const allSession = useSession();
+  console.log(allSession);
   const {data: session} = useSession();
   let authButton;
   if (session) {

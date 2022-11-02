@@ -1,17 +1,25 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { signIn } from "next-auth/react"
 
-const SignIn = () => {
-
-	const [email, setEmail] = useState("");
-	const [psswd, setPsswd] = useState("");
+const SignIn = ({}: any) => {
 
 	const router = useRouter()
+	
+	const [userInfo, setUserInfo] = useState({ email: "", password: "" });
 
-	function onSubmit(e : any) {
+	async function handleSubmit(e : any) {
 		e.preventDefault();
 
+		await signIn('credentials', {
+			email: userInfo.email,
+			password: userInfo.password,
+			redirect: false,
+		})
+
+		let {callbackUrl: url} = router.query as {callbackUrl: string}
+		router.replace(url ?? '/')
 	}
 
 	return (
@@ -33,7 +41,7 @@ const SignIn = () => {
 
 				<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
 					<div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-						<form className="space-y-6" action="/onboarding" method="POST">
+						<form className="space-y-6" onSubmit={handleSubmit}>
 							<div>
 								<label htmlFor="email" className="block text-sm font-medium text-gray-700">
 									Email address
@@ -41,12 +49,15 @@ const SignIn = () => {
 								<div className="mt-1">
 									<input
 										id="email"
-										name="email"
+										name="username"
 										type="email"
 										autoComplete="email"
+										value={userInfo.email}
 										required
 										className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-										onChange={(e) => setEmail(e.target.value)}
+										onChange={({ target }) =>
+											setUserInfo({ ...userInfo, email: target.value })
+										}
 									/>
 								</div>
 							</div>
@@ -61,14 +72,17 @@ const SignIn = () => {
 										name="password"
 										type="password"
 										autoComplete="current-password"
+										value={userInfo.password}
 										required
 										className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-										onChange={(e) => setPsswd(e.target.value)}
+										onChange={({ target }) =>
+											setUserInfo({ ...userInfo, password: target.value })
+										}
 									/>
 								</div>
 							</div>
 
-							<div className="flex items-center justify-between">
+							{/* <div className="flex items-center justify-between">
 								<div className="flex items-center">
 									<input
 										id="remember-me"
@@ -86,13 +100,12 @@ const SignIn = () => {
 										Forgot your password?
 									</a>
 								</div>
-							</div>
+							</div> */}
 
 							<div>
 								<button
 									type="submit"
 									className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-									onClick={onSubmit}
 								>
 									Sign in
 								</button>
