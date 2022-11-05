@@ -2,6 +2,7 @@ import { Fragment, useEffect } from 'react'
 import { Menu, Popover, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import { useSession, signOut, signIn } from "next-auth/react"
 
 const user = {
   name: 'Herbert Pietrzyk',
@@ -14,9 +15,8 @@ const navigation = [
   { name: 'Veranstalter', href: '/organizer', current: false },
 ]
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
+  // { name: 'Your Profile', href: '#', onClick: ()=>{}},
+  { name: 'Einstellungen', href: '#', onClick: () => { } },
 ]
 //TODO type anlegen
 function classNames(...classes: any) {
@@ -25,6 +25,17 @@ function classNames(...classes: any) {
 
 //TODO type anlegen
 const AppShell = (props: any) => {
+
+  const session = useSession();
+
+  if (userNavigation.length == 1) {
+    if (session.data) {
+      userNavigation.push({ name: 'Abmelden', href: '', onClick: () => { signOut() } })
+    }
+    else {
+      userNavigation.push({ name: 'Anmelden', href: '', onClick: () => { signIn() } })
+    }
+  }
 
   return (
     <>
@@ -72,6 +83,7 @@ const AppShell = (props: any) => {
                                     active ? 'bg-gray-100' : '',
                                     'block px-4 py-2 text-sm text-gray-700'
                                   )}
+                                  onClick={() => item.onClick()}
                                 >
                                   {item.name}
                                 </a>
