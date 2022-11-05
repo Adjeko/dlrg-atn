@@ -1,6 +1,8 @@
+import { contextProps } from "@trpc/react-query/dist/internals/context";
+import { Session } from "inspector";
 import { z } from "zod";
 
-import { router, publicProcedure } from "../trpc";
+import { router, publicProcedure, protectedProcedure } from "../trpc";
 
 export const organizerRouter = router({
   getEvent: publicProcedure
@@ -15,10 +17,12 @@ export const organizerRouter = router({
         description: 'Hier steht eine tolle Beschreibung'
       };
     }),
-  getEvents: publicProcedure.query(() => {
-    return [
-      { id: '1', title: 'Sanitätskurs A' },
-      { id: '2', title: 'Wasserrettungshelfer' },
-    ];
+  getEvents: protectedProcedure.query((ctx) => {
+    console.log('USER ID: ' + ctx.ctx.session.user.id);
+    return prisma?.event.findMany({
+      where: {
+        creatorId: ctx.ctx.session?.user?.id
+      }
+    })
   }),
 });

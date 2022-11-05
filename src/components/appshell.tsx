@@ -35,8 +35,7 @@ const AppShell = (props: any) => {
     userNavigation[userNavigation.length - 1] = newNavigation
   }
 
-  console.log(session)
-  if(!session.data){
+  if(session.status === 'unauthenticated'){
     signIn()
     return <></>
   }

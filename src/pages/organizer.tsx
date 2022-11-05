@@ -5,6 +5,7 @@ import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import Link from "next/link"
 import { trpc } from "../utils/trpc"
+import { useSession } from "next-auth/react"
 
 
 const positions = [
@@ -103,6 +104,8 @@ const Organizer = () => {
 	const cancelButtonRef = useRef(null)
 
 	const [addEventTitle, SetAddEventTitle] = useState("");
+
+	const session = useSession();
 
 	const eventsQuery = trpc.organizer.getEvents.useQuery();
 	const events = eventsQuery.data ?? [];
