@@ -17,6 +17,7 @@ const navigation = [
 const userNavigation = [
   // { name: 'Your Profile', href: '#', onClick: ()=>{}},
   { name: 'Einstellungen', href: '#', onClick: () => { } },
+  { name: 'Anmelden', href: '', onClick: () => { signIn() } },
 ]
 //TODO type anlegen
 function classNames(...classes: any) {
@@ -28,13 +29,16 @@ const AppShell = (props: any) => {
 
   const session = useSession();
 
-  if (userNavigation.length == 1) {
-    if (session.data) {
-      userNavigation.push({ name: 'Abmelden', href: '', onClick: () => { signOut() } })
-    }
-    else {
-      userNavigation.push({ name: 'Anmelden', href: '', onClick: () => { signIn() } })
-    }
+
+  if (session.status == 'authenticated' && session.data) {
+    let newNavigation = { name: 'Abmelden', href: '', onClick: () => { signOut() } }
+    userNavigation[userNavigation.length - 1] = newNavigation
+  }
+
+  console.log(session)
+  if(!session.data){
+    signIn()
+    return <></>
   }
 
   return (

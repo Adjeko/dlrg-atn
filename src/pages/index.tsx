@@ -19,27 +19,6 @@ const Home: NextPage = () => {
   const [data, setData] = useState('');
   const cancelButtonRef = useRef(null)
 
-  const allSession = useSession();
-  const {data: session} = useSession();
-  let authButton;
-  if (session) {
-    authButton =
-      <>
-        Signed in as {session.user.email} <br />
-        UserID: {session.user.id} <br/>
-        <button onClick={() => signOut()}>Sign out</button>
-      </>
-  } else {
-    authButton =
-    <>
-      Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
-    </>
-  }
-
-
-
-
   const statsQuery = trpc.index.getStats.useQuery();
   const stats = statsQuery.data ?? [];
 
@@ -66,8 +45,6 @@ const Home: NextPage = () => {
 
   return (
     <AppShell>
-      {authButton}
-
       <div>
         {/* Statistiken */}
         <dl className="grid grid-cols-1 overflow-hidden bg-white divide-y divide-gray-200 rounded-lg shadow md:grid-cols-2 md:divide-y-0 md:divide-x">
