@@ -6,6 +6,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db/client";
+import bcrypt from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -41,13 +42,37 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         const {email, password} = credentials as {email:string,password:string}
 
-        //TODO hier kommt eine Abfrage bei Prisma rein
+        //find a user with the same password and get the account
+        const foundAccount = await prisma.user.findFirst({
+          where: {
+            email: email,
+          },
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            accounts: {
+              where: {
+                type: 'credentials'
+              },
+              select: {
+                userId: true,
+                scope: true
+              }
+            }
+          }
+        })
 
-        
-        
+        const isAuthorized = await bcrypt.compare(password, foundAccount?.accounts[0]?.scope ?? "")
+                
         // If no error and we have user data, return it
-        if (true) {
-          return { id: 'testID', email: email, password: password};
+        if (isAuthorized) {
+          const currentUser = await prisma.user.findUnique({
+            where: {
+              id: foundAccount?.id
+            }
+          })
+          return currentUser;
         }
 
         // Return null if user data could not be retrieved
