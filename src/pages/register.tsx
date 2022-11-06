@@ -1,18 +1,24 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { trpc } from "../utils/trpc";
 
 const Register = () => {
 
-	const [email, setEmail] = useState("");
-	const [psswd, setPsswd] = useState("");
-	const [confPsswd, setConfPsswd] = useState("");
-
 	const router = useRouter()
+	const registerUser = trpc.auth.register.useMutation()
 
-	function onSubmit(e : any) {
+	async function onSubmit(e: any) {
 		e.preventDefault();
+		let email = e.target[0].value as string
+		let password = e.target[1].value as string
+		let confirmPassword = e.target[2].value as string
+		let firstName = e.target[3].value as string
+		let lastName = e.target[4].value as string
+		let acceptAgbs = e.target[5].checked as boolean
 
-		router.push("/onboarding");
+		registerUser.mutate({ email: email, password: password, name: `${firstName} ${lastName}` })
+		
+		// router.push("/onboarding");
 	}
 
 	return (
@@ -38,7 +44,7 @@ const Register = () => {
 						<form className="space-y-6" method="POST" onSubmit={onSubmit}>
 							<div>
 								<label htmlFor="email" className="block text-sm font-medium text-gray-700">
-									Email address
+									Email Addresse
 								</label>
 								<div className="mt-1">
 									<input
@@ -48,14 +54,13 @@ const Register = () => {
 										autoComplete="email"
 										required
 										className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-										onChange={(e) => setEmail(e.target.value)}
 									/>
 								</div>
 							</div>
 
 							<div>
 								<label htmlFor="password" className="block text-sm font-medium text-gray-700">
-									Password
+									Passwort
 								</label>
 								<div className="mt-1">
 									<input
@@ -65,14 +70,13 @@ const Register = () => {
 										autoComplete="current-password"
 										required
 										className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-										onChange={(e) => setPsswd(e.target.value)}
 									/>
 								</div>
 							</div>
 
 							<div>
 								<label htmlFor="password" className="block text-sm font-medium text-gray-700">
-									Confirm Password
+									Passwort bestätigen
 								</label>
 								<div className="mt-1">
 									<input
@@ -82,7 +86,46 @@ const Register = () => {
 										autoComplete="current-password"
 										required
 										className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-										onChange={(e) => setConfPsswd(e.target.value)}
+									/>
+								</div>
+							</div>
+
+							{/* Divider */}
+							<div className="relative">
+								<div className="absolute inset-0 flex items-center" aria-hidden="true">
+									<div className="w-full border-t border-gray-300" />
+								</div>
+								<div className="relative flex justify-center">
+									<span className="bg-white px-2 text-sm text-gray-500">Profil</span>
+								</div>
+							</div>
+
+							<div>
+								<label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+									Vorname
+								</label>
+								<div className="mt-1">
+									<input
+										id="firstName"
+										name="firstName"
+										type="text"
+										required
+										className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+									/>
+								</div>
+							</div>
+
+							<div>
+								<label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+									Nachname
+								</label>
+								<div className="mt-1">
+									<input
+										id="lastName"
+										name="lastName"
+										type="text"
+										required
+										className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
 									/>
 								</div>
 							</div>
@@ -106,7 +149,7 @@ const Register = () => {
 									type="submit"
 									className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 								>
-									Register
+									Registrieren
 								</button>
 							</div>
 						</form>
