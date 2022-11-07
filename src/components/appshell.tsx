@@ -77,6 +77,9 @@ const AppShell = (props: any) => {
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <Menu.Items className="absolute z-40 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg -right-2 ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <Menu.Item>
+                            <p className='block px-4 py-2 text-sm text-gray-700'>{session.data?.user?.name}</p>
+                          </Menu.Item>
                           {userNavigation.map((item) => (
                             <Menu.Item key={item.name}>
                               {({ active }) => (
