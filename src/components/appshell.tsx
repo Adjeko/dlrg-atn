@@ -4,12 +4,6 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { useSession, signOut, signIn } from "next-auth/react"
 
-const user = {
-  name: 'Herbert Pietrzyk',
-  email: 'Herbert.Pietrzyk@gmail.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
 const navigation = [
   { name: 'Teilnehmer', href: '/', current: true },
   { name: 'Veranstalter', href: '/organizer', current: false },
@@ -28,7 +22,7 @@ function classNames(...classes: any) {
 const AppShell = (props: any) => {
 
   const session = useSession();
-
+  const userImageUrl = `https://ui-avatars.com/api/?name=${session.data?.user?.name}?background=random`
 
   if (session.status == 'authenticated' && session.data) {
     let newNavigation = { name: 'Abmelden', href: '', onClick: () => { signOut() } }
@@ -67,7 +61,7 @@ const AppShell = (props: any) => {
                       <div>
                         <Menu.Button className="flex text-sm bg-white rounded-full ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
                           <span className="sr-only">Open user menu</span>
-                          <img className="w-8 h-8 rounded-full" src={user.imageUrl} alt="" />
+                          <img className="w-8 h-8 rounded-full" src={userImageUrl} alt="" />
                         </Menu.Button>
                       </div>
                       <Transition
@@ -240,11 +234,11 @@ const AppShell = (props: any) => {
                         <div className="pt-4 pb-2">
                           <div className="flex items-center px-5">
                             <div className="flex-shrink-0">
-                              <img className="w-10 h-10 rounded-full" src={user.imageUrl} alt="" />
+                              <img className="w-10 h-10 rounded-full" src={userImageUrl} alt="" />
                             </div>
                             <div className="flex-1 min-w-0 ml-3">
-                              <div className="text-base font-medium text-gray-800 truncate">{user.name}</div>
-                              <div className="text-sm font-medium text-gray-500 truncate">{user.email}</div>
+                              <div className="text-base font-medium text-gray-800 truncate">{session.data?.user?.name}</div>
+                              <div className="text-sm font-medium text-gray-500 truncate">{session.data?.user?.email}</div>
                             </div>
                             <button
                               type="button"
