@@ -17,11 +17,23 @@ export const organizerRouter = router({
         description: 'Hier steht eine tolle Beschreibung'
       };
     }),
-  getEvents: protectedProcedure.query((ctx) => {
-    console.log('USER ID: ' + ctx.ctx.session.user.id);
+  getEvents: protectedProcedure.query(({ctx}) => {
     return prisma?.event.findMany({
       where: {
-        creatorId: ctx.ctx.session?.user?.id
+        creatorId: ctx.session?.user?.id
+      }
+    })
+  }),
+  createEvent: protectedProcedure
+  .input(z.object({title: z.string()}))
+  .mutation(async ({input, ctx}) => {
+    console.log(input)
+    console.log(ctx.session)
+    await prisma?.event.create({
+      data: {
+        creatorId: ctx.session.user.id,
+        title: input.title,
+        points: 15,
       }
     })
   }),

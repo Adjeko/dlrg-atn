@@ -16,11 +16,20 @@ export const authOptions: NextAuthOptions = {
     signIn: '/signin',
   },
   callbacks: {
+    //if the provider uses jwt specific informations have to be deconstructed here
+    //to have them accessible in the session callback
+    async jwt({ token, account, profile }) {
+      return token
+    },
     // Include user.id on session
-    session({ session, user }) {
+    session({ session, token, user }) {
       if (session.user && user) {
         session.user.id = user.id;
       }
+      else if(session.user && token && token.sub) {
+        session.user.id = token.sub
+      }
+      
       return session;
     },
   },
@@ -78,10 +87,6 @@ export const authOptions: NextAuthOptions = {
         // Return null if user data could not be retrieved
         return null;
       },
-    }),
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!
     }),
     // ...add more providers here
   ],
