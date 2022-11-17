@@ -5,17 +5,14 @@ import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 
 export const organizerRouter = router({
-  getEvent: publicProcedure
+  getEvent: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(({ input }) => {
-      return {
-        id: input?.id,
-        title: `Hello ${input?.id ?? "world"}`,
-        organizer: 'ICH',
-        email: 'ich@du.de',
-        date: 'heute',
-        description: 'Hier steht eine tolle Beschreibung'
-      };
+      return prisma?.event.findFirst({
+        where:{
+          id: input.id
+        }
+      });
     }),
   getEvents: protectedProcedure.query(({ctx}) => {
     return prisma?.event.findMany({
