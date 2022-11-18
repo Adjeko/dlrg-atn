@@ -11,6 +11,9 @@ export const organizerRouter = router({
       return prisma?.event.findFirst({
         where:{
           id: input.id
+        },
+        include:{
+          attendees: true
         }
       });
     }),

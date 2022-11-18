@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import bcrypt from "bcrypt";
+import { profile } from "console";
 
 export const authRouter = router({
   getSession: publicProcedure.query(({ ctx }) => {
@@ -19,21 +20,45 @@ export const authRouter = router({
 
     const hashedPassword = await bcrypt.hash(input.password, 10)
 
+    const maxProviderAccount = await prisma.account.findFirst({
+      where:{
+        provider: 'credentials',
+      },
+      orderBy:{
+        providerAccountId: 'desc'
+      }
+    })
+
+    const maxProviderAccountId = parseInt(maxProviderAccount?.providerAccountId ?? '0');
+
     const newUser = await prisma.user.create({
       data: {
         name: input.name,
         email: input.email,
+        accounts:{
+          create:{
+            type: 'credentials',
+            provider: 'credentials',
+            providerAccountId: (maxProviderAccountId + 1).toString(),
+            scope: hashedPassword
+          }
+        },
+        profile:{
+          create:{
+            events: undefined
+          }
+        }
       }
     })  
 
-    const newAccount = await prisma.account.create({
-      data: {
-        userId: newUser?.id ?? 'Error in creating new User',
-        type: 'credentials',
-        provider: 'credentials',
-        providerAccountId: '1',
-        scope: hashedPassword //scope does get miss used here to store the hashed password
-      }
-    })
+    // const newAccount = await prisma.account.create({
+    //   data: {
+    //     userId: newUser?.id ?? 'Error in creating new User',
+    //     type: 'credentials',
+    //     provider: 'credentials',
+    //     providerAccountId: '1',
+    //     scope: hashedPassword //scope does get miss used here to store the hashed password
+    //   }
+    // })
   }),
 });

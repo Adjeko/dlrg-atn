@@ -42,7 +42,7 @@ const Course = () => {
 		organizer: 'ICH',
 		email: 'ich@du.de',
 		date: 'heute',
-		description: 'Hier steht eine tolle Beschreibung'
+		description: 'Hier steht eine tolle Beschreibung',
 	};
 
 	function closeDialog() {

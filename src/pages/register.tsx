@@ -18,7 +18,7 @@ const Register = () => {
 
 		registerUser.mutate({ email: email, password: password, name: `${firstName} ${lastName}` })
 		
-		// router.push("/onboarding");
+		// router.replace('/')
 	}
 
 	return (

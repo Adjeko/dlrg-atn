@@ -3,11 +3,11 @@ import type { NextPage } from 'next'
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid'
 // import { CheckIcon, HandThumbUpIcon, UserIcon } from '@heroicons/react/20/solid'
 import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
-import React, { Fragment, useRef, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { QrReader } from 'react-qr-reader'
 import { trpc } from '../utils/trpc'
-import { useSession, signIn, signOut } from "next-auth/react"
+import QrScanner from 'qr-scanner';
 
 //TODO type anlegen
 function classNames(...classes: any) {
@@ -16,8 +16,10 @@ function classNames(...classes: any) {
 
 const Home: NextPage = () => {
   const [open, setOpen] = useState(false)
-  const [data, setData] = useState('');
   const cancelButtonRef = useRef(null)
+
+  const camerRef = useRef<HTMLVideoElement>(null);
+  const Scanner = useRef<QrScanner>();
 
   const statsQuery = trpc.index.getStats.useQuery();
   const stats = statsQuery.data ?? [];
@@ -25,21 +27,60 @@ const Home: NextPage = () => {
   const timelineQuery = trpc.index.getTimeline.useQuery();
   const timeline = timelineQuery.data ?? [];
 
+  const joinEventMutation = trpc.index.joinEvent.useMutation();
+
+  // useEffect(() => {
+  //   console.log("SCANNER ?")
+  //   console.log(camerRef)
+
+  //   if(camerRef.current != null){
+  //     Scanner = new QrScanner(camerRef.current, (result : any) => onQRScannerResult(result), {
+  //       onDecodeError: (error) => {console.log(error)},
+  //       // returnDetailedScanResult: true,
+  //       maxScansPerSecond: 2,
+  //       highlightScanRegion: true,
+  //       highlightCodeOutline: true
+  //     })
+      
+  //     if(open){
+  //       console.log("Try to start Scanner")
+  //       Scanner.start()
+  //     }
+      
+  //     if(!open){
+  //       console.log("Try to stop Scanner")
+  //       Scanner.stop();
+  //     }
+  //   }
+  // }, [camerRef.current])
+
   function closeDialog() {
+      if (Scanner.current != null) {
+        Scanner.current.stop()
+      }
     setOpen(false);
   }
   function openDialog() {
     setOpen(true);
+    setTimeout(() => {
+      if (camerRef.current != null) {
+        Scanner.current = new QrScanner(camerRef.current, (result: any) => onQRScannerResult(result), {
+          // onDecodeError: (error) => { console.log(error) },
+          // returnDetailedScanResult: true,
+          maxScansPerSecond: 2,
+          highlightScanRegion: true,
+          highlightCodeOutline: true
+        })
+
+        Scanner.current.start()
+      }
+    }, 100)
   }
-  function onQRReaderResult(result : any, error : any) {
+  function onQRScannerResult(result : any) {
+    
     if (!!result) {
-      setData(result?.getText());
-
+      joinEventMutation.mutate({eventId: result?.data})
       closeDialog();
-    }
-
-    if (!!error) {
-      setData(error.message);
     }
   }
 
@@ -174,14 +215,7 @@ const Home: NextPage = () => {
                       <div className="mt-2">
                         {/* QR-Code Scanner */}
                         <>
-                          <QrReader
-                            onResult={(result, error) => {
-                              onQRReaderResult(result, error);
-                            }}
-                            className="w-full h-full"
-                            constraints={{ facingMode: 'environment' }}
-                          />
-                          <p>{data}</p>
+                          <video ref={camerRef} className="w-full h-full"></video>
                         </>
                       </div>
                     </div>
@@ -190,7 +224,7 @@ const Home: NextPage = () => {
                     <button
                       type="button"
                       className="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-                      onClick={() => setOpen(false)}
+                      onClick={() => closeDialog()}
                       ref={cancelButtonRef}
                     >
                       Cancel
