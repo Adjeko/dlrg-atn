@@ -5,7 +5,6 @@ import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid'
 import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
 import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { QrReader } from 'react-qr-reader'
 import { trpc } from '../utils/trpc'
 import QrScanner from 'qr-scanner';
 
