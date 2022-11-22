@@ -2,31 +2,9 @@ import AppShell from "../../components/appshell"
 import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
 import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { PaperClipIcon } from '@heroicons/react/20/solid'
 import QRCode from "react-qr-code";
 import { useRouter } from "next/router"
 import { trpc } from "../../utils/trpc"
-
-const people = [
-	{
-		name: 'Calvin Hawkins',
-		email: 'calvin.hawkins@example.com',
-		image:
-			'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	},
-	{
-		name: 'Kristen Ramos',
-		email: 'kristen.ramos@example.com',
-		image:
-			'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	},
-	{
-		name: 'Ted Fox',
-		email: 'ted.fox@example.com',
-		image:
-			'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	},
-]
 
 const Course = () => {
 	const router = useRouter();
@@ -43,7 +21,11 @@ const Course = () => {
 		email: 'ich@du.de',
 		date: 'heute',
 		description: 'Hier steht eine tolle Beschreibung',
+		contact: "",
 	};
+
+	const attendeesQuery = trpc.organizer.getAttendees.useQuery({eventId:pid});
+  const attendees = attendeesQuery.data?.attendees
 
 	function closeDialog() {
 		setOpen(false);
@@ -92,7 +74,7 @@ const Course = () => {
 						<div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
 							<dt className="text-sm font-medium text-gray-500">Email Addresse</dt>
 							<dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-								<span className="flex-grow">{event.email}</span>
+								<span className="flex-grow">{event.contact}</span>
 								<span className="flex-shrink-0 ml-4">
 									<button
 										type="button"
@@ -106,7 +88,7 @@ const Course = () => {
 						<div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
 							<dt className="text-sm font-medium text-gray-500">Datum</dt>
 							<dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-								<span className="flex-grow"> {event.date} </span>
+								<span className="flex-grow">{event.date?.toString()}</span>
 								<span className="flex-shrink-0 ml-4">
 									<button
 										type="button"
@@ -146,12 +128,12 @@ const Course = () => {
 
 			{/* TeilnehmerListe */}
 			<ul role="list" className="divide-y divide-gray-200">
-				{people.map((person) => (
-					<li key={person.email} className="flex py-4">
-						<img className="w-10 h-10 rounded-full" src={person.image} alt="" />
+				{attendees?.map((person) => (
+					<li key={person.user.id} className="flex py-4">
+						<img className="w-10 h-10 rounded-full" src={`https://ui-avatars.com/api/?name=${person.user.name}?background=random`} alt="" />
 						<div className="ml-3">
-							<p className="text-sm font-medium text-gray-900">{person.name}</p>
-							<p className="text-sm text-gray-500">{person.email}</p>
+							<p className="text-sm font-medium text-gray-900">{person.user.name}</p>
+							<p className="text-sm text-gray-500">{person.user.email}</p>
 						</div>
 					</li>
 				))}

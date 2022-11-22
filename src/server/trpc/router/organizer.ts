@@ -24,6 +24,22 @@ export const organizerRouter = router({
       }
     })
   }),
+  getAttendees: protectedProcedure
+  .input(z.object({eventId: z.string()}))
+  .query(({input, ctx}) => {
+    return prisma?.event.findFirst({
+      where: {
+        creatorId: ctx.session?.user?.id
+      },
+      select: {
+        attendees: {
+          select: {
+            user: true
+          }
+        }
+      }
+    })
+  }),
   createEvent: protectedProcedure
   .input(z.object({title: z.string()}))
   .mutation(async ({input, ctx}) => {
