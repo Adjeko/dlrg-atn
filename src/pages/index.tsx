@@ -24,34 +24,9 @@ const Home: NextPage = () => {
   const stats = statsQuery.data ?? [];
 
   const timelineQuery = trpc.index.getTimeline.useQuery();
-  const timeline = timelineQuery.data ?? [];
+  const timeline = timelineQuery.data;
 
   const joinEventMutation = trpc.index.joinEvent.useMutation();
-
-  // useEffect(() => {
-  //   console.log("SCANNER ?")
-  //   console.log(camerRef)
-
-  //   if(camerRef.current != null){
-  //     Scanner = new QrScanner(camerRef.current, (result : any) => onQRScannerResult(result), {
-  //       onDecodeError: (error) => {console.log(error)},
-  //       // returnDetailedScanResult: true,
-  //       maxScansPerSecond: 2,
-  //       highlightScanRegion: true,
-  //       highlightCodeOutline: true
-  //     })
-      
-  //     if(open){
-  //       console.log("Try to start Scanner")
-  //       Scanner.start()
-  //     }
-      
-  //     if(!open){
-  //       console.log("Try to stop Scanner")
-  //       Scanner.stop();
-  //     }
-  //   }
-  // }, [camerRef.current])
 
   function closeDialog() {
       if (Scanner.current != null) {
@@ -131,34 +106,33 @@ const Home: NextPage = () => {
         {/* Timeline */}
         <div className="flow-root">
           <ul role="list" className="-mb-8">
-            {timeline.map((event, eventIdx) => (
+            {timeline?.events.map((event) => (
               <li key={event.id}>
                 <div className="relative pb-8">
-                  {eventIdx !== timeline.length - 1 ? (
+                  {/* {eventIdx !== timeline.length - 1 ? (
                     <span className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" />
-                  ) : null}
+                  ) : null} */}
                   <div className="relative flex space-x-3">
                     <div>
-                      <span
+                      {/* <span
                         className={classNames(
                           event.iconBackground,
                           'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white'
                         )}
                       >
-                        {/* <event.icon className="w-5 h-5 text-white" aria-hidden="true" /> */}
-                      </span>
+                      </span> */}
                     </div>
                     <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                       <div>
                         <p className="text-sm text-gray-500">
-                          {event.content}{' '}
-                          <a href={event.href} className="font-medium text-gray-900">
-                            {event.target}
+                          {"Beigetreten: "}{' '}
+                          <a href={`course/${event.id}`} className="font-medium text-gray-900">
+                            {event.title}
                           </a>
                         </p>
                       </div>
                       <div className="text-sm text-right text-gray-500 whitespace-nowrap">
-                        <time dateTime={event.datetime}>{event.date}</time>
+                        <time dateTime={event.date?.toDateString()}>{event.date?.toString()}</time>
                       </div>
                     </div>
                   </div>
