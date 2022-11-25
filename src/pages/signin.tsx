@@ -27,7 +27,7 @@ const SignIn = ({}: any) => {
 			<div className="flex flex-col justify-center min-h-full py-12 sm:px-6 lg:px-8">
 				<div className="sm:mx-auto sm:w-full sm:max-w-md">
 					<img
-						className="w-full h-16 content-center bg-[#FF222B] pb-2"
+						className="w-full h-16 content-center bg-[#FF222B] py-2"
 						src="https://asset.brandfetch.io/id1kbwnF66/id90RqLdal.svg?updated=1635891151637"
 						alt="Workflow"
 					/>
