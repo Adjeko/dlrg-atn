@@ -52,7 +52,7 @@ export const authOptions: NextAuthOptions = {
         const {email, password} = credentials as {email:string,password:string}
         console.log('EMAIL ' + email)
         //find a user with the same password and get the account
-        console.log('ENV ' + env.DATABASE_URL)
+        console.log('ENV ' + env.NEXTAUTH_URL)
         let foundAccount
         try{
         foundAccount = await prisma.user.findFirst({
