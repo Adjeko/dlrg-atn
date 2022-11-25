@@ -45,7 +45,8 @@ export const organizerRouter = router({
     }
   }),
   createEvent: protectedProcedure
-    .input(z.object({ title: z.string() }))
+    .input(z.object({ title: z.string(), organizer: z.string(), 
+    contact: z.string(),  points: z.number()}))
     .mutation(async ({ input, ctx }) => {
       console.log(input)
       console.log(ctx.session)
@@ -54,8 +55,10 @@ export const organizerRouter = router({
         await prisma?.event.create({
           data: {
             creatorId: ctx.session.user.id,
+            contact: input.contact,
+            organizer: input.organizer,
             title: input.title,
-            points: 15,
+            points: input.points,
           }
         })
       } catch (error) {

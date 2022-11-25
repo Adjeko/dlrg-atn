@@ -26,17 +26,11 @@ const Register = () => {
 			<div className="flex flex-col justify-center min-h-full py-12 sm:px-6 lg:px-8">
 				<div className="sm:mx-auto sm:w-full sm:max-w-md">
 					<img
-						className="w-auto h-12 mx-auto"
-						src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-						alt="Your Company"
+						className="w-full h-16 content-center bg-[#FF222B] pb-2"
+						src="https://asset.brandfetch.io/id1kbwnF66/id90RqLdal.svg?updated=1635891151637"
+						alt="Workflow"
 					/>
-					<h2 className="mt-6 text-3xl font-bold tracking-tight text-center text-gray-900">Register a new account</h2>
-					<p className="mt-2 text-sm text-center text-gray-600">
-						Or{' '}
-						<a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-							start your 14-day free trial
-						</a>
-					</p>
+					<h2 className="mt-6 text-3xl font-bold tracking-tight text-center text-gray-900">Registriere dich für einen neuen Account</h2>
 				</div>
 
 				<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -147,7 +141,7 @@ const Register = () => {
 							<div>
 								<button
 									type="submit"
-									className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+									className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-[#FF222B] border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 								>
 									Registrieren
 								</button>

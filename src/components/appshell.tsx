@@ -206,7 +206,7 @@ const AppShell = (props: any) => {
                             <div>
                               <img
                                 className="w-auto h-8"
-                                src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
+                                src="https://asset.brandfetch.io/id1kbwnF66/id90RqLdal.svg?updated=1635891151637"
                                 alt="Workflow"
                               />
                             </div>

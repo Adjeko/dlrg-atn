@@ -131,8 +131,11 @@ const Organizer = () => {
 		e.preventDefault();
 
 		const courseName = e.target[0].value as string
+		const organizer = e.target[1].value as string
+		const email = e.target[2].value as string
+		const points = parseInt(e.target[3].value) as number
 
-		createEventQuery.mutate({title: courseName})
+		createEventQuery.mutate({title: courseName, organizer: organizer, contact: email, points: points})
 		closeDialog();
 	}
 
@@ -247,7 +250,46 @@ const Organizer = () => {
 																				id="coursename"
 																				name="Kursname"
 																				type="text"
-																				className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+																				className="block w-full py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+																			/>
+																		</div>
+																	</div>
+																	<div className="sm:col-span-4">
+																		<label htmlFor="organizer" className="block text-sm font-medium text-gray-700">
+																			Veranstalter
+																		</label>
+																		<div className="mt-1">
+																			<input
+																				id="organizer"
+																				name="organizer"
+																				type="text"
+																				className="block w-full py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+																			/>
+																		</div>
+																	</div>
+																	<div className="sm:col-span-4">
+																		<label htmlFor="email" className="block text-sm font-medium text-gray-700">
+																			Email
+																		</label>
+																		<div className="mt-1">
+																			<input
+																				id="email"
+																				name="email"
+																				type="text"
+																				className="block w-full py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+																			/>
+																		</div>
+																	</div>
+																	<div className="sm:col-span-4">
+																		<label htmlFor="points" className="block text-sm font-medium text-gray-700">
+																			Lerneinheiten
+																		</label>
+																		<div className="mt-1">
+																			<input
+																				id="points"
+																				name="points"
+																				type="text"
+																				className="block w-full py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
 																			/>
 																		</div>
 																	</div>
