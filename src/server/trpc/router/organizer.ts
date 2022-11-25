@@ -27,30 +27,39 @@ export const organizerRouter = router({
   getAttendees: protectedProcedure
   .input(z.object({eventId: z.string()}))
   .query(({input, ctx}) => {
-    return prisma?.event.findFirst({
-      where: {
-        creatorId: ctx.session?.user?.id
-      },
-      select: {
-        attendees: {
-          select: {
-            user: true
+    try {
+      return prisma?.event.findFirst({
+        where: {
+          creatorId: ctx.session?.user?.id
+        },
+        select: {
+          attendees: {
+            select: {
+              user: true
+            }
           }
         }
-      }
-    })
+      })
+    } catch (error) {
+      console.error(error)
+    }
   }),
   createEvent: protectedProcedure
-  .input(z.object({title: z.string()}))
-  .mutation(async ({input, ctx}) => {
-    console.log(input)
-    console.log(ctx.session)
-    await prisma?.event.create({
-      data: {
-        creatorId: ctx.session.user.id,
-        title: input.title,
-        points: 15,
+    .input(z.object({ title: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      console.log(input)
+      console.log(ctx.session)
+
+      try {
+        await prisma?.event.create({
+          data: {
+            creatorId: ctx.session.user.id,
+            title: input.title,
+            points: 15,
+          }
+        })
+      } catch (error) {
+        console.error(error)
       }
-    })
-  }),
+    }),
 });
