@@ -50,7 +50,8 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         const {email, password} = credentials as {email:string,password:string}
-
+        console.log('EMAIL ' + email)
+        console.log('PRISMA ' + prisma)
         //find a user with the same password and get the account
         const foundAccount = await prisma.user.findFirst({
           where: {
@@ -72,7 +73,11 @@ export const authOptions: NextAuthOptions = {
           }
         })
 
+        console.log('FOUND ' + foundAccount)
+
         const isAuthorized = await bcrypt.compare(password, foundAccount?.accounts[0]?.scope ?? "")
+
+        console.log(isAuthorized)
                 
         // If no error and we have user data, return it
         if (isAuthorized) {

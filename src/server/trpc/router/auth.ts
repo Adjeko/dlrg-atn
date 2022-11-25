@@ -14,6 +14,7 @@ export const authRouter = router({
     .input(z.object({email: z.string(), password: z.string(), name: z.string()}))
     .mutation(async ({ input, ctx }) => {
 
+    console.log(prisma);
     if(!prisma){
       return {user: null, account: null, error: "Prisma not loaded"};
     }
