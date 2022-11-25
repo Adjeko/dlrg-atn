@@ -18,7 +18,7 @@ const SignIn = ({}: any) => {
 			redirect: false,
 		})
 
-		let {callbackUrl: url} = router.query as {callbackUrl: string}
+		const {callbackUrl: url} = router.query as {callbackUrl: string}
 		router.replace(url ?? '/')
 	}
 

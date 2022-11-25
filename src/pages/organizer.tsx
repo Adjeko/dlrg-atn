@@ -130,7 +130,7 @@ const Organizer = () => {
 	function onDialogSave(e: any) {
 		e.preventDefault();
 
-		let courseName = e.target[0].value as string
+		const courseName = e.target[0].value as string
 
 		createEventQuery.mutate({title: courseName})
 		closeDialog();

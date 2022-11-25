@@ -9,16 +9,16 @@ const Register = () => {
 
 	async function onSubmit(e: any) {
 		e.preventDefault();
-		let email = e.target[0].value as string
-		let password = e.target[1].value as string
-		let confirmPassword = e.target[2].value as string
-		let firstName = e.target[3].value as string
-		let lastName = e.target[4].value as string
-		let acceptAgbs = e.target[5].checked as boolean
+		const email = e.target[0].value as string
+		const password = e.target[1].value as string
+		const confirmPassword = e.target[2].value as string
+		const firstName = e.target[3].value as string
+		const lastName = e.target[4].value as string
+		const acceptAgbs = e.target[5].checked as boolean
 
 		registerUser.mutate({ email: email, password: password, name: `${firstName} ${lastName}` })
 		
-		// router.replace('/')
+		router.replace('/')
 	}
 
 	return (
