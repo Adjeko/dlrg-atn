@@ -52,8 +52,10 @@ export const authOptions: NextAuthOptions = {
         const {email, password} = credentials as {email:string,password:string}
         console.log('EMAIL ' + email)
         //find a user with the same password and get the account
+
+        let foundAccount
         try{
-        const foundAccount = await prisma.user.findFirst({
+        foundAccount = await prisma.user.findFirst({
           where: {
             email: email,
           },
