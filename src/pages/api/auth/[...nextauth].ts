@@ -51,8 +51,8 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         const {email, password} = credentials as {email:string,password:string}
         console.log('EMAIL ' + email)
-        console.log('PRISMA ' + prisma)
         //find a user with the same password and get the account
+        try{
         const foundAccount = await prisma.user.findFirst({
           where: {
             email: email,
@@ -72,6 +72,9 @@ export const authOptions: NextAuthOptions = {
             }
           }
         })
+      } catch ( error) {
+        console.error(error)
+      }
 
         console.log('FOUND ' + foundAccount)
 
