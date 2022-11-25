@@ -13,5 +13,11 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    domains: [
+      "asset.brandfetch.io",
+      "ui-avatars.com"
+    ]
+  }
 };
 export default config;
