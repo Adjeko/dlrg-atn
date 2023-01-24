@@ -37,7 +37,8 @@ const Home: NextPage = () => {
         Scanner.current = new QrScanner(camerRef.current, (result: any) => onQRScannerResult(result), {
           // onDecodeError: (error) => { console.log(error) },
           // returnDetailedScanResult: true,
-          maxScansPerSecond: 2,
+          // maxScansPerSecond: 2,
+          preferredCamera: 'environment',
           highlightScanRegion: true,
           highlightCodeOutline: true
         })
