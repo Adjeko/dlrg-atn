@@ -71,16 +71,16 @@ const Home: NextPage = () => {
     }
   }
 
-  function onCameraPermissions() {
-    requestMediaPermissions({ audio: false, video: true })
-      .then(() => { })
-      .catch((err: MediaPermissionsError) => { });
-  }
+  // function onCameraPermissions() {
+  //   requestMediaPermissions({ audio: false, video: true })
+  //     .then(() => { })
+  //     .catch((err: MediaPermissionsError) => { });
+  // }
 
   return (
     <AppShell>
       <div>
-        <button className="bg-gray-200" onClick={onCameraPermissions}> Camera Permissions </button>
+        {/* <button className="bg-gray-200" onClick={onCameraPermissions}> Camera Permissions </button> */}
         <div>Media: {mediaDevicesSupported ? '✅' : '❌'}</div>
         <div>UserMedia: {getUserMediaSupported ? '✅' : '❌'}</div>
         {/* Statistiken */}
