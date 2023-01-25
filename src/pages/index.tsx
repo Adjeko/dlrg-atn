@@ -100,8 +100,8 @@ const Home: NextPage = () => {
 
   function onCameraPermissions() {
     requestMediaPermissions({ audio: false, video: true })
-      .then(() => { })
-      .catch((err: MediaPermissionsError) => { });
+      .then(() => { console.log("Camera granted") })
+      .catch((err: MediaPermissionsError) => { console.log("Camera Permission Error") });
   }
 
   return (
