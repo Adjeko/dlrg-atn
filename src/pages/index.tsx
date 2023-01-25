@@ -6,6 +6,7 @@ import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { trpc } from '../utils/trpc'
 import QrScanner from 'qr-scanner';
+import {QrScanner as QrCodeScanner} from '@yudiel/react-qr-scanner';
 import {
   MediaPermissionsError,
   requestMediaPermissions
@@ -300,6 +301,10 @@ const Home: NextPage = () => {
                       <div className="mt-2">
                         {/* QR-Code Scanner */}
                         <>
+                          <QrCodeScanner
+                            onDecode={(result) => console.log(result)}
+                            onError={(error) => console.log(error?.message)}
+                          />
                         </>
                       </div>
                     </div>
