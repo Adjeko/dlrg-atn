@@ -6,6 +6,10 @@ import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { trpc } from '../utils/trpc'
 import QrScanner from 'qr-scanner';
+import {
+  MediaPermissionsError,
+  requestMediaPermissions
+} from 'mic-check';
 
 //TODO type anlegen
 function classNames(...classes: any) {
@@ -23,6 +27,18 @@ const Home: NextPage = () => {
   const timeline = timelineQuery.data;
 
   const joinEventMutation = trpc.index.joinEvent.useMutation();
+
+  const [mediaDevicesSupported, setMediaDevicesSupported] = useState(false);
+  const [getUserMediaSupported, setGetUserMediaSupported] = useState(false);
+
+  useEffect(() => {
+    if('mediaDevices' in navigator){
+      setMediaDevicesSupported(true);
+    }
+    if('getUserMedia' in navigator.mediaDevices){
+      setGetUserMediaSupported(true);
+    }
+  }, []);
 
   function closeDialog() {
       if (Scanner.current != null) {
@@ -55,9 +71,18 @@ const Home: NextPage = () => {
     }
   }
 
+  function onCameraPermissions() {
+    requestMediaPermissions({ audio: false, video: true })
+      .then(() => { })
+      .catch((err: MediaPermissionsError) => { });
+  }
+
   return (
     <AppShell>
       <div>
+        <button className="bg-gray-200" onClick={onCameraPermissions}> Camera Permissions </button>
+        <div>Media: {mediaDevicesSupported ? '✅' : '❌'}</div>
+        <div>UserMedia: {getUserMediaSupported ? '✅' : '❌'}</div>
         {/* Statistiken */}
         <dl className="grid grid-cols-1 overflow-hidden bg-white divide-y divide-gray-200 rounded-lg shadow md:grid-cols-2 md:divide-y-0 md:divide-x">
 
