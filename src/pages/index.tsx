@@ -11,6 +11,7 @@ import {
   MediaPermissionsError,
   requestMediaPermissions
 } from 'mic-check';
+import * as Sentry from "@sentry/nextjs";
 
 //TODO type anlegen
 function classNames(...classes: any) {
@@ -100,14 +101,14 @@ const Home: NextPage = () => {
 
   function onCameraPermissions() {
     requestMediaPermissions({ audio: false, video: true })
-      .then(() => { console.log("Camera granted") })
+      .then(() => { console.log("Camera granted"); Sentry.captureMessage("Camera granted"); })
       .catch((err: MediaPermissionsError) => { console.log("Camera Permission Error") });
   }
 
   return (
     <AppShell>
       <div>
-        {/* <button className="bg-gray-200" onClick={onCameraPermissions}> Camera Permissions </button> */}
+        <button className="bg-gray-200" onClick={onCameraPermissions}> Camera Permissions </button>
         <div>Media: {mediaDevicesSupported ? '✅' : '❌'}</div>
         <div>UserMedia: {getUserMediaSupported ? '✅' : '❌'}</div>
         {/* Statistiken */}
