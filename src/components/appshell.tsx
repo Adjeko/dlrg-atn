@@ -3,6 +3,7 @@ import { Menu, Popover, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { useSession, signOut, signIn } from "next-auth/react"
+import * as Sentry from "@sentry/nextjs";
 
 const navigation = [
   { name: 'Teilnehmer', href: '/', current: true },
@@ -25,7 +26,10 @@ const AppShell = (props: any) => {
   const userImageUrl = `https://ui-avatars.com/api/?name=${session.data?.user?.name}?background=random`
 
   if (session.status == 'authenticated' && session.data) {
-    const newNavigation = { name: 'Abmelden', href: '', onClick: () => { signOut() } }
+    const newNavigation = { name: 'Abmelden', href: '', onClick: () => { 
+      Sentry.captureMessage("Camera granted");
+      signOut() } 
+    }
     userNavigation[userNavigation.length - 1] = newNavigation
   }
 
