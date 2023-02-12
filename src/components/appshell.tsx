@@ -27,7 +27,7 @@ const AppShell = (props: any) => {
 
   if (session.status == 'authenticated' && session.data) {
     const newNavigation = { name: 'Abmelden', href: '', onClick: () => { 
-      Sentry.captureMessage("Camera granted");
+      Sentry.captureMessage("Signing OUT");
       signOut() } 
     }
     userNavigation[userNavigation.length - 1] = newNavigation
