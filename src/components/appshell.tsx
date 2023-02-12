@@ -12,7 +12,7 @@ const navigation = [
 const userNavigation = [
   // { name: 'Your Profile', href: '#', onClick: ()=>{}},
   { name: 'Einstellungen', href: '#', onClick: () => null },
-  { name: 'Anmelden', href: '', onClick: () => { signIn() } },
+  { name: 'Anmelden', href: '', onClick: (e : any) => { signIn() } },
 ]
 //TODO type anlegen
 function classNames(...classes: any) {
@@ -26,11 +26,12 @@ const AppShell = (props: any) => {
   const userImageUrl = `https://ui-avatars.com/api/?name=${session.data?.user?.name}?background=random`
 
   if (session.status == 'authenticated' && session.data) {
-    const newNavigation = { name: 'Abmelden', href: '', onClick: () => { 
+    const newNavigation = { name: 'Abmelden', href: '', onClick: (e : any) => { 
       Sentry.captureMessage("Signing OUT");
+      e.preventDefault();
       signOut() } 
-    }
-    userNavigation[userNavigation.length - 1] = newNavigation
+    };
+    userNavigation[userNavigation.length - 1] = newNavigation;
   }
 
   if(session.status === 'unauthenticated'){
