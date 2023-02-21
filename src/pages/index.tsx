@@ -12,10 +12,14 @@ import {
   requestMediaPermissions
 } from 'mic-check';
 import * as Sentry from "@sentry/nextjs";
+import { getServerAuthSession } from "../server/common/get-server-auth-session"
 
-//TODO type anlegen
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(' ')
+export async function getServerSideProps( {req, res} : any){
+  return {
+    props:{
+      session: await getServerAuthSession({req, res})
+    }
+  }
 }
 
 const Home: NextPage = () => {
