@@ -2,6 +2,15 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { signIn } from "next-auth/react"
+import { getServerAuthSession } from "../server/common/get-server-auth-session";
+
+export async function getServerSideProps( {req, res} : any){
+  return {
+    props:{
+      session: await getServerAuthSession({req, res})
+    }
+  }
+}
 
 const SignIn = ({}: any) => {
 

@@ -6,7 +6,15 @@ import { Dialog, Transition } from '@headlessui/react'
 import Link from "next/link"
 import { trpc } from "../utils/trpc"
 import { useSession } from "next-auth/react"
+import { getServerAuthSession } from "../server/common/get-server-auth-session";
 
+export async function getServerSideProps( {req, res} : any){
+  return {
+    props:{
+      session: await getServerAuthSession({req, res})
+    }
+  }
+}
 
 
 const positions = [

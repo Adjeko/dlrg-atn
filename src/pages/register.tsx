@@ -1,6 +1,15 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
+import { getServerAuthSession } from "../server/common/get-server-auth-session";
+
+export async function getServerSideProps( {req, res} : any){
+  return {
+    props:{
+      session: await getServerAuthSession({req, res})
+    }
+  }
+}
 
 const Register = () => {
 

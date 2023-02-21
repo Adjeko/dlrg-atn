@@ -5,8 +5,30 @@ import { Dialog, Transition } from '@headlessui/react'
 import QRCode from "react-qr-code";
 import { useRouter } from "next/router"
 import { trpc } from "../../utils/trpc"
+import { getServerAuthSession } from "../../server/common/get-server-auth-session";
+import { organizerRouter } from "../../server/trpc/router/organizer";
 
-const Course = () => {
+export async function getServerSideProps({params, req, res} : any){
+
+	const session = await getServerAuthSession({req, res});
+
+	const event = await prisma?.event.findFirst({
+		where:{
+			id: params.pid
+		},
+		include:{
+			attendees: true
+		}});
+
+  return {
+    props:{
+      session: session,
+			event: event,
+    }
+  }
+}
+
+const Course = (props : any) => {
 	const router = useRouter();
 	const {pid} = router.query as any;
 	
@@ -14,15 +36,7 @@ const Course = () => {
 	const cancelButtonRef = useRef(null);
 
 	const eventsQuery = trpc.organizer.getEvent.useQuery({id: pid});
-	const event = eventsQuery.data ?? {
-		id: '0',
-		title: `Keine Ahnung was hier los ist`,
-		organizer: 'ICH',
-		email: 'ich@du.de',
-		date: 'heute',
-		description: 'Hier steht eine tolle Beschreibung',
-		contact: "",
-	};
+	const event = eventsQuery.data ?? props.event;
 
 	const attendeesQuery = trpc.organizer.getAttendees.useQuery({eventId:pid});
   const attendees = attendeesQuery.data?.attendees
