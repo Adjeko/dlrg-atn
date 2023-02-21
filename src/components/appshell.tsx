@@ -23,6 +23,7 @@ function classNames(...classes: any) {
 const AppShell = (props: any) => {
 
   const session = useSession();
+  console.log(session)
   const userImageUrl = `https://ui-avatars.com/api/?name=${session.data?.user?.name}?background=random`
 
   if (session.status == 'authenticated' && session.data) {
@@ -32,6 +33,10 @@ const AppShell = (props: any) => {
       signOut() } 
     };
     userNavigation[userNavigation.length - 1] = newNavigation;
+  }
+
+  if(session.status === 'loading'){
+    return <></>
   }
 
   if(session.status === 'unauthenticated'){
