@@ -17,7 +17,7 @@ import { getServerAuthSession } from "../server/common/get-server-auth-session"
 export async function getServerSideProps( {req, res} : any){
   return {
     props:{
-      session: await getServerAuthSession({req, res})
+      // session: await getServerAuthSession({req, res})
     }
   }
 }
