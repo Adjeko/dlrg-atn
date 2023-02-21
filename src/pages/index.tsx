@@ -35,17 +35,17 @@ const Home: NextPage = () => {
 
   const joinEventMutation = trpc.index.joinEvent.useMutation();
 
-  const [mediaDevicesSupported, setMediaDevicesSupported] = useState(false);
-  const [getUserMediaSupported, setGetUserMediaSupported] = useState(false);
+  // const [mediaDevicesSupported, setMediaDevicesSupported] = useState(false);
+  // const [getUserMediaSupported, setGetUserMediaSupported] = useState(false);
 
-  useEffect(() => {
-    if('mediaDevices' in navigator){
-      setMediaDevicesSupported(true);
-    }
-    if('getUserMedia' in navigator.mediaDevices){
-      setGetUserMediaSupported(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if('mediaDevices' in navigator){
+  //     setMediaDevicesSupported(true);
+  //   }
+  //   if('getUserMedia' in navigator.mediaDevices){
+  //     setGetUserMediaSupported(true);
+  //   }
+  // }, []);
 
   function closeDialog() {
       if (Scanner.current != null) {
@@ -112,9 +112,9 @@ const Home: NextPage = () => {
   return (
     <AppShell>
       <div>
-        <button className="bg-gray-200" onClick={onCameraPermissions}> Camera Permissions </button>
+        {/* <button className="bg-gray-200" onClick={onCameraPermissions}> Camera Permissions </button>
         <div>Media: {mediaDevicesSupported ? '✅' : '❌'}</div>
-        <div>UserMedia: {getUserMediaSupported ? '✅' : '❌'}</div>
+        <div>UserMedia: {getUserMediaSupported ? '✅' : '❌'}</div> */}
         {/* Statistiken */}
         <dl className="grid grid-cols-1 overflow-hidden bg-white divide-y divide-gray-200 rounded-lg shadow md:grid-cols-2 md:divide-y-0 md:divide-x">
 
@@ -188,27 +188,27 @@ const Home: NextPage = () => {
       </div>
 
       {/* Floating Button */}
-      <button
+      {/* <button
         type="button"
         className="fixed inline-flex items-center p-3 text-white bg-indigo-600 border border-transparent rounded-full shadow-sm bottom-6 right-6 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         onClick={openDialog}
       >
         <PlusIconOutline className="w-8 h-8" aria-hidden="true" />
-      </button>
+      </button> */}
 
       {/* Floating Button */}
-      <button
+      {/* <button
         type="button"
         className="fixed inline-flex items-center p-3 text-white bg-green-500 border border-transparent rounded-full shadow-sm bottom-6 right-44 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         onClick={onCameraPermissions}
       >
         <PlusIconOutline className="w-8 h-8" aria-hidden="true" />
-      </button>
+      </button> */}
 
       {/* Floating Button */}
       <button
         type="button"
-        className="fixed inline-flex items-center p-3 text-white bg-yellow-500 border border-transparent rounded-full shadow-sm bottom-6 right-24 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className="fixed inline-flex items-center p-3 text-white bg-yellow-500 border border-transparent rounded-full shadow-sm bottom-6 right-6 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         onClick={openDialog2}
       >
         <PlusIconOutline className="w-8 h-8" aria-hidden="true" />
