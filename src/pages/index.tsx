@@ -74,20 +74,6 @@ const Home: NextPage = () => {
 
   function openDialog2() {
     setOpen2(true);
-    setTimeout(() => {
-      if (camerRef.current != null) {
-        Scanner.current = new QrScanner(camerRef.current, (result: any) => onQRScannerResult(result), {
-          // onDecodeError: (error) => { console.log(error) },
-          // returnDetailedScanResult: true,
-          // maxScansPerSecond: 2,
-          preferredCamera: 'environment',
-          highlightScanRegion: true,
-          highlightCodeOutline: true
-        })
-
-        Scanner.current.start()
-      }
-    }, 100)
   }
 
   function closeDialog2() {
@@ -96,9 +82,9 @@ const Home: NextPage = () => {
 }
 
   function onQRScannerResult(result : any) {
-    
+    console.log(result)
     if (!!result) {
-      joinEventMutation.mutate({eventId: result?.data})
+      joinEventMutation.mutate({eventId: result})
       closeDialog();
     }
   }
@@ -307,7 +293,11 @@ const Home: NextPage = () => {
                         {/* QR-Code Scanner */}
                         <>
                           <QrCodeScanner
-                            onDecode={(result) => console.log(result)}
+                            onDecode={(result) => {
+                              console.log(result);
+                              onQRScannerResult(result);
+                              closeDialog2();
+                            }}
                             onError={(error) => console.log(error?.message)}
                           />
                         </>
