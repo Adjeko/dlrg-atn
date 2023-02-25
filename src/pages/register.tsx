@@ -26,13 +26,13 @@ const Register = () => {
 		const lastName = e.target[4].value as string
 		const acceptAgbs = e.target[5].checked as boolean
 
-		registerUser.mutate({ email: email, password: password, name: `${firstName} ${lastName}` })
-		
-		await signIn('credentials', {
+		registerUser.mutateAsync({ email: email, password: password, name: `${firstName} ${lastName}` })
+		.then(() => signIn('credentials', {
 			email: email,
 			password: password,
 			redirect: false,
-		}).then(() => router.push('/')) 
+		})
+		.then(() => router.push('/')) )	
 	}
 
 	return (
