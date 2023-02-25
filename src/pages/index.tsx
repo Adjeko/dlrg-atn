@@ -13,6 +13,7 @@ import {
 } from 'mic-check';
 import * as Sentry from "@sentry/nextjs";
 import { getServerAuthSession } from "../server/common/get-server-auth-session"
+import { useSession } from "next-auth/react"
 
 export async function getServerSideProps( {req, res} : any){
   return {
@@ -30,7 +31,8 @@ const Home: NextPage = () => {
   const camerRef = useRef<HTMLVideoElement>(null);
   const Scanner = useRef<QrScanner>();
 
-  const timelineQuery = trpc.index.getTimeline.useQuery();
+  const session = useSession();
+  const timelineQuery = trpc.index.getTimeline.useQuery(undefined , {enabled: session.status == 'authenticated'});
   const timeline = timelineQuery.data;
 
   const joinEventMutation = trpc.index.joinEvent.useMutation();
