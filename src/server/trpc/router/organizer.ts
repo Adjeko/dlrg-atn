@@ -30,7 +30,8 @@ export const organizerRouter = router({
     try {
       return prisma?.event.findFirst({
         where: {
-          creatorId: ctx.session?.user?.id
+          creatorId: ctx.session?.user?.id,
+          id: input.eventId,          
         },
         select: {
           attendees: {
