@@ -14,23 +14,25 @@ export const authRouter = router({
     .input(z.object({email: z.string(), password: z.string(), name: z.string()}))
     .mutation(async ({ input, ctx }) => {
 
-    console.log(prisma);
     if(!prisma){
       return {user: null, account: null, error: "Prisma not loaded"};
     }
 
     const hashedPassword = await bcrypt.hash(input.password, 10)
 
-    const maxProviderAccount = await prisma.account.findFirst({
+    const maxProviderAccount = await prisma.account.findMany({
       where:{
         provider: 'credentials',
       },
       orderBy:{
         providerAccountId: 'desc'
+      },
+      select: {
+        providerAccountId: true,
       }
     })
 
-    const maxProviderAccountId = parseInt(maxProviderAccount?.providerAccountId ?? '0');
+    const maxProviderAccountId = Math.max.apply(Math, maxProviderAccount.map(function(o) {return parseInt(o.providerAccountId)}))
 
     const newUser = await prisma.user.create({
       data: {
@@ -51,6 +53,8 @@ export const authRouter = router({
         }
       }
     })  
+
+    console.log("registered new user \n" + newUser)
 
     // const newAccount = await prisma.account.create({
     //   data: {

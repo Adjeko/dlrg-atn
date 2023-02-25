@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
 import { getServerAuthSession } from "../server/common/get-server-auth-session";
+import { signIn } from "next-auth/react";
 
 export async function getServerSideProps( {req, res} : any){
   return {
@@ -27,7 +28,11 @@ const Register = () => {
 
 		registerUser.mutate({ email: email, password: password, name: `${firstName} ${lastName}` })
 		
-		router.replace('/')
+		await signIn('credentials', {
+			email: email,
+			password: password,
+			redirect: false,
+		}).then(() => router.push('/')) 
 	}
 
 	return (
