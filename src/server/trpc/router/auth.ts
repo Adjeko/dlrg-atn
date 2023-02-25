@@ -32,7 +32,7 @@ export const authRouter = router({
       }
     })
 
-    const maxProviderAccountId = Math.max.apply(Math, maxProviderAccount.map(function(o) {return parseInt(o.providerAccountId)}))
+    const maxProviderAccountId = Math.max(...maxProviderAccount.map(function(o) {return parseInt(o.providerAccountId)}))
 
     const newUser = await prisma.user.create({
       data: {
