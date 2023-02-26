@@ -62,12 +62,12 @@ const Course = (props : any) => {
 							<dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
 								<span className="flex-grow">{event.title}</span>
 								<span className="flex-shrink-0 ml-4">
-									<button
+									{/* <button
 										type="button"
 										className="font-medium text-indigo-600 bg-white rounded-md hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 									>
 										Update
-									</button>
+									</button> */}
 								</span>
 							</dd>
 						</div>
@@ -76,12 +76,12 @@ const Course = (props : any) => {
 							<dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
 								<span className="flex-grow">{event.organizer}</span>
 								<span className="flex-shrink-0 ml-4">
-									<button
+									{/* <button
 										type="button"
 										className="font-medium text-indigo-600 bg-white rounded-md hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 									>
 										Update
-									</button>
+									</button> */}
 								</span>
 							</dd>
 						</div>
@@ -90,12 +90,12 @@ const Course = (props : any) => {
 							<dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
 								<span className="flex-grow">{event.contact}</span>
 								<span className="flex-shrink-0 ml-4">
-									<button
+									{/* <button
 										type="button"
 										className="font-medium text-indigo-600 bg-white rounded-md hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 									>
 										Update
-									</button>
+									</button> */}
 								</span>
 							</dd>
 						</div>
@@ -104,12 +104,12 @@ const Course = (props : any) => {
 							<dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
 								<span className="flex-grow">{event.date?.toString()}</span>
 								<span className="flex-shrink-0 ml-4">
-									<button
+									{/* <button
 										type="button"
 										className="font-medium text-indigo-600 bg-white rounded-md hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 									>
 										Update
-									</button>
+									</button> */}
 								</span>
 							</dd>
 						</div>
@@ -120,12 +120,12 @@ const Course = (props : any) => {
 									{event.description}
 								</span>
 								<span className="flex-shrink-0 ml-4">
-									<button
+									{/* <button
 										type="button"
 										className="font-medium text-indigo-600 bg-white rounded-md hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 									>
 										Update
-									</button>
+									</button> */}
 								</span>
 							</dd>
 						</div>
