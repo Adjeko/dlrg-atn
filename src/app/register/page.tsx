@@ -1,6 +1,6 @@
 
 
-export default function Signin() {
+export default function Register() {
 
   async function onSubmit(e: any) {
 		e.preventDefault();
