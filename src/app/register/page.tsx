@@ -1,4 +1,6 @@
+'use client'
 
+import PocketBase from 'pocketbase';
 
 export default function Register() {
 
@@ -11,13 +13,21 @@ export default function Register() {
 		const lastName = e.target[4].value as string
 		const acceptAgbs = e.target[5].checked as boolean
 
-		// registerUser.mutateAsync({ email: email, password: password, name: `${firstName} ${lastName}` })
-		// .then(() => signIn('credentials', {
-		// 	email: email,
-		// 	password: password,
-		// 	redirect: false,
-		// })
-		// .then(() => router.push('/')) )	
+		const pb = new PocketBase('http://127.0.0.1:8090');
+
+		const data = {
+			"username": firstName+lastName,
+			"email": email,
+			"emailVisibility": true,
+			"password": password,
+			"passwordConfirm": confirmPassword,
+			"name": firstName + " " + lastName
+		};
+
+		const record = pb.collection('users').create(data);
+
+		// (optional) send an email verification request
+		//await pb.collection('users').requestVerification('test@example.com');
 	}
 
 

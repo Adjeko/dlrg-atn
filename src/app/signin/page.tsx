@@ -1,27 +1,36 @@
 'use client'
 
 import { useState } from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import PocketBase from 'pocketbase';
+import Cookies from 'js-cookie';
+
+
+
 
 export default function Signin() {
 
-  
-	const router = useRouter()
+  const pb = new PocketBase('http://127.0.0.1:8090');
+
+	// const router = useRouter()
+
+	
 	
 	const [userInfo, setUserInfo] = useState({ email: "", password: "" });
 
 	async function handleSubmit(e : any) {
 		e.preventDefault();
 
-		// await signIn('credentials', {
-		// 	email: userInfo.email,
-		// 	password: userInfo.password,
-		// 	redirect: false,
-		// })
-
-		const {callbackUrl: url} = router.query as {callbackUrl: string}
-		router.replace(url ?? '/')
+		const authData = pb.collection('users').authWithPassword(
+			userInfo.email,
+			userInfo.password,
+		);
+		
+		// Cookies.set("pb_test", 
+		console.log(pb.authStore.exportToCookie());
+		// , {secure: false, domain: 'localhost'});
+		// const {callbackUrl: url} = router.query as {callbackUrl: string}
+		// router.replace(url ?? '/')
 	}
 
 
