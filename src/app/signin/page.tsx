@@ -4,40 +4,51 @@ import { useState } from "react";
 import Link from "next/link";
 import PocketBase from 'pocketbase';
 import Cookies from 'js-cookie';
-
-
+import { useRouter, useSearchParams } from 'next/navigation'
 
 
 export default function Signin() {
 
-  const pb = new PocketBase('http://127.0.0.1:8090');
+	const pb = new PocketBase('http://127.0.0.1:8090');
 
-	// const router = useRouter()
+	const router = useRouter()
 
-	
-	
+	const searchParams = useSearchParams()
+
 	const [userInfo, setUserInfo] = useState({ email: "", password: "" });
 
-	async function handleSubmit(e : any) {
+	async function handleSubmit(e: any) {
 		e.preventDefault();
 
 		const authData = pb.collection('users').authWithPassword(
 			userInfo.email,
 			userInfo.password,
 		);
-		
-		// Cookies.set("pb_test", 
-		console.log(pb.authStore.exportToCookie());
-		// , {secure: false, domain: 'localhost'});
-		// const {callbackUrl: url} = router.query as {callbackUrl: string}
-		// router.replace(url ?? '/')
+
+		if (pb.authStore.isValid) {
+			Cookies.set("pb_auth", pb.authStore.exportToCookie(), {secure: false, domain: 'localhost'});
+			
+			alert(searchParams.get("origiUrl"))
+			searchParams.get("origiUrl") ? router.push(searchParams.get("origiUrl") + "") : router.push("/")
+		}
 	}
 
+	function getRegisterUrl() {
+		if (searchParams.get("origiUrl")) {
+			const redirect_to = new URL("/register", "");
+			redirect_to.searchParams.set('originUrl', searchParams.get("origiUrl") + "");
+			return redirect_to.toString()
+		}
+		else {
+			return "/register"
+		}
+	}
 
-  return (
+	return (
 		<>
 			<div className="flex flex-col justify-center min-h-full py-12 sm:px-6 lg:px-8">
 				<div className="sm:mx-auto sm:w-full sm:max-w-md">
+					<p>{JSON.stringify(searchParams.get("originUrl"))}</p>
 					<img
 						className="w-full h-16 content-center bg-[#FF222B] py-2"
 						src="https://asset.brandfetch.io/id1kbwnF66/id90RqLdal.svg?updated=1635891151637"
@@ -45,7 +56,7 @@ export default function Signin() {
 					/>
 					<h2 className="mt-6 text-3xl font-bold tracking-tight text-center text-gray-900">Melde dich an</h2>
 					<p className="mt-2 text-sm text-center text-gray-600">
-						<Link href="/register" className="font-medium text-[#FF222B] hover:text-indigo-500">
+						<Link href={getRegisterUrl()} className="font-medium text-[#FF222B] hover:text-indigo-500">
 							Registriere dich hier
 						</Link>
 					</p>
