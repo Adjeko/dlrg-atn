@@ -9,9 +9,7 @@ export function middleware(request: NextRequest) {
   // console.log(JSON.stringify(request.cookies.get('pb_test')))
 
   pb.authStore.loadFromCookie(request.cookies.get('pb_auth')?.value + "")
-  console.log(request.nextUrl.pathname);
-
-
+  
   if (!pb.authStore.isValid &&
     (request.nextUrl.pathname == '/'
       || request.nextUrl.pathname.startsWith('/onboarding')

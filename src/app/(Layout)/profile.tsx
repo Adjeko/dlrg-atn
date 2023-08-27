@@ -2,6 +2,8 @@
 
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
+import PocketBase from 'pocketbase';
+import Cookies from 'js-cookie';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
@@ -12,10 +14,15 @@ export default function Profile() {
   const userNavigation = [
     // { name: 'Your Profile', href: '#', onClick: ()=>{}},
     { name: 'Einstellungen', href: '#', onClick: () => null },
-    { name: 'Anmelden', href: '', onClick: (e: any) => { signIn() } },
+    { name: 'Abmelden', href: '', onClick: (e: any) => { signOut() } },
   ]
-  function signIn() {
-
+  function signOut() {
+    const pb = new PocketBase('http://127.0.0.1:8090');
+    
+    if(pb.authStore.isValid){
+      pb.authStore.clear()
+      Cookies.remove("pb_auth")
+    }
   }
   const userImageUrl = `https://ui-avatars.com/api/?name=Herbert Pietrzyk?background=random`
 

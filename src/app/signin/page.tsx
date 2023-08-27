@@ -28,7 +28,6 @@ export default function Signin() {
 		if (pb.authStore.isValid) {
 			Cookies.set("pb_auth", pb.authStore.exportToCookie(), {secure: false, domain: 'localhost'});
 			
-			alert(searchParams.get("origiUrl"))
 			searchParams.get("origiUrl") ? router.push(searchParams.get("origiUrl") + "") : router.push("/")
 		}
 	}
