@@ -1,9 +1,7 @@
 'use client'
 
-import React, { Fragment, useEffect, useRef, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import React, { useRef, useState } from 'react'
 import QrScanner from 'qr-scanner';
-import { QrScanner as QrCodeScanner } from '@yudiel/react-qr-scanner';
 
 import Timeline from './(Page)/timeline';
 import FloatingButton from './(Page)/floatingButton';

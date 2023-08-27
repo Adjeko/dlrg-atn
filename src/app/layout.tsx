@@ -1,6 +1,7 @@
 'use client'
 
 import '@/css/globals.css'
+
 import type { Metadata } from 'next'
 import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'

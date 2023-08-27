@@ -8,15 +8,13 @@ export function middleware(request: NextRequest) {
   const pb = new PocketBase('http://127.0.0.1:8090');
   // console.log(JSON.stringify(request.cookies.get('pb_test')))
 
-  var st = request.cookies.get('pb_test')?.value;
-
   pb.authStore.loadFromCookie(request.cookies.get('pb_test')?.value + "")
-
-  console.log(pb.authStore.isValid);
-
-  if(!pb.authStore.isValid && request.nextUrl.pathname.startsWith('/register')){
+  console.log(request.nextUrl.pathname);
+  if(!pb.authStore.isValid && 
+    (request.nextUrl.pathname == '/'
+    || request.nextUrl.pathname.startsWith('/onboarding') 
+    || request.nextUrl.pathname.startsWith('/course'))){
     return NextResponse.redirect(new URL('/signin', request.url))
-
   }
 
   // return NextResponse.redirect(new URL('/home', request.url))
@@ -24,5 +22,5 @@ export function middleware(request: NextRequest) {
  
 // See "Matching Paths" below to learn more
 export const config = {
-  // matcher: '/about/:path*',
-}
+  matcher: "/",
+};
