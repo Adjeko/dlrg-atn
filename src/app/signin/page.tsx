@@ -26,17 +26,17 @@ export default function Signin() {
 		);
 
 		if (pb.authStore.isValid) {
-			Cookies.set("pb_auth", pb.authStore.exportToCookie(), {secure: false, domain: 'localhost'});
-			
-			searchParams.get("origiUrl") ? router.push(searchParams.get("origiUrl") + "") : router.push("/")
+			Cookies.set("pb_auth", pb.authStore.exportToCookie(), { secure: false, domain: 'localhost' });
+
+			searchParams.get("originUrl") ? router.push(searchParams.get("originUrl") + "") : router.push("/")
 		}
 	}
 
 	function getRegisterUrl() {
-		if (searchParams.get("origiUrl")) {
-			const redirect_to = new URL("/register", "");
-			redirect_to.searchParams.set('originUrl', searchParams.get("origiUrl") + "");
-			return redirect_to.toString()
+		
+		if (searchParams.get("originUrl")) {
+			const queryParamString = new URLSearchParams({"originUrl" : searchParams.get("originUrl")+""}).toString();
+			return `/register?${queryParamString}`
 		}
 		else {
 			return "/register"

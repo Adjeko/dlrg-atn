@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
   // console.log(JSON.stringify(request.cookies.get('pb_test')))
 
   pb.authStore.loadFromCookie(request.cookies.get('pb_auth')?.value + "")
-  
+
   if (!pb.authStore.isValid &&
     (request.nextUrl.pathname == '/'
       || request.nextUrl.pathname.startsWith('/onboarding')
@@ -19,8 +19,6 @@ export function middleware(request: NextRequest) {
     redirect_to.searchParams.set('originUrl', request.nextUrl.pathname);
     return NextResponse.redirect(redirect_to)
   }
-
-  // return NextResponse.redirect(new URL('/home', request.url))
 }
 
 // See "Matching Paths" below to learn more

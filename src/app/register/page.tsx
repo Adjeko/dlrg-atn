@@ -1,10 +1,17 @@
 'use client'
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import PocketBase from 'pocketbase';
+import Cookies from 'js-cookie';
 
 export default function Register() {
 
-  async function onSubmit(e: any) {
+	const router = useRouter()
+
+	const searchParams = useSearchParams()
+
+
+	async function onSubmit(e: any) {
 		e.preventDefault();
 		const email = e.target[0].value as string
 		const password = e.target[1].value as string
@@ -16,7 +23,7 @@ export default function Register() {
 		const pb = new PocketBase('http://127.0.0.1:8090');
 
 		const data = {
-			"username": firstName+lastName,
+			"username": firstName + lastName,
 			"email": email,
 			"emailVisibility": true,
 			"password": password,
@@ -24,15 +31,24 @@ export default function Register() {
 			"name": firstName + " " + lastName
 		};
 
-		const record = pb.collection('users').create(data);
+		const record = await pb.collection('users').create(data)
+		const authData = await pb.collection('users').authWithPassword(
+			email,
+			password,
+		);
 
 		// (optional) send an email verification request
 		//await pb.collection('users').requestVerification('test@example.com');
+		if (pb.authStore.isValid) {
+			Cookies.set("pb_auth", pb.authStore.exportToCookie(), { secure: false, domain: 'localhost' });
+
+			searchParams.get("originUrl") ? router.push(searchParams.get("originUrl") + "") : router.push("/")
+		}
+
 	}
 
-
-  return (
-    <>
+	return (
+		<>
 			<div className="flex flex-col justify-center min-h-full py-12 sm:px-6 lg:px-8">
 				<div className="sm:mx-auto sm:w-full sm:max-w-md">
 					<img
@@ -162,6 +178,6 @@ export default function Register() {
 				</div>
 			</div>
 		</>
-  );
+	);
 
 }
