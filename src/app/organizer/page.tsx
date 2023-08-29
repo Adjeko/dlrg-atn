@@ -1,8 +1,11 @@
+'use client'
+
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
 import React, { Fragment, useRef, useState, } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import Link from "next/link"
+import { createCourse } from '@/services/pocketbase'
 
 export default function Organizer() {
 
@@ -11,25 +14,29 @@ export default function Organizer() {
   var events: any
 
   function closeDialog() {
-		// setOpen(false);
+		setOpen(false);
 	}
 	function openDialog() {
-		// setOpen(true);
+		setOpen(true);
 	}
 
 	function onDialogCancel() {
 		closeDialog();
 	}
 
-	function onDialogSave(e: any) {
+	async function onDialogSave(e: any) {
 		e.preventDefault();
 
 		const courseName = e.target[0].value as string
-		const organizer = e.target[1].value as string
-		const email = e.target[2].value as string
-		const points = parseInt(e.target[3].value) as number
+		// const organizer = e.target[1].value as string
+		// const email = e.target[2].value as string
+		const points = parseInt(e.target[1].value) as number
 
-		// createEventQuery.mutate({title: courseName, organizer: organizer, contact: email, points: points})
+		await createCourse({
+      name: courseName,
+      organizer: '',
+      points: points
+    })
 		closeDialog();
 	}
 
@@ -134,7 +141,7 @@ export default function Organizer() {
                           <form className="space-y-8 divide-y divide-gray-200" onSubmit={onDialogSave}>
                             <div className="space-y-8 divide-y divide-gray-200">
                               <div className="pt-8">
-                                <div className="grid grid-cols-1 mt-6 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                <div className="grid grid-cols-1 mt-6 gap-y-6 gap-x-4 sm:grid-cols-4">
                                   <div className="sm:col-span-4">
                                     <label htmlFor="coursename" className="block text-sm font-medium text-gray-700">
                                       Kursname
@@ -148,7 +155,7 @@ export default function Organizer() {
                                       />
                                     </div>
                                   </div>
-                                  <div className="sm:col-span-4">
+                                  {/* <div className="sm:col-span-4">
                                     <label htmlFor="organizer" className="block text-sm font-medium text-gray-700">
                                       Veranstalter
                                     </label>
@@ -173,7 +180,7 @@ export default function Organizer() {
                                         className="block w-full py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                       />
                                     </div>
-                                  </div>
+                                  </div> */}
                                   <div className="sm:col-span-4">
                                     <label htmlFor="points" className="block text-sm font-medium text-gray-700">
                                       Lerneinheiten
