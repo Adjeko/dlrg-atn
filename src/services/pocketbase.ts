@@ -30,3 +30,8 @@ export async function getOrganizerCourses() : Promise<RecordModel[]> {
 
     return resultList;
 }
+
+export async function getCourse(id: string) : Promise<RecordModel> {
+    const record = await pb.collection('courses').getOne(id);
+    return record;
+}
