@@ -2,16 +2,17 @@
 
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
-import React, { Fragment, useRef, useState, } from 'react'
+import React, { Fragment, useEffect, useRef, useState, } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import Link from "next/link"
-import { createCourse } from '@/services/pocketbase'
+import { createCourse, getOrganizerCourses } from '@/services/pocketbase'
+import { RecordModel } from 'pocketbase'
 
 export default function Organizer() {
 
   const [open, setOpen] = useState(false)
 	const cancelButtonRef = useRef(null)
-  var events: any
+  const [courses, setCourses] = useState<RecordModel[]>()
 
   function closeDialog() {
 		setOpen(false);
@@ -19,7 +20,6 @@ export default function Organizer() {
 	function openDialog() {
 		setOpen(true);
 	}
-
 	function onDialogCancel() {
 		closeDialog();
 	}
@@ -34,11 +34,17 @@ export default function Organizer() {
 
 		await createCourse({
       name: courseName,
-      organizer: '',
       points: points
     })
 		closeDialog();
 	}
+
+  useEffect(() => {
+    (async () => {
+      const courses = await getOrganizerCourses()
+      setCourses(courses)
+    })();    
+  }, [])
 
   return (
     <>
@@ -50,15 +56,15 @@ export default function Organizer() {
       {/* Fortbildungsliste */}
       <div className="overflow-hidden bg-white shadow sm:rounded-md">
         <ul role="list" className="divide-y divide-gray-200">
-          {events?.map((position : any) => (
-            <li key={position.id}>
-              <Link href={`/course/${position.id}`} className="block hover:bg-gray-50">
+          {courses?.map((course) => (
+            <li key={course.id}>
+              <Link href={`/course/${course.id}`} className="block hover:bg-gray-50">
                 <div className="flex items-center px-4 py-4 sm:px-6">
                   <div className="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
                     <div className="truncate">
                       <div className="flex text-sm">
-                        <p className="font-medium text-indigo-600 truncate">{position.title}</p>
-                        {/* <p className="flex-shrink-0 ml-1 font-normal text-gray-500">in {position.department}</p> */}
+                        <p className="font-medium text-indigo-600 truncate">{course.name}</p>
+                        <p className="flex-shrink-0 ml-1 font-normal text-gray-500"> {course.points}</p>
                       </div>
                       {/* Datumse */}
                       {/* <div className="flex mt-2">
