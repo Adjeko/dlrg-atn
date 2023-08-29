@@ -20,11 +20,11 @@ export default function Signin() {
 	async function handleSubmit(e: any) {
 		e.preventDefault();
 
-		const authData = pb.collection('users').authWithPassword(
+		const authData = await pb.collection('users').authWithPassword(
 			userInfo.email,
 			userInfo.password,
 		);
-
+			console.log(pb.authStore.isValid);
 		if (pb.authStore.isValid) {
 			Cookies.set("pb_auth", pb.authStore.exportToCookie(), { secure: false, domain: 'localhost' });
 
