@@ -3,6 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { QrScanner as QrCodeScanner } from '@yudiel/react-qr-scanner';
 import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
 import QrScanner from 'qr-scanner';
+import { registerUserAsCourseMember } from '@/services/pocketbase';
 
 export default function qrCodeReader() {
   const [open, setOpen] = useState(false)
@@ -47,7 +48,7 @@ export default function qrCodeReader() {
   function onQRScannerResult(result: any) {
     console.log(result)
     if (!!result) {
-      // joinEventMutation.mutate({ eventId: result })
+      registerUserAsCourseMember(result);
       closeDialog();
     }
   }

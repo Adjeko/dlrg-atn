@@ -35,3 +35,15 @@ export async function getCourse(id: string) : Promise<RecordModel> {
     const record = await pb.collection('courses').getOne(id);
     return record;
 }
+
+export async function registerUserAsCourseMember(courseId : string) {
+    const currentUser = getCurrentUser();
+    
+    const data = {
+        "members": [
+            currentUser?.id
+        ]
+    };
+    
+    const record = await pb.collection('courses').update(courseId, data);
+}
