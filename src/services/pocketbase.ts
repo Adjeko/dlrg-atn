@@ -39,11 +39,19 @@ export async function getCourse(id: string) : Promise<RecordModel> {
 export async function registerUserAsCourseMember(courseId : string) {
     const currentUser = getCurrentUser();
     
-    const data = {
+    //add user as member to the course
+    const courseData = {
         "members": [
             currentUser?.id
         ]
-    };
-    
-    const record = await pb.collection('courses').update(courseId, data);
+    };    
+    const courseRecord = await pb.collection('courses').update(courseId, courseData);
+
+    //add course to the course list of the user
+    const userData = {
+        "courses": [
+            courseId
+        ]
+    };    
+    const userRecord = await pb.collection('users').update(currentUser?.id + "", userData);
 }
