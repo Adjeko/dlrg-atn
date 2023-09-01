@@ -2,6 +2,7 @@
 
 import Stats from './(Page)/stats';
 import QrCodeReader from './(Page)/qrCodeReader';
+import Timeline from './(Page)/timeline';
 
 export default function Home() {
 
@@ -9,7 +10,7 @@ export default function Home() {
     <main className="">
       <div>
         <Stats/>
-        {/* <Timeline/> */}
+        <Timeline/>
       </div>
 
       <QrCodeReader/>

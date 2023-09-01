@@ -36,7 +36,7 @@ export async function getCourse(id: string) : Promise<RecordModel> {
     return record;
 }
 
-export async function registerUserAsCourseMember(courseId : string) {
+export async function registerUserAsCourseMember(courseId : string) : Promise<void> {
     const currentUser = getCurrentUser();
     
     const data = {
@@ -44,4 +44,20 @@ export async function registerUserAsCourseMember(courseId : string) {
         "course": courseId
     };   
     const record = await pb.collection('isMemberOf').create(data);
+}
+
+export async function getCourseListOfUser() : Promise<RecordModel[]> {
+    const currentUser = getCurrentUser();
+
+    const records = await pb.collection('isMemberOf').getFullList({
+        filter: `user.id="${currentUser?.id}"`,
+        expand: 'course',
+        sort: '-created',
+    });
+
+    return records;
+}
+
+export async function getMembersOfCourse() {
+
 }
