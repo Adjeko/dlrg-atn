@@ -58,6 +58,12 @@ export async function getCourseListOfUser() : Promise<RecordModel[]> {
     return records;
 }
 
-export async function getMembersOfCourse() {
+export async function getMembersOfCourse(courseId : string) : Promise<RecordModel[]> {
+    const records = await pb.collection('isMemberOf').getFullList({
+        filter: `course.id="${courseId}"`,
+        expand: 'user',
+        sort: '-created',
+    });
 
+    return records;
 }
