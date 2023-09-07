@@ -10,8 +10,6 @@ export default function Timeline() {
 
   const [eventList, setEventList] = useState<RecordModel[]>();
 
-  var timeline: any;
-
   useEffect(() => {
     (async () => {
       const list = await getCourseListOfUser();
