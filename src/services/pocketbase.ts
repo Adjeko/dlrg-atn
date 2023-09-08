@@ -13,6 +13,7 @@ interface Course {
     creator?: string,
     organizer?: string,
     points: number,
+    description?: string,
 }
 
 export async function createCourse(course: Course) {

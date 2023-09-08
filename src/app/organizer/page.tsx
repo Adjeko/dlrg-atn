@@ -31,10 +31,12 @@ export default function Organizer() {
 		// const organizer = e.target[1].value as string
 		// const email = e.target[2].value as string
 		const points = parseInt(e.target[1].value) as number
+    const description = e.target[2].value as string
 
 		await createCourse({
       name: courseName,
-      points: points
+      points: points,
+      description,
     })
 		closeDialog();
 	}
@@ -195,6 +197,19 @@ export default function Organizer() {
                                       <input
                                         id="points"
                                         name="points"
+                                        type="text"
+                                        className="block w-full py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="sm:col-span-4">
+                                    <label htmlFor="points" className="block text-sm font-medium text-gray-700">
+                                      Beschreibung
+                                    </label>
+                                    <div className="mt-1">
+                                      <input
+                                        id="description"
+                                        name="description"
                                         type="text"
                                         className="block w-full py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                       />
