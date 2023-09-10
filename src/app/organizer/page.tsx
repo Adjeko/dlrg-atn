@@ -27,12 +27,22 @@ export default function Organizer() {
 	async function onDialogSave(e: any) {
 		e.preventDefault();
 
-		const courseName = e.target[0].value as string
+    const courseName = e.target[0].value as string
 		// const organizer = e.target[1].value as string
 		// const email = e.target[2].value as string
-		const points = parseInt(e.target[1].value) as number
-    const date = e.target[2].value as Date
-    const description = e.target[3].value as string
+		const pointsInH = parseInt(e.target[1].value) as number
+    const pointsInLE = parseInt(e.target[2].value) as number
+    const date = e.target[3].value as Date
+    const description = e.target[4].value as string
+
+    let points = 0
+
+    if(pointsInH) {
+      points = Math.round(pointsInH * (4/3))
+    }
+    if(pointsInLE) {
+      points = pointsInLE
+    }
 
 		await createCourse({
       name: courseName,
@@ -195,13 +205,21 @@ export default function Organizer() {
                                     <label htmlFor="points" className="block text-sm font-medium text-gray-700">
                                       Lerneinheiten
                                     </label>
-                                    <div className="mt-1">
+                                    <div className="flex justify-between mt-1 px-12">
                                       <input
-                                        id="points"
-                                        name="points"
+                                        id="pointsInH"
+                                        name="pointsInH"
                                         type="text"
-                                        className="block w-full py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        placeholder="in Stunden"
+                                        className="w-auto py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                       />
+                                      <input
+                                      id="pointsInLE"
+                                      name="pointsInLE"
+                                      type="text"
+                                      placeholder="in LE"
+                                      className="w-auto py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    />
                                     </div>
                                   </div>
                                   <div className="sm:col-span-4">
