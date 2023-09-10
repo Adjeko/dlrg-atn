@@ -13,6 +13,7 @@ interface Course {
     creator?: string,
     organizer?: string,
     points: number,
+    date: Date,
     description?: string,
 }
 
