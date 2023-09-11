@@ -10,6 +10,7 @@ export default function Navigation() {
   const navigation = [
     { name: 'Teilnehmer', href: '/', current: true },
     { name: 'Veranstalter', href: '/organizer', current: false },
+    { name: 'Exports', href: '/exports', current: false },
   ]
 
   return (
