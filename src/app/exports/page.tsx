@@ -1,45 +1,17 @@
 'use client'
 
-const statuses = {
+const statuses : any = {
   Complete: 'text-green-700 bg-green-50 ring-green-600/20',
   'In progress': 'text-gray-600 bg-gray-50 ring-gray-500/10',
   Archived: 'text-yellow-800 bg-yellow-50 ring-yellow-600/20',
+  New: 'text-purple-800 bg-purple-50 ring-purple-600/20',
 }
 const projects = [
   {
     id: 1,
-    name: 'GraphQL API',
-    href: '#',
-    status: 'Complete',
-    description: 'GraphQL and stuff',
-  },
-  {
-    id: 2,
-    name: 'New benefits plan',
-    href: '#',
-    status: 'In progress',
-    description: 'Benefits and stuff',
-  },
-  {
-    id: 3,
-    name: 'Onboarding emails',
-    href: '#',
-    status: 'In progress',
-    description: 'Onboarding and stuff',
-  },
-  {
-    id: 4,
-    name: 'iOS app',
-    href: '#',
-    status: 'In progress',
-    description: 'IOS and stuff',
-  },
-  {
-    id: 5,
-    name: 'Marketing site redesign',
-    href: '#',
-    status: 'Archived',
-    description: 'Marketing and stuff',
+    name: 'Download 2023 Report',
+    status: 'New',
+    description: 'Erstellt dir deine Fortbildungen aus 2023 als Liste in einem PDF',
   },
 ]
 
@@ -73,12 +45,12 @@ export default function Exports() {
               </div>
             </div>
             <div className="flex flex-none items-center gap-x-4">
-              <a
-                href={project.href}
+              <button
+                onClick={() => alert("KLICK")}
                 className="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
               >
                 View project<span className="sr-only">, {project.name}</span>
-              </a>
+              </button>
             </div>
           </li>
         ))}
