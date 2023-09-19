@@ -1,5 +1,5 @@
 import React from "react";
-import ReactPDF, { Document, Page, Text, View, StyleSheet, PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
+import ReactPDF, { Document, Page, Text, View, StyleSheet, PDFViewer, PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import { createTw } from "react-pdf-tailwind";
 
 // The 'theme' object is your Tailwind theme config
@@ -37,4 +37,8 @@ export function downloadPDFButton() {
       </PDFDownloadLink>
     </div>
   )
+}
+
+export async function getPDFAsData() {
+  const blob = await pdf(<MyPdf />).toBlob()
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { MyPdf, createCourse, downloadPDF, downloadPDFButton } from "@/services/exports"
+import { MyPdf, downloadPDF, downloadPDFButton } from "@/services/exports"
 
 const statuses: any = {
   Complete: 'text-green-700 bg-green-50 ring-green-600/20',
@@ -14,6 +14,14 @@ const projects = [
     name: 'Download 2023 Report',
     status: 'New',
     description: 'Erstellt dir deine Fortbildungen aus 2023 als Liste in einem PDF',
+    action: downloadPDFButton()
+  },
+  {
+    id: 2,
+    name: 'Send Email',
+    status: 'In progress',
+    description: 'Sende eine Email an irgendwen',
+    action: (<a href="mailto:john@demosite.com?subject=Test%20email&cc=test@gmail.com&body=This is <b>my</b> body text">Hallo</a>)
   },
 ]
 
@@ -47,7 +55,7 @@ export default function Exports() {
               </div>
             </div>
             <div className="flex flex-none items-center gap-x-4">
-              {downloadPDFButton()}
+              {project.action}
             </div>
           </li>
         ))}
