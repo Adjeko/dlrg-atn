@@ -1,6 +1,8 @@
 'use client'
 
-const statuses : any = {
+import { MyPdf, createCourse, downloadPDF, downloadPDFButton } from "@/services/exports"
+
+const statuses: any = {
   Complete: 'text-green-700 bg-green-50 ring-green-600/20',
   'In progress': 'text-gray-600 bg-gray-50 ring-gray-500/10',
   Archived: 'text-yellow-800 bg-yellow-50 ring-yellow-600/20',
@@ -45,12 +47,7 @@ export default function Exports() {
               </div>
             </div>
             <div className="flex flex-none items-center gap-x-4">
-              <button
-                onClick={() => alert("KLICK")}
-                className="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
-              >
-                View project<span className="sr-only">, {project.name}</span>
-              </button>
+              {downloadPDFButton()}
             </div>
           </li>
         ))}
