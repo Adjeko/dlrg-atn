@@ -1,6 +1,6 @@
 'use client'
 
-import { MyPdf, downloadPDF, downloadPDFButton } from "@/services/exports"
+import { MyPdf, downloadPDF, downloadPDFButton, getPDFAsData } from "@/services/exports"
 
 const statuses: any = {
   Complete: 'text-green-700 bg-green-50 ring-green-600/20',
@@ -21,7 +21,10 @@ const projects = [
     name: 'Send Email',
     status: 'In progress',
     description: 'Sende eine Email an irgendwen',
-    action: (<a href="mailto:john@demosite.com?subject=Test%20email&cc=test@gmail.com&body=This is <b>my</b> body text">Hallo</a>)
+    // action: (<a href="mailto:john@demosite.com?subject=Test%20email&cc=test@gmail.com&body=This is <b>my</b> body text">Hallo</a>)
+    action: (<button onClick={async () => {
+      navigator.share({text: "Hallo Welt", title: "Sharing oder was ?", files: [new File([await getPDFAsData()], "test.pdf", {type: (await getPDFAsData()).type})]})
+    }}>Share</button>)
   },
 ]
 

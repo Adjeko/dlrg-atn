@@ -41,4 +41,5 @@ export function downloadPDFButton() {
 
 export async function getPDFAsData() {
   const blob = await pdf(<MyPdf />).toBlob()
+  return blob
 }
