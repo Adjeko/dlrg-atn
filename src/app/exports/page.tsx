@@ -24,7 +24,7 @@ const projects = [
     // action: (<a href="mailto:john@demosite.com?subject=Test%20email&cc=test@gmail.com&body=This is <b>my</b> body text">Hallo</a>)
     action: (<button onClick={async () => {
       navigator.share({text: "Hallo Welt", title: "Sharing oder was ?", files: [new File([await getPDFAsData()], "test.pdf", {type: (await getPDFAsData()).type})]})
-    }}>Share</button>)
+    }}>Mail senden</button>)
   },
 ]
 
