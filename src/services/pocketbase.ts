@@ -15,6 +15,7 @@ interface Course {
     points: number,
     date: Date,
     description?: string,
+    category: string,
 }
 
 export async function createCourse(course: Course) {

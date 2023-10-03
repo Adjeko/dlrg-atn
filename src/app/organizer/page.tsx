@@ -28,12 +28,13 @@ export default function Organizer() {
 		e.preventDefault();
 
     const courseName = e.target[0].value as string
+    const category = e.target[1].value as string
 		// const organizer = e.target[1].value as string
 		// const email = e.target[2].value as string
-		const pointsInH = parseInt(e.target[1].value) as number
-    const pointsInLE = parseInt(e.target[2].value) as number
-    const date = e.target[3].value as Date
-    const description = e.target[4].value as string
+		const pointsInH = parseInt(e.target[2].value) as number
+    const pointsInLE = parseInt(e.target[3].value) as number
+    const date = e.target[4].value as Date
+    const description = e.target[5].value as string
 
     let points = 0
 
@@ -49,6 +50,7 @@ export default function Organizer() {
       points: points,
       date: date,
       description: description,
+      category: category,
     })
 		closeDialog();
 	}
@@ -173,6 +175,21 @@ export default function Organizer() {
                                         type="text"
                                         className="block w-full py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                       />
+                                    </div>
+                                  </div>
+                                  <div className="sm:col-span-4">
+                                    <label htmlFor="coursename" className="block text-sm font-medium text-gray-700">
+                                      Kategorie
+                                    </label>
+                                    <div className="mt-1">
+                                      <select
+                                        name="Kategorie" 
+                                        id="category" 
+                                        className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 bg-gray-200 text-gray-900 ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <option value="Seminar">Seminar</option>
+                                        <option value="Web">Web</option>
+                                        <option value="Workshop">Workshop</option>
+                                      </select>
                                     </div>
                                   </div>
                                   {/* <div className="sm:col-span-4">
