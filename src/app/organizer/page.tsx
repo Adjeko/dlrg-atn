@@ -8,6 +8,12 @@ import Link from "next/link"
 import { createCourse, getOrganizerCourses } from '@/services/pocketbase'
 import { RecordModel } from 'pocketbase'
 
+const categories: any = {
+  Seminar: "inline-flex items-center rounded-full bg-purple-100 px-2 py-1 text-xs font-medium text-purple-700",
+  Web: "inline-flex items-center rounded-full bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-700",
+  Workshop: "inline-flex items-center rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800",
+}
+
 export default function Organizer() {
 
   const [open, setOpen] = useState(false)
@@ -80,7 +86,8 @@ export default function Organizer() {
                     <div className="truncate">
                       <div className="flex text-sm">
                         <p className="font-medium text-indigo-600 truncate">{course.name}</p>
-                        <p className="flex-shrink-0 ml-1 font-normal text-gray-500"> {course.points}</p>
+                        <p className="flex-shrink-0 ml-1 font-bold text-gray-500 px-3"> {course.points} LE</p>
+                        <p className={categories[course.category]}> {course.category}</p>
                       </div>
                       {/* Datumse */}
                       {/* <div className="flex mt-2">

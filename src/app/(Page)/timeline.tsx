@@ -6,6 +6,12 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
+const categories: any = {
+  Seminar: "inline-flex items-center rounded-full bg-purple-100 px-2 py-1 text-xs font-medium text-purple-700",
+  Web: "inline-flex items-center rounded-full bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-700",
+  Workshop: "inline-flex items-center rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800",
+}
+
 export default function Timeline() {
 
   const [eventList, setEventList] = useState<RecordModel[]>();
@@ -31,7 +37,7 @@ export default function Timeline() {
               <div className="relative pb-8">
 
                 <div className="relative flex space-x-3">
-                  <div>
+                  {/* <div>
                     <span
                       className={classNames(
                         event.iconBackground,
@@ -39,17 +45,15 @@ export default function Timeline() {
                       )}
                     >
                     </span>
-                  </div>
+                  </div> */}
                   <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                     <div>
-                      <p className="text-sm text-gray-500">
-                        {"Beigetreten: "}{' '}
-                        <a href={`course/${event.expand.course.id}`} className="font-medium text-gray-900">
-                          {event.expand.course.name}
-                        </a>
-                      </p>
+                      <span className={categories[event.expand.course.category]}>{event.expand.course.category}</span>
+                      <a href={`course/${event.expand.course.id}`} className="font-medium text-gray-900 px-2">
+                        {event.expand.course.name}
+                      </a>
                     </div>
-                    <div className="text-sm text-right text-gray-500 whitespace-nowrap">
+                    <div className="text-l font-bold text-right text-violet-500 whitespace-nowrap">
                       {/* <time dateTime={event.date?.toDateString()}>{event.date?.toString()}</time> */}
                       <p>{`${event.expand.course.points} LE`}</p>
                     </div>
