@@ -7,6 +7,12 @@ import QRCode from "react-qr-code";
 import { getCourse, getMembersOfCourse } from '@/services/pocketbase';
 import { RecordModel } from 'pocketbase';
 
+const categories: any = {
+    Seminar: "inline-flex items-center rounded-full bg-purple-100 px-2 py-1 text-xs font-medium text-purple-700",
+    Web: "inline-flex items-center rounded-full bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-700",
+    Workshop: "inline-flex items-center rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800",
+  }
+
 export default function Course(
     {params}: {
     params: { pid: string }
@@ -15,7 +21,7 @@ export default function Course(
     const [open, setOpen] = useState(false);
     const cancelButtonRef = useRef(null);
 
-    const [event, setEvent] = useState({id: '', name: '', points: 0, description: "", date: new Date});
+    const [event, setEvent] = useState({id: '', name: '', points: 0, description: "", date: new Date, category: ""});
 
     const [members, setMembers] = useState<RecordModel[]>();
 
@@ -29,7 +35,7 @@ export default function Course(
     useEffect(() => {
         (async () => {
           const event = await getCourse(params.pid)
-          setEvent({id: event.id, name: event.name, points: event.points, description: event.description, date: new Date(event.date)})
+          setEvent({id: event.id, name: event.name, points: event.points, description: event.description, date: new Date(event.date), category: event.category})
 
           const memberList = await getMembersOfCourse(params.pid)
           setMembers(memberList)
@@ -40,8 +46,12 @@ export default function Course(
         <>
             {/* Kursbeschreibung */}
             <>
-                <div>
+                <div className="flex">
                     <h3 className="text-2xl font-medium leading-6 text-gray-900">{event.name}</h3>
+                    <h2 className="text-2xl font-bold leading-6 text-violet-500 pl-4">{event.points} LE</h2>
+                </div>
+                <div className='pt-2'>
+                    <span className={categories[event.category]}>{event.category}</span>
                 </div>
                 <div className="mt-5 border-t border-gray-200">
                     <dl className="divide-y divide-gray-200">
@@ -49,7 +59,6 @@ export default function Course(
                             <dt className="text-sm font-medium text-gray-500">Kursname</dt>
                             <dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                 <span className="flex-grow">{event.name}</span>
-                                <span className="flex-shrink-0 ml-1 font-normal text-gray-500">{event.points}</span>
                                 <span className="flex-shrink-0 ml-4">
                                     {/* <button
 										type="button"
