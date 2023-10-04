@@ -11,6 +11,7 @@ import MenuButton from './(Layout)/menuButton'
 import Navigation from './(Layout)/navigation'
 import MenuContent from './(Layout)/menuContent'
 import Footer from './(Layout)/footer'
+import FeedbackButton from './(Layout)/feedbackButton'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -35,7 +36,7 @@ export default function RootLayout({ children, }: RootLayoutProps) {
                     <Logo />
                     <Profile />
                     <MenuButton open={open} />
-
+                    <FeedbackButton/>
                   </div>
                   <Navigation />
                 </div>

@@ -13,7 +13,6 @@ export default function MenuContent() {
   ]
   const userNavigation = [
     // { name: 'Your Profile', href: '#', onClick: ()=>{}},
-    { name: 'Einstellungen', href: '#', onClick: () => null },
     { name: 'Anmelden', href: '', onClick: (e: any) => { signIn() } },
   ]
   const userImageUrl = `https://ui-avatars.com/api/?name=Herbert Pietrzyk?background=random`

@@ -17,7 +17,6 @@ export default function Profile() {
 
   const userNavigation = [
     // { name: 'Your Profile', href: '#', onClick: ()=>{}},
-    { name: 'Einstellungen', href: '#', onClick: () => null },
     { name: 'Abmelden', href: '', onClick: (e: any) => { signOut() } },
   ]
   function signOut() {
