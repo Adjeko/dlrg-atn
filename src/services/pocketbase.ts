@@ -71,3 +71,17 @@ export async function getMembersOfCourse(courseId : string) : Promise<RecordMode
 
     return records;
 }
+
+interface Feedback {
+    user: string,
+    text: string,
+}
+
+export async function createFeedback(text: string) : Promise<void> {
+
+    let feedback : Feedback = {user: "", text: ""};
+    feedback.user = getCurrentUser()?.id ?? "";
+    feedback.text = text;
+
+    const record = await pb.collection('feedback').create(feedback);
+}

@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ChatBubbleBottomCenterTextIcon as ChatBubbleBottomCenterTextIconOutline } from '@heroicons/react/24/outline'
+import { createFeedback } from '@/services/pocketbase'
 
 
 export default function FeedbackButton() {
@@ -12,6 +13,14 @@ export default function FeedbackButton() {
   }
   function closeDialog() {
     setOpen(false);
+  }
+
+  function onDialogSave(e: any) {
+    e.preventDefault();
+    const text = e.target[0].value as string;
+
+    createFeedback(text);
+    closeDialog();
   }
 
   return (
@@ -56,25 +65,44 @@ export default function FeedbackButton() {
                         Gib Feedback zu dieser DLRG App ab!
                       </Dialog.Title>
                       <div className="mt-2">
-                        CONTENT?
+                      <form className="space-y-8 divide-y divide-gray-200" onSubmit={onDialogSave}>
+                            <div className="space-y-8 divide-y divide-gray-200">
+                              <div className="pt-8">
+                                <div className="grid grid-cols-1 mt-6 gap-y-6 gap-x-4 sm:grid-cols-4">
+                                  <div className="sm:col-span-4">
+                                    <label htmlFor="coursename" className="block text-sm font-medium text-gray-700">
+                                      Feedback
+                                    </label>
+                                    
+                                    <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
+                                      <label htmlFor="comment" className="sr-only">Your comment</label>
+                                      <textarea id="comment" rows={4} className="block w-full py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Schreibe einen Kommentar" required></textarea>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="pt-5">
+                              <div className="flex justify-end">
+                                <button
+                                  type="button"
+                                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                  onClick={closeDialog}
+                                >
+                                  Abbrechen
+                                </button>
+                                <button
+                                  type="submit"
+                                  className="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                  Absenden
+                                </button>
+                              </div>
+                            </div>
+                          </form>
                       </div>
                     </div>
-                  </div>
-                  <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-                      onClick={() => closeDialog()}
-                    >
-                      Abbrechen
-                    </button>
-                    <button
-                      type="button"
-                      className="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-green-100 border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-2 sm:text-sm"
-                      onClick={() => closeDialog()}
-                    >
-                      Absenden
-                    </button>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
