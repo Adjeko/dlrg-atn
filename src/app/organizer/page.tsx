@@ -21,6 +21,7 @@ export default function Organizer() {
   const [courses, setCourses] = useState<RecordModel[]>()
   const [startDate, setStartDate] = useState<Date>(new Date(Date.now()))
   const [endDate, setEndDate] = useState<Date>(new Date(Date.now()))
+  const [isLongRunning, setIsLongRunning] = useState<boolean>(false);
 
   function closeDialog() {
 		setOpen(false);
@@ -214,7 +215,8 @@ export default function Organizer() {
                                         name="isLongRunning" 
                                         id="isLongRunning"
                                         type='checkbox' 
-                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                        onChange={(e) => setIsLongRunning(e.target.checked)}>
                                       </input>
                                     </div>
                                   </div>
@@ -265,31 +267,34 @@ export default function Organizer() {
                                       />
                                     </div>
                                   </div>
-                                  <div className="sm:col-span-4">
-                                    <label htmlFor="points" className="block text-sm font-medium text-gray-700">
-                                      Datum
-                                    </label>
-                                    <div className='flex justify-between mt-1 px-12'>
-                                      <input
-                                        id="startDate"
-                                        name="startDate"
-                                        type="date"
-                                        className="block w-auto py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        defaultValue={startDate.toISOString().substring(0,10)}
-                                        onChange={(e) => {setEndDate(e.target.valueAsDate!)}}
-                                      />
-                                      <p className='pt-1' >bis</p>
-                                      <input
-                                        id="endDate"
-                                        name="endDate"
-                                        type="date"
-                                        defaultValue={endDate.toISOString().substring(0,10)}
-                                        value={endDate.toISOString().substring(0,10)}
-                                        className="block w-auto py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        onChange={(e) => {setEndDate(e.target.valueAsDate!)}}
-                                      />
+                                  {!isLongRunning
+                                    ?
+                                    <div className="sm:col-span-4">
+                                      <label htmlFor="points" className="block text-sm font-medium text-gray-700">
+                                        Datum
+                                      </label>
+                                      <div className='flex justify-between mt-1 px-12'>
+                                        <input
+                                          id="startDate"
+                                          name="startDate"
+                                          type="date"
+                                          className="block w-auto py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                          defaultValue={startDate.toISOString().substring(0, 10)}
+                                          onChange={(e) => { setEndDate(e.target.valueAsDate!) }}
+                                        />
+                                        <p className='pt-1' >bis</p>
+                                        <input
+                                          id="endDate"
+                                          name="endDate"
+                                          type="date"
+                                          defaultValue={endDate.toISOString().substring(0, 10)}
+                                          value={endDate.toISOString().substring(0, 10)}
+                                          className="block w-auto py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                          onChange={(e) => { setEndDate(e.target.valueAsDate!) }}
+                                        />
+                                      </div>
                                     </div>
-                                  </div>
+                                    : <></>}
                                   <div className="sm:col-span-4">
                                     <label htmlFor="points" className="block text-sm font-medium text-gray-700">
                                       Beschreibung
