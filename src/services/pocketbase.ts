@@ -16,6 +16,7 @@ interface Course {
     startDate: Date,
     endDate: Date,
     description?: string,
+    isLongRunning: boolean,
     category: string,
 }
 

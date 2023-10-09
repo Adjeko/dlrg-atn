@@ -37,13 +37,14 @@ export default function Organizer() {
 
     const courseName = e.target[0].value as string
     const category = e.target[1].value as string
+    const isLongRunning = e.target[2].value as boolean
 		// const organizer = e.target[1].value as string
 		// const email = e.target[2].value as string
-		const pointsInH = parseInt(e.target[2].value) as number
-    const pointsInLE = parseInt(e.target[3].value) as number
-    const startDate = e.target[4].value as Date
-    const endDate = e.target[5].value as Date
-    const description = e.target[6].value as string
+		const pointsInH = parseInt(e.target[3].value) as number
+    const pointsInLE = parseInt(e.target[4].value) as number
+    const startDate = e.target[5].value as Date
+    const endDate = e.target[6].value as Date
+    const description = e.target[7].value as string
 
     let points = 0
 
@@ -61,6 +62,7 @@ export default function Organizer() {
       endDate: endDate,
       description: description,
       category: category,
+      isLongRunning: isLongRunning,
     })
 		closeDialog();
 	}
@@ -201,6 +203,19 @@ export default function Organizer() {
                                         <option value="Web">Web</option>
                                         <option value="Workshop">Workshop</option>
                                       </select>
+                                    </div>
+                                  </div>
+                                  <div className="sm:col-span-4 flex items-start space-x-5">
+                                    <label htmlFor="coursename" className="flex text-sm font-medium text-gray-700">
+                                      Laufender Termin?
+                                    </label>
+                                    <div className="flex">
+                                      <input
+                                        name="isLongRunning" 
+                                        id="isLongRunning"
+                                        type='checkbox' 
+                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                                      </input>
                                     </div>
                                   </div>
                                   {/* <div className="sm:col-span-4">
