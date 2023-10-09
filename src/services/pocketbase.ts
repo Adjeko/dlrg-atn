@@ -13,7 +13,8 @@ interface Course {
     creator?: string,
     organizer?: string,
     points: number,
-    date: Date,
+    startDate: Date,
+    endDate: Date,
     description?: string,
     category: string,
 }

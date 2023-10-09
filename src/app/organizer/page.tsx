@@ -19,6 +19,8 @@ export default function Organizer() {
   const [open, setOpen] = useState(false)
 	const cancelButtonRef = useRef(null)
   const [courses, setCourses] = useState<RecordModel[]>()
+  const [startDate, setStartDate] = useState<Date>(new Date(Date.now()))
+  const [endDate, setEndDate] = useState<Date>(new Date(Date.now()))
 
   function closeDialog() {
 		setOpen(false);
@@ -39,8 +41,9 @@ export default function Organizer() {
 		// const email = e.target[2].value as string
 		const pointsInH = parseInt(e.target[2].value) as number
     const pointsInLE = parseInt(e.target[3].value) as number
-    const date = e.target[4].value as Date
-    const description = e.target[5].value as string
+    const startDate = e.target[4].value as Date
+    const endDate = e.target[5].value as Date
+    const description = e.target[6].value as string
 
     let points = 0
 
@@ -54,7 +57,8 @@ export default function Organizer() {
 		await createCourse({
       name: courseName,
       points: points,
-      date: date,
+      startDate: startDate,
+      endDate: endDate,
       description: description,
       category: category,
     })
@@ -238,24 +242,36 @@ export default function Organizer() {
                                         className="w-auto py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                       />
                                       <input
-                                      id="pointsInLE"
-                                      name="pointsInLE"
-                                      type="text"
-                                      placeholder="in LE"
-                                      className="w-auto py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    />
+                                        id="pointsInLE"
+                                        name="pointsInLE"
+                                        type="text"
+                                        placeholder="in LE"
+                                        className="w-auto py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                      />
                                     </div>
                                   </div>
                                   <div className="sm:col-span-4">
                                     <label htmlFor="points" className="block text-sm font-medium text-gray-700">
                                       Datum
                                     </label>
-                                    <div className="mt-1">
+                                    <div className='flex justify-between mt-1 px-12'>
                                       <input
-                                        id="date"
-                                        name="date"
+                                        id="startDate"
+                                        name="startDate"
                                         type="date"
-                                        className="block w-full py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        className="block w-auto py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        defaultValue={startDate.toISOString().substring(0,10)}
+                                        onChange={(e) => {setEndDate(e.target.valueAsDate!)}}
+                                      />
+                                      <p className='pt-1' >bis</p>
+                                      <input
+                                        id="endDate"
+                                        name="endDate"
+                                        type="date"
+                                        defaultValue={endDate.toISOString().substring(0,10)}
+                                        value={endDate.toISOString().substring(0,10)}
+                                        className="block w-auto py-2 pl-3 bg-gray-200 border-gray-400 rounded-md shadow-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        onChange={(e) => {setEndDate(e.target.valueAsDate!)}}
                                       />
                                     </div>
                                   </div>

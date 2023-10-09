@@ -21,7 +21,7 @@ export default function Course(
     const [open, setOpen] = useState(false);
     const cancelButtonRef = useRef(null);
 
-    const [event, setEvent] = useState({id: '', name: '', points: 0, description: "", date: new Date, category: ""});
+    const [event, setEvent] = useState({id: '', name: '', points: 0, description: "", startDate: new Date, endDate: new Date, category: ""});
 
     const [members, setMembers] = useState<RecordModel[]>();
 
@@ -35,7 +35,7 @@ export default function Course(
     useEffect(() => {
         (async () => {
           const event = await getCourse(params.pid)
-          setEvent({id: event.id, name: event.name, points: event.points, description: event.description, date: new Date(event.date), category: event.category})
+          setEvent({id: event.id, name: event.name, points: event.points, description: event.description, startDate: new Date(event.startDate), endDate: new Date(event.endDate), category: event.category})
 
           const memberList = await getMembersOfCourse(params.pid)
           setMembers(memberList)
@@ -100,7 +100,11 @@ export default function Course(
                         <div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
                             <dt className="text-sm font-medium text-gray-500">Datum</dt>
                             <dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                <span className="flex-grow">{`${event.date?.getDate()}.${event.date?.getMonth()}.${event.date?.getFullYear()}`}</span>
+                                <span className="flex-grow">{
+                                    (event.startDate?.getTime() === event.endDate?.getTime()) 
+                                    ? `${event.startDate?.getDate()}.${event.startDate?.getMonth()}.${event.startDate?.getFullYear()}` 
+                                    : `${event.startDate?.getDate()}.${event.startDate?.getMonth()}.${event.startDate?.getFullYear()} - ${event.endDate?.getDate()}.${event.endDate?.getMonth()}.${event.endDate?.getFullYear()}`
+                                }</span>
                                 <span className="flex-shrink-0 ml-4">
                                     {/* <button
 										type="button"
