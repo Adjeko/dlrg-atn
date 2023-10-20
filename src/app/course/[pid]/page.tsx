@@ -101,7 +101,7 @@ export default function Course(
                             <dt className="text-sm font-medium text-gray-500">Datum</dt>
                             <dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                 <span className="flex-grow">{
-                                    (event.startDate?.getTime() === event.endDate?.getTime()) 
+                                    (event.startDate?.getTime() === event.endDate?.getTime() || isNaN(event.endDate?.getFullYear())) 
                                     ? `${event.startDate?.getDate()}.${event.startDate?.getMonth()}.${event.startDate?.getFullYear()}` 
                                     : `${event.startDate?.getDate()}.${event.startDate?.getMonth()}.${event.startDate?.getFullYear()} - ${event.endDate?.getDate()}.${event.endDate?.getMonth()}.${event.endDate?.getFullYear()}`
                                 }</span>
