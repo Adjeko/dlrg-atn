@@ -1,10 +1,18 @@
-import PocketBase, { AuthModel, ListResult, RecordModel } from 'pocketbase';
+import PocketBase, { AuthModel, RecordModel } from 'pocketbase';
 
 const pb = new PocketBase('http://127.0.0.1:8090');
 pb.autoCancellation(false)
 
 export function getCurrentUser() : AuthModel {
     return pb.authStore.model;
+}
+
+export async function getUser() : Promise<RecordModel>{
+
+    const userId = getCurrentUser()?.id;
+
+    const record = await pb.collection('users').getOne(userId!);
+    return record;
 }
 
 

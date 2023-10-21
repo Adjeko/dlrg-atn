@@ -1,3 +1,6 @@
+import { getUser } from "@/services/pocketbase";
+import { AuthModel, RecordModel } from "pocketbase";
+import { useEffect, useState } from "react";
 
 
 //TODO type anlegen
@@ -7,10 +10,19 @@ function classNames(...classes: any) {
 
 export default function Navigation() {
 
+  const [user, setUser] = useState<RecordModel>()
+
+  useEffect(() => {
+    (async () => {
+        const user = await getUser()
+        setUser(user)
+    })();
+}, [])
+
   const navigation = [
-    { name: 'Teilnehmer', href: '/', current: true },
-    { name: 'Veranstalter', href: '/organizer', current: false },
-    { name: 'Exports', href: '/exports', current: false },
+    { name: 'Teilnehmer', href: '/', current: true, roles: ['attendee', 'organizer', 'admin'] },
+    { name: 'Veranstalter', href: '/organizer', current: false, roles: ['organizer', 'admin'] },
+    { name: 'Exports', href: '/exports', current: false, roles: ['attendee', 'organizer', 'admin']},
   ]
 
   return (
@@ -19,17 +31,20 @@ export default function Navigation() {
         <div className="col-span-2">
           <nav className="flex space-x-4">
             {navigation.map((item) => {
-              return (<a
-                key={item.name}
-                href={item.href}
-                className={classNames(
-                  item.current ? 'text-white' : 'text-indigo-100',
-                  'text-sm font-medium rounded-md bg-white bg-opacity-0 px-3 py-2 hover:bg-opacity-10'
-                )}
-                aria-current={item.current ? 'page' : undefined}
-              >
-                {item.name}
-              </a>)
+              
+              if(item.roles.includes(user?.role)){
+                return (<a
+                  key={item.name}
+                  href={item.href}
+                  className={classNames(
+                    item.current ? 'text-white' : 'text-indigo-100',
+                    'text-sm font-medium rounded-md bg-white bg-opacity-0 px-3 py-2 hover:bg-opacity-10'
+                  )}
+                  aria-current={item.current ? 'page' : undefined}
+                >
+                  {item.name}
+                </a>)
+              }              
             })}
           </nav>
         </div>

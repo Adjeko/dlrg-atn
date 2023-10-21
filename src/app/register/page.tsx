@@ -28,7 +28,8 @@ export default function Register() {
 			"emailVisibility": true,
 			"password": password,
 			"passwordConfirm": confirmPassword,
-			"name": firstName + " " + lastName
+			"name": firstName + " " + lastName,
+			"role": "attendee",
 		};
 
 		const record = await pb.collection('users').create(data)
