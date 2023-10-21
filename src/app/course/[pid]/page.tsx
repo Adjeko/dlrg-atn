@@ -131,7 +131,7 @@ export default function Course(
                     </dl>
                 </div>
             </>
-            <p>{`isLongRunning: ${event.isLongRunning}`}</p>
+            
             {event.isLongRunning
                 ? <CourseList courseId={params.pid}/>
                 : <AttendeeList courseId={params.pid}/>}
