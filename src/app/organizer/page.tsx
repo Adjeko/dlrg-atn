@@ -43,8 +43,8 @@ export default function Organizer() {
 		// const email = e.target[2].value as string
 		const pointsInH = parseInt(e.target[3].value) as number
     const pointsInLE = parseInt(e.target[4].value) as number
-    const startDate = e.target[5].value as Date
-    const endDate = e.target[6].value as Date
+    var startDate = e.target[5].value as Date
+    var endDate = e.target[6].value as Date
     const description = e.target[7].value as string
 
     let points = 0
@@ -54,6 +54,10 @@ export default function Organizer() {
     }
     if(pointsInLE) {
       points = pointsInLE
+    }
+    if(isLongRunning){
+      startDate = new Date()
+      endDate = new Date()
     }
 
 		await createCourse({
