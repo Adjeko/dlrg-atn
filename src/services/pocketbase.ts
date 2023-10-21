@@ -33,7 +33,7 @@ export async function getOrganizerCourses() : Promise<RecordModel[]> {
     const currentUser = getCurrentUser();
 
     const resultList = await pb.collection('courses').getFullList({
-        filter: `creator.id="${currentUser?.id}"`,
+        filter: `creator.id="${currentUser?.id}" && parentLongRunningCourse=""`,
     });
 
     return resultList;
