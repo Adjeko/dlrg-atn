@@ -57,6 +57,7 @@ export default function Organizer() {
     }
 
 		await createCourse({
+      id: undefined!,
       name: courseName,
       points: points,
       startDate: startDate,
@@ -64,6 +65,7 @@ export default function Organizer() {
       description: description,
       category: category,
       isLongRunning: isLongRunning,
+      parentLongRunningCourse: undefined!,
     })
 		closeDialog();
 	}

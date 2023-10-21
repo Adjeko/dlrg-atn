@@ -6,24 +6,24 @@ import { Dialog, Transition } from '@headlessui/react'
 import QRCode from "react-qr-code";
 import { getCourse, getMembersOfCourse } from '@/services/pocketbase';
 import { RecordModel } from 'pocketbase';
+import AttendeeList from './(Page)/AttendeeList';
+import CourseList from './(Page)/CourseList';
 
 const categories: any = {
     Seminar: "inline-flex items-center rounded-full bg-purple-100 px-2 py-1 text-xs font-medium text-purple-700",
     Web: "inline-flex items-center rounded-full bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-700",
     Workshop: "inline-flex items-center rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800",
-  }
+}
 
 export default function Course(
-    {params}: {
-    params: { pid: string }
-  }) {
+    { params }: {
+        params: { pid: string }
+    }) {
 
     const [open, setOpen] = useState(false);
     const cancelButtonRef = useRef(null);
 
-    const [event, setEvent] = useState({id: '', name: '', points: 0, description: "", startDate: new Date, endDate: new Date, category: ""});
-
-    const [members, setMembers] = useState<RecordModel[]>();
+    const [event, setEvent] = useState({id: '', name: '', points: 0, description: "", startDate: new Date, endDate: new Date, category: "", isLongRunning: false});
 
     function closeDialog() {
         setOpen(false);
@@ -34,13 +34,10 @@ export default function Course(
 
     useEffect(() => {
         (async () => {
-          const event = await getCourse(params.pid)
-          setEvent({id: event.id, name: event.name, points: event.points, description: event.description, startDate: new Date(event.startDate), endDate: new Date(event.endDate), category: event.category})
-
-          const memberList = await getMembersOfCourse(params.pid)
-          setMembers(memberList)
-        })();    
-      }, [])
+            const event = await getCourse(params.pid)
+            setEvent({ id: event.id, name: event.name, points: event.points, description: event.description, startDate: new Date(event.startDate), endDate: new Date(event.endDate), category: event.category, isLongRunning: event.isLongRunning })
+        })();
+    }, [])
 
     return (
         <>
@@ -134,25 +131,10 @@ export default function Course(
                     </dl>
                 </div>
             </>
-
-
-            {/* Teilnehmer Section Heading */}
-            <div className="pb-5 mt-6 mb-3 border-b border-gray-200">
-                <h3 className="text-lg font-medium leading-6 text-gray-900">Teilnehmer</h3>
-            </div>
-
-            {/* TeilnehmerListe */}
-            <ul role="list" className="divide-y divide-gray-200">
-                {members?.map((person) => (
-                    <li key={person.id} className="flex py-4">
-                        <img className="w-10 h-10 rounded-full" src={`https://ui-avatars.com/api/?name=${person.expand?.user.name}?background=random`} alt="" />
-                        <div className="ml-3">
-                            <p className="text-sm font-medium text-gray-900">{person.expand?.user.name}</p>
-                            <p className="text-sm text-gray-500">{person.expand?.user.email}</p>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+            <p>{`isLongRunning: ${event.isLongRunning}`}</p>
+            {event.isLongRunning
+                ? <CourseList courseId={params.pid}/>
+                : <AttendeeList courseId={params.pid}/>}
 
             {/* Floating Button */}
             <button
@@ -225,8 +207,7 @@ export default function Course(
                         </div>
                     </div>
                 </Dialog>
-            </Transition.Root>
-
+            </Transition.Root>    
         </>
     )
 }

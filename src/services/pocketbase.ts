@@ -9,6 +9,7 @@ export function getCurrentUser() : AuthModel {
 
 
 interface Course {
+    id: string | undefined,
     name: string,
     creator?: string,
     organizer?: string,
@@ -17,6 +18,7 @@ interface Course {
     endDate: Date,
     description?: string,
     isLongRunning: boolean,
+    parentLongRunningCourse: string,
     category: string,
 }
 
@@ -72,6 +74,31 @@ export async function getMembersOfCourse(courseId : string) : Promise<RecordMode
     });
 
     return records;
+}
+
+export async function getSubCourses(courseId : string) : Promise<RecordModel[]> {
+
+    const records = await pb.collection('courses'). getFullList({
+        filter: `parentLongRunningCourse="${courseId}"`,
+        sort: '-created',
+    });
+
+    return records;
+}
+
+export async function createSubCourse(courseId: string){
+
+    var course = await getCourse(courseId);
+
+    course.name = course.name + ` ${new Date().getDate()}.${new Date().getMonth()}.${new Date().getFullYear()}`
+    course.startDate = new Date()
+    course.endDate = new Date()
+    course.isLongRunning = false
+    course.parentLongRunningCourse = course.id
+    course.id = undefined!
+
+    // alert(JSON.stringify(course))
+    const record = await pb.collection('courses').create(course);
 }
 
 interface Feedback {
