@@ -38,7 +38,7 @@ export default function Organizer() {
 
     const courseName = e.target[0].value as string
     const category = e.target[1].value as string
-    const isLongRunning = e.target[2].value as boolean
+    const isLongRunning = e.target[2].checked as boolean
 		// const organizer = e.target[1].value as string
 		// const email = e.target[2].value as string
 		const pointsInH = parseInt(e.target[3].value) as number
