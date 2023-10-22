@@ -35,7 +35,6 @@ yarn-error.log*
 next-env.d.ts
 
 #pocketbase log files
-
 pocketbase/pb_data/logs.db
 pocketbase/pb_data/logs.db-wal
 pocketbase/pb_data/logs.db-shm

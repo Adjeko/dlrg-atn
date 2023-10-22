@@ -1,0 +1,21 @@
+version: '3'
+services:
+  web:
+    container_name: web
+    build: .
+    privileged: false
+    ports:
+      - "3000:3000"
+    # volumes:
+  pocketbase:
+    container_name: pocketbase
+    build: ./pocketbase
+    image: pocketbase:latest
+    volumes:
+      - pocketbase-volume:/app/data
+    ports:
+      - "8080:8080"
+
+      
+volumes:
+  pocketbase-volume:
