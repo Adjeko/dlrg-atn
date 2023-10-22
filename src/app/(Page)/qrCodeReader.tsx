@@ -5,7 +5,7 @@ import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
 import QrScanner from 'qr-scanner';
 import { registerUserAsCourseMember } from '@/services/pocketbase';
 
-export default function qrCodeReader() {
+export default function QRCodeReader() {
   const [open, setOpen] = useState(false)
   const [open2, setOpen2] = useState(false)
   const cancelButtonRef = useRef(null)

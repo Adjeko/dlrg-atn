@@ -1,7 +1,7 @@
 'use client'
 
 import Stats from './(Page)/stats';
-import QrCodeReader from './(Page)/qrCodeReader';
+import QRCodeReader from './(Page)/qrCodeReader';
 import Timeline from './(Page)/timeline';
 
 export default function Home() {
@@ -13,7 +13,7 @@ export default function Home() {
         <Timeline/>
       </div>
 
-      <QrCodeReader/>
+      <QRCodeReader/>
     </main>
   )
 }
