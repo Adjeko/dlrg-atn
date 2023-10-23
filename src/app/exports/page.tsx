@@ -1,6 +1,6 @@
 'use client'
 
-import { MyPdf, downloadPDF, downloadPDFButton, getPDFAsData } from "@/services/exports"
+import { getPDFAsData } from "@/services/exports"
 
 const statuses: any = {
   Complete: 'text-green-700 bg-green-50 ring-green-600/20',
@@ -14,7 +14,7 @@ const projects = [
     name: 'Download 2023 Report',
     status: 'New',
     description: 'Erstellt dir deine Fortbildungen aus 2023 als Liste in einem PDF',
-    action: downloadPDFButton()
+    action: (<></>)//downloadPDFButton()
   },
   {
     id: 2,
