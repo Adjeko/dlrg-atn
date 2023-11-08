@@ -1,14 +1,14 @@
 version: '3'
 services:
-  web:
-    container_name: web
+  dlrgweb:
+    container_name: dlrgWeb
     build: .
     privileged: false
     ports:
       - "3000:3000"
     # volumes:
-  pocketbase:
-    container_name: pocketbase
+  dlrgpocketbase:
+    container_name: dlrgPocketbase
     build: ./pocketbase
     image: pocketbase:latest
     volumes:
