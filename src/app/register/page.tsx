@@ -1,8 +1,8 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import PocketBase from 'pocketbase';
 import Cookies from 'js-cookie';
+import { getPocketBase } from '@/services/pocketbase';
 
 export default function Register() {
 
@@ -20,7 +20,7 @@ export default function Register() {
 		const lastName = e.target[4].value as string
 		const acceptAgbs = e.target[5].checked as boolean
 
-		const pb = new PocketBase('http://127.0.0.1:8090');
+		const pb = getPocketBase();
 
 		const data = {
 			"username": firstName + lastName,

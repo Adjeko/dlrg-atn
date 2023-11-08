@@ -5,11 +5,12 @@ import Link from "next/link";
 import PocketBase from 'pocketbase';
 import Cookies from 'js-cookie';
 import { useRouter, useSearchParams } from 'next/navigation'
+import { getPocketBase } from "@/services/pocketbase";
 
 
 export default function Signin() {
 
-	const pb = new PocketBase('http://127.0.0.1:8090');
+	const pb = getPocketBase();
 
 	const router = useRouter()
 

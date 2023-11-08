@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import PocketBase from 'pocketbase';
+import { getPocketBase } from './services/pocketbase';
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
 
-  const pb = new PocketBase('http://127.0.0.1:8090');
+  const pb = getPocketBase();
   // console.log(JSON.stringify(request.cookies.get('pb_test')))
 
   pb.authStore.loadFromCookie(request.cookies.get('pb_auth')?.value + "")

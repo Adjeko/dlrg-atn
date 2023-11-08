@@ -1,7 +1,12 @@
 import PocketBase, { AuthModel, RecordModel } from 'pocketbase';
 
-const pb = new PocketBase('http://127.0.0.1:8090');
+// const pb = new PocketBase('http://127.0.0.1:8090');
+const pb = new PocketBase('https://dlrgbase.adjeko.de/');
 pb.autoCancellation(false)
+
+export function getPocketBase() : PocketBase {
+    return pb;
+}
 
 export function getCurrentUser() : AuthModel {
     return pb.authStore.model;
