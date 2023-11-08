@@ -2,9 +2,9 @@
 
 import { Fragment, useEffect, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import PocketBase, { AuthModel } from 'pocketbase';
+import { AuthModel } from 'pocketbase';
 import Cookies from 'js-cookie';
-import { getCurrentUser } from '@/services/pocketbase';
+import { getCurrentUser, getPocketBase } from '@/services/pocketbase';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
@@ -20,7 +20,7 @@ export default function Profile() {
     { name: 'Abmelden', href: '', onClick: (e: any) => { signOut() } },
   ]
   function signOut() {
-    const pb = new PocketBase('http://127.0.0.1:8090');
+    const pb = getPocketBase();
     
     if(pb.authStore.isValid){
       pb.authStore.clear()
