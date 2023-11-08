@@ -7,9 +7,9 @@ export function middleware(request: NextRequest) {
 
   const pb = getPocketBase();
   // console.log(JSON.stringify(request.cookies.get('pb_test')))
-
+  
   pb.authStore.loadFromCookie(request.cookies.get('pb_auth')?.value + "")
-
+  console.log("Authstore valid:" + pb.authStore.isValid.toString() + " URL: " + request.nextUrl.pathname.toString())
   if (!pb.authStore.isValid &&
     (request.nextUrl.pathname == '/'
       || request.nextUrl.pathname.startsWith('/onboarding')

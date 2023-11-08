@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import PocketBase from 'pocketbase';
 import Cookies from 'js-cookie';
 import { useRouter, useSearchParams } from 'next/navigation'
 import { getPocketBase } from "@/services/pocketbase";
@@ -27,7 +26,7 @@ export default function Signin() {
 		);
 			console.log(pb.authStore.isValid);
 		if (pb.authStore.isValid) {
-			Cookies.set("pb_auth", pb.authStore.exportToCookie(), { secure: false, domain: 'localhost' });
+			Cookies.set("pb_auth", pb.authStore.exportToCookie(), { secure: false, domain: '.adjeko.de' });
 
 			searchParams.get("originUrl") ? router.push(searchParams.get("originUrl") + "") : router.push("/")
 		}
