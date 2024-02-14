@@ -41,7 +41,7 @@ export default function Register() {
 		// (optional) send an email verification request
 		//await pb.collection('users').requestVerification('test@example.com');
 		if (pb.authStore.isValid) {
-			Cookies.set("pb_auth", pb.authStore.exportToCookie(), { secure: false, domain: '.dlrgtack.de' });
+			Cookies.set("pb_auth", pb.authStore.exportToCookie(), { secure: false, domain: '.dlrgtrack.de' });
 
 			searchParams.get("originUrl") ? router.push(searchParams.get("originUrl") + "") : router.push("/")
 		}
