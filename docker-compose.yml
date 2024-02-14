@@ -1,21 +1,48 @@
 version: '3'
 services:
+  proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80' # Public HTTP Port
+      - '443:443' # Public HTTPS Port
+      - '81:81' # Admin Web Port
+
+    volumes:
+      - proxy-data:/data
+      - proxy-letsencrypt:/etc/letsencrypt
+
   dlrgweb:
     container_name: dlrgWeb
-    build: .
+    image: adjeko/dlrgtrack:latest
     privileged: false
     ports:
       - "3000:3000"
     # volumes:
-  dlrgpocketbase:
-    container_name: dlrgPocketbase
-    build: ./pocketbase
-    image: pocketbase:latest
-    volumes:
-      - pocketbase-volume:/app/data
+  
+  pocketbase:
+    image: ghcr.io/muchobien/pocketbase:latest
+    container_name: pocketbase
+    restart: unless-stopped
+    command:
+      - --encryptionEnv #optional
+      - ENCRYPTION #optional
+    environment:
+      ENCRYPTION: example #optional
     ports:
-      - "8080:8080"
+      - "8090:8090"
+    volumes:
+      - pocketbase_data:/pb_data
+      - pocketbase_public:/pb_public #optional
+    healthcheck: #optional (recommended) since v0.10.0
+      test: wget --no-verbose --tries=1 --spider http://localhost:8090/api/health || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
       
 volumes:
-  pocketbase-volume:
+  proxy-data:
+  proxy-letsencrypt:
+  pocketbase_data:
+  pocketbase_public:
