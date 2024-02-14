@@ -26,7 +26,7 @@ export default function Signin() {
 		);
 			console.log(pb.authStore.isValid);
 		if (pb.authStore.isValid) {
-			Cookies.set("pb_auth", pb.authStore.exportToCookie(), { secure: false, domain: '.adjeko.de' });
+			Cookies.set("pb_auth", pb.authStore.exportToCookie(), { secure: false, domain: '.dlrgtack.de' });
 
 			searchParams.get("originUrl") ? router.push(searchParams.get("originUrl") + "") : router.push("/")
 		}
