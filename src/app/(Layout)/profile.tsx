@@ -24,7 +24,7 @@ export default function Profile() {
     
     if(pb.authStore.isValid){
       pb.authStore.clear()
-      Cookies.remove("pb_auth")
+      Cookies.remove("pb_auth", { secure: false, domain: '.dlrgtrack.de' })
     }
   }
   
