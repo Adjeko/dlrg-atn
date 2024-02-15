@@ -1,6 +1,6 @@
 import { getUser } from "@/services/pocketbase";
 import { AuthModel, RecordModel } from "pocketbase";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 
 //TODO type anlegen
@@ -12,12 +12,14 @@ export default function Navigation() {
 
   const [user, setUser] = useState<RecordModel>()
 
+  const getUserData = useCallback(async () => {
+    const user = await getUser()
+    setUser(user)
+  }, [])
+
   useEffect(() => {
-    (async () => {
-        const user = await getUser()
-        setUser(user)
-    })();
-}, [])
+    getUserData()
+  }, [getUserData])
 
   const navigation = [
     { name: 'Teilnehmer', href: '/', current: true, roles: ['attendee', 'organizer', 'admin'] },

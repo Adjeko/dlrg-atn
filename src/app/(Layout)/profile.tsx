@@ -1,6 +1,6 @@
 // 'use server'
 
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useCallback, useEffect, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { AuthModel } from 'pocketbase';
 import Cookies from 'js-cookie';
@@ -15,27 +15,28 @@ export default function Profile() {
   const [user, setUser] = useState<AuthModel>();
   const [userImageUrl, setUserImageUrl] = useState<string>(`https://ui-avatars.com/api/?name=Unknown?background=random`)
 
+  const getUserData = useCallback(async () => {
+    const currentUser = await getCurrentUser();
+    setUser(currentUser)
+    setUserImageUrl(`https://ui-avatars.com/api/?name=${currentUser?.name}?background=random`)
+  }, [])
+
   const userNavigation = [
     // { name: 'Your Profile', href: '#', onClick: ()=>{}},
     { name: 'Abmelden', href: '', onClick: (e: any) => { signOut() } },
   ]
   function signOut() {
     const pb = getPocketBase();
-    
-    if(pb.authStore.isValid){
+
+    if (pb.authStore.isValid) {
       pb.authStore.clear()
       Cookies.remove("pb_auth", { secure: false, domain: '.dlrgtrack.de' })
     }
   }
-  
 
   useEffect(() => {
-    (async () => {
-      const currentUser = await getCurrentUser();
-      setUser(currentUser)
-      setUserImageUrl(`https://ui-avatars.com/api/?name=${currentUser?.name}?background=random`)
-    })();
-  }, [])
+    getUserData()
+  }, [getUserData])
 
   return (
     <>
