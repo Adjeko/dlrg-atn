@@ -32,6 +32,14 @@ export default function Profile() {
     }
   }
 
+  useEffect( () => {
+    const pb = getPocketBase()
+
+    if(pb.authStore.isValid && user?.email != pb.authStore.model?.email){
+      setUser(getCurrentUser())
+    }
+  }, [user])
+
   useEffect(() => {
     getUserData()
   }, [user])
