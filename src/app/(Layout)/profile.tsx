@@ -12,13 +12,11 @@ function classNames(...classes: any) {
 
 export default function Profile() {
 
-  const [user, setUser] = useState<AuthModel>();
+  const [user, setUser] = useState<AuthModel>(getCurrentUser());
   const [userImageUrl, setUserImageUrl] = useState<string>(`https://ui-avatars.com/api/?name=Unknown?background=random`)
 
   const getUserData = useCallback(async () => {
-    const currentUser = await getCurrentUser();
-    setUser(currentUser)
-    setUserImageUrl(`https://ui-avatars.com/api/?name=${currentUser?.name}?background=random`)
+    setUserImageUrl(`https://ui-avatars.com/api/?name=${user?.name}?background=random`)
   }, [])
 
   const userNavigation = [
@@ -36,7 +34,7 @@ export default function Profile() {
 
   useEffect(() => {
     getUserData()
-  }, [getUserData])
+  }, [user])
 
   return (
     <>
