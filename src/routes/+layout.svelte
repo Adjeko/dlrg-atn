@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
   import "../app.pcss";
+  import { Toaster } from 'svelte-french-toast'
   export let data
 </script>
 
-
+<Toaster>
 <div class="min-h-full">
   <nav class="navbar bg-base-100 border-b">
     <div class="flex-1">
