@@ -7,12 +7,15 @@ export const handle = async({event, resolve} : any)=>{
   event.locals.pb = new Pocketbase('https://db.dlrgtrack.de/')
   event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '')
 
-  if(event.locals.pb.authStore.isValid){
-    event.locals.user = event.locals.pb.authStore.model
-  }
-  else {
-    event.locals.user = undefined
-  }
+  try {
+		if (event.locals.pb.authStore.isValid) {
+			await event.locals.pb.collection('users').authRefresh();
+			event.locals.user = event.locals.pb.authStore.model;
+		}
+	} catch (_) {
+		event.locals.pb.authStore.clear();
+		event.locals.user = undefined;
+	}
 
   //in diesem resolve passiert die Serverside Logik
   const response = await resolve(event)

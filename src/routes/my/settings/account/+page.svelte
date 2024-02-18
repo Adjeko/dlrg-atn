@@ -3,11 +3,11 @@
 	import { invalidateAll } from '$app/navigation';
 	import { Input, Modal } from '$lib/components';
 
-	export let form : any;
-	export let data : any;
-	let emailModalOpen : any;
-	let usernameModalOpen : any;
-	let loading : any;
+	export let form;
+	export let data;
+	let emailModalOpen;
+	let usernameModalOpen;
+	let loading;
 
 	$: emailModalOpen = false;
 	$: usernameModalOpen = false;
@@ -16,7 +16,7 @@
 	const submitUpdateEmail = () => {
 		loading = true;
 		emailModalOpen = true;
-		return async ({ result } : any) => {
+		return async ({ result }) => {
 			switch (result.type) {
 				case 'success':
 					await invalidateAll();
@@ -34,11 +34,10 @@
 	const submitUpdateUsername = () => {
 		loading = true;
 		usernameModalOpen = true;
-		return async ({ result } : any) => {
+		return async ({ result }) => {
 			switch (result.type) {
 				case 'success':
 					await invalidateAll();
-					usernameModalOpen = false;
 					break;
 				case 'error':
 					break;
@@ -46,6 +45,7 @@
 					await applyAction(result);
 			}
 			loading = false;
+			usernameModalOpen = false;
 		};
 	};
 </script>
@@ -65,6 +65,7 @@
 					required={true}
 					value={form?.data?.email}
 					disabled={loading}
+					errors={form?.errors?.email}
 				/>
 				<button type="submit" class="btn btn-primary w-full" disabled={loading}
 					>Change my email</button
@@ -91,6 +92,7 @@
 					label="Enter your new username"
 					required={true}
 					value={form?.data?.username}
+					errors={form?.errors?.username}
 					disabled={loading}
 				/>
 				<button type="submit" class="btn btn-primary w-full" disabled={loading}

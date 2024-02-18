@@ -6,10 +6,11 @@
 	import { getImageURL } from '$lib/utils';
 
 	export let data;
-	let loading : any;
+	export let form;
+	let loading;
 
 	$: loading = false;
-	const showPreview = (event : any) => {
+	const showPreview = (event) => {
 		const target = event.target;
 		const files = target.files;
 
@@ -22,7 +23,7 @@
 
 	const submitUpdateProfile = () => {
 		loading = true;
-		return async ({ result } : any) => {
+		return async ({ result }) => {
 			switch (result.type) {
 				case 'success':
 					await invalidateAll();
@@ -45,10 +46,10 @@
 		enctype="multipart/form-data"
 		use:enhance={submitUpdateProfile}
 	>
-		<h3 class="text-2xl font-medium">Profil ändern</h3>
+		<h3 class="text-2xl font-medium">Update Profile</h3>
 		<div class="form-control w-full max-w-lg">
 			<label for="avatar" class="label font-medium pb-1">
-				<span class="label-text">Profilbild</span>
+				<span class="label-text">Profile Picture</span>
 			</label>
 			<label for="avatar" class="avatar w-32 rounded-full hover:cursor-pointer">
 				<label for="avatar" class="absolute -bottom-0.5 -right-0.5 hover:cursor-pointer">
@@ -76,8 +77,23 @@
 				on:change={showPreview}
 				disabled={loading}
 			/>
+			{#if form?.errors?.avatar}
+				{#each form?.errors?.avatar as error}
+					<label for="avatar" class="label py-0 pt-1">
+						<span class="label-text-alt text-error">
+							{error}
+						</span>
+					</label>
+				{/each}
+			{/if}
 		</div>
-		<Input id="name" label="Name" value={data?.user?.name} disabled={loading} />
+		<Input
+			id="name"
+			label="Name"
+			value={form?.data?.name ?? data?.user?.name}
+			disabled={loading}
+			errors={form?.errors?.name}
+		/>
 		<div class="w-full max-w-lg pt-3">
 			<button class="btn btn-primary w-full max-w-lg" type="submit" disabled={loading}>
 				Update Profile
