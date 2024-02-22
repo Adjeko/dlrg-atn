@@ -25,3 +25,12 @@ export async function load ({ locals } : any) {
 		courses: await getJoinedCourses(locals.user.id)
 	};
 };
+
+export const actions = {
+	joinCourse: async ({ request, locals } : any) => {
+		const body = await request.formData();
+
+		console.log(body.get("courseId"))
+		console.log(locals.user.id)
+	},
+};
