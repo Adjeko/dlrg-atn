@@ -4,7 +4,7 @@
 </script>
 
 
-<h2 class="text-3xl font-bold">Veranstalter</h2>
+<h2 class="text-3xl font-bold">Deine erstellten Kurse</h2>
 <div class="w-full mt-4 flex flex-col items-center">
 	{#if data.courses.length === 0}
 		<p class="text-center text-3xl">☹️</p>
