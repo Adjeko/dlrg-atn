@@ -30,6 +30,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@zerodevx/svelte-json-view": "^1.0.9",
     "pocketbase": "^0.20.0-rc3"
   }
 }
