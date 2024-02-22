@@ -3,11 +3,11 @@
 	export let placeholder = '';
 	export let id : any;
 	export let label : any;
-	export let type = 'text';
+	// export let type = 'text';
 	export let disabled = false;
 	export let required = false;
 
-	export let errors;
+	export let errors : any;
 </script>
 
 <div class="form-control w-full max-w-lg">
@@ -16,7 +16,6 @@
 	</label>
 	<textarea
 		class="textarea textarea-bordered h-24 resize-none"
-		{type}
 		{placeholder}
 		{required}
 		{disabled}

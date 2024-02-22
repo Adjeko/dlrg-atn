@@ -24,3 +24,7 @@ export const validateData = async (formData : any, schema : any) => {
 		};
 	}
 };
+
+export const serializeNonPOJOs = (obj : any) => {
+	return structuredClone(obj);
+};

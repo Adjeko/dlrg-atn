@@ -3,14 +3,14 @@
 	import { Modal } from '$lib/components';
 	import { getImageURL } from '$lib/utils';
 	import toast from 'svelte-french-toast';
-	export let project;
+	export let project : any;
 
-	let modalOpen;
+	let modalOpen : boolean;
 	let loading = false;
 
 	const submitDeleteProject = () => {
 		loading = true;
-		return async ({ result, update }) => {
+		return async ({ result, update } : any) => {
 			switch (result.type) {
 				case 'success':
 					toast.success('Project deleted successfully!');

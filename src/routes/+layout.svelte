@@ -4,7 +4,7 @@
   export let data
 </script>
 
-<Toaster>
+<Toaster></Toaster>
 <div class="min-h-full">
   <nav class="navbar bg-base-100 border-b">
     <div class="flex-1">

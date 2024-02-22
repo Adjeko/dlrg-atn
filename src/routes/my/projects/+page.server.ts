@@ -1,13 +1,14 @@
 import { error, redirect } from '@sveltejs/kit';
 
-export const load = ({ locals } : any) => {
+export async function load ({ locals } : any) {
 	if (!locals.pb.authStore.isValid) {
 		throw redirect(303, '/login');
 	}
 
 	const getUsersProjects = async (userId : any) => {
 		try {
-			const projects = await locals.pb.collection('projects').getFullList(undefined, {
+			const projects = 
+				await locals.pb.collection('projects').getFullList(undefined, {
 					filter: `user = "${userId}"`
 				})
 			
@@ -19,7 +20,7 @@ export const load = ({ locals } : any) => {
 	};
 
 	return {
-		projects: getUsersProjects(locals.user.id)
+		projects: await getUsersProjects(locals.user.id)
 	};
 };
 
