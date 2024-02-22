@@ -1,5 +1,6 @@
 <script lang="ts">
   import "../app.pcss";
+  import { JsonView } from '@zerodevx/svelte-json-view'
   import { Toaster } from 'svelte-french-toast'
   export let data
 </script>

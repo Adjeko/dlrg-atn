@@ -10,7 +10,7 @@ export async function load ({ locals } : any) {
 		try {
 			const projects = 
 				await locals.pb.collection('isMemberOf').getFullList(undefined, {
-					filter: `user = "t78b293a3r4hrvz"`,
+					filter: `user = "${userId}"`,
           expand: `course`
 				})
 			
