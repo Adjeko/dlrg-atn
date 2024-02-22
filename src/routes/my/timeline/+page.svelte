@@ -1,6 +1,9 @@
 <script lang="ts">
+	import { Icon, Plus } from "svelte-hero-icons";
   import TimelineItem from "$lib/components/TimelineItem.svelte";
   export let data : any;
+
+	let modal : any;
 </script>
 
 <h2 class="text-3xl font-bold">Timeline</h2>
@@ -22,3 +25,15 @@
 	{/if}
 </div>
 
+<button class="fixed bottom-12 right-12 btn btn-primary btn-circle" on:click={modal.showModal()}>
+	<Icon src="{Plus}" size="32"/>
+</button>
+<dialog class="modal" bind:this={modal}>
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Hello!</h3>
+    <p class="py-4">Press ESC key or click outside to close</p>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

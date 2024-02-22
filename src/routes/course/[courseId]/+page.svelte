@@ -1,6 +1,11 @@
 <script lang="ts">
   import { JsonView } from '@zerodevx/svelte-json-view'
+	// @ts-ignore there are no type definitions for svelte-qrcode
+	import QrCodeImage from "svelte-qrcode"
+	import { Icon, QrCode } from "svelte-hero-icons";
+
   export let data : any;
+	let modal : any;
 </script>
 
 
@@ -16,3 +21,16 @@
 	{/if}
 </div>
 
+<button class="fixed bottom-12 right-12 btn btn-primary btn-circle" on:click={modal.showModal()}>
+	<Icon src="{QrCode}" size="32"/>
+</button>
+<dialog class="modal" bind:this={modal}>
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Hello!</h3>
+    <p class="py-4">Press ESC key or click outside to close</p>
+		<QrCodeImage value="{data.course.id}" />
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
