@@ -1,4 +1,7 @@
-import { error, redirect } from '@sveltejs/kit';
+import { createCourseSchema } from '$lib/schema.js';
+import { validateData } from '$lib/utils';
+import { error, fail, redirect } from '@sveltejs/kit';
+import { serialize } from 'object-to-formdata';
 
 
 export async function load ({ locals } : any) {
@@ -25,3 +28,32 @@ export async function load ({ locals } : any) {
 		courses: await getJoinedCourses(locals.user.id)
 	};
 };
+
+export const actions = {
+	createCourse: async ({ request, locals } : any) => {
+		const body = await request.formData();
+
+		body.set("points", 3)
+		body.append('creator', locals.user.id);
+		body.append('organizer', locals.user.id);
+
+		const { formData, errors } = await validateData(body, createCourseSchema);
+		
+		if (errors) {
+			return fail(400, {
+				data: formData,
+				errors: errors.fieldErrors
+			});
+		}
+
+		try {
+			console.log(serialize(formData))
+			await locals.pb.collection('courses').create(serialize(formData));
+		} catch (err : any) {
+			console.log('Error: ', err);
+			throw error(err.status, err.message);
+		}
+
+		throw redirect(303, '/my/courses');
+	}
+}

@@ -55,6 +55,24 @@ const imageTypes = [
 	'image/gif'
 ];
 
+export const createCourseSchema = z.object({
+	name: z
+		.string({ required_error: 'Name is required' })
+		.min(1, { message: 'Name is required' })
+		.max(64, { message: 'Name must be 64 characters or less' })
+		.trim(),
+	points: z.string({required_error: "Es müssen Punkte vergeben werden"}),
+	startDate: z.string(),
+	endDate: z.string(),
+	description: z
+		.string({ required_error: 'Description is required' })
+		.min(1, { message: 'Description is required' })
+		.max(512, { message: 'Description must be less than 512 characters' })
+		.trim(),
+	creator: z.string(),
+	organizer: z.string(),
+})
+
 export const createProjectSchema = z.object({
 	name: z
 		.string({ required_error: 'Name is required' })
