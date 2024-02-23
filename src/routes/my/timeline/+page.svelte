@@ -7,7 +7,6 @@
   import { onMount } from 'svelte'
 
   export let data : any;
-	export let form : any;
 
 	let modal : any;
 

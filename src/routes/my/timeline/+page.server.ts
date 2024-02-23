@@ -30,7 +30,30 @@ export const actions = {
 	joinCourse: async ({ request, locals } : any) => {
 		const body = await request.formData();
 
+		const courseId = body.get("courseId")
 		console.log(body.get("courseId"))
 		console.log(locals.user.id)
+
+		try{
+			await locals.pb.collection('isMemberOf').getFirstListItem(`user="${locals.user.id}" && course="${courseId}"`)
+			return {
+				hasAlreadyJoined: true
+			}
+		} catch(err : any) {
+			//wenn der Request mit 404 zurück kommt, war der user noch nicht diesem Kurs beigetreten
+			if(err.status != 404){
+				throw error(err.status, err.message);
+			}
+		}
+
+		try {
+			await locals.pb.collection('isMemberOf').create({
+				user: locals.user.id,
+				course: courseId
+			})
+		}
+		catch (err : any) {
+			throw error(err.status, err.message);
+		}
 	},
 };

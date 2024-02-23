@@ -10,7 +10,7 @@ export async function load ({ locals } : any) {
 		try {
 			const courses = 
 				await locals.pb.collection('courses').getFullList(undefined, {
-					filter: `creator = "t78b293a3r4hrvz"`,
+					filter: `creator = "${userId}"`,
           expand: `parent`
 				})
 			
