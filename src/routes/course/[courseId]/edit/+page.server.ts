@@ -1,6 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
-import { serializeNonPOJOs, validateData } from '$lib/utils';
-import { updateProjectSchema } from '$lib/schema';
+import { validateData } from '$lib/utils';
+import { createCourseSchema, updateProjectSchema } from '$lib/schema';
 import { serialize } from 'object-to-formdata';
 
 export const load = async ({ locals, params } : any) => {
@@ -8,62 +8,43 @@ export const load = async ({ locals, params } : any) => {
 		throw error(401, 'Unauthorized');
 	}
 
-	try {
-		const project = serializeNonPOJOs(
-			await locals.pb.collection('projects').getOne(params.projectId)
-		);
-
-		if (locals.user.id === project.user) {
-			return {
-				project
-			};
-		} else {
-			throw error(403, 'Forbidden');
+	const getCourse = async (courseId : any) => {
+		try {
+			const course = await locals.pb.collection('courses').getOne(courseId, {
+				expand: 'creator, organizer'
+			});
+			return course;
+		} catch (err : any) {
+			console.log('Error: ', err);
+			throw error(err.status, err.message);
 		}
-	} catch (err : any) {
-		console.log('Error: ', err);
-		throw error(err.status, err.message);
-	}
+	};
+
+	return {
+		course: await getCourse(params.courseId)
+	};
 };
 
 export const actions = {
-	updateProject: async ({ request, locals, params } : any) => {
+	updateCourse: async ({ request, locals, params } : any) => {
 		const body = await request.formData();
 
-		const thumb = body.get('thumbnail');
-
-		if (thumb.size === 0) {
-			body.delete('thumbnail');
-		}
-
-		const { formData, errors } = await validateData(body, updateProjectSchema);
-		const { thumbnail, ...rest } = formData;
+		const { formData, errors } = await validateData(body, createCourseSchema);
 
 		if (errors) {
 			return fail(400, {
-				data: rest,
+				data: formData,
 				errors: errors.fieldErrors
 			});
 		}
 
 		try {
-			await locals.pb.collection('projects').update(params.projectId, serialize(formData));
+			await locals.pb.collection('courses').update(params.courseId, serialize(formData));
 		} catch (err : any) {
 			console.log('Error: ', err);
 			throw error(err.status, err.message);
 		}
 
-		throw redirect(303, `/my/projects`);
+		throw redirect(303, `/course/${params.courseId}`);
 	},
-	deleteThumbnail: async ({ locals, params } : any) => {
-		try {
-			await locals.pb.collection('projects').update(params.projectId, { thumbnail: null });
-		} catch (err : any) {
-			console.log('Error: ', err);
-			throw error(err.status, err.message);
-		}
-		return {
-			success: true
-		};
-	}
 };

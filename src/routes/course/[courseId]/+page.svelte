@@ -2,7 +2,7 @@
   import { JsonView } from '@zerodevx/svelte-json-view'
 	// @ts-ignore there are no type definitions for svelte-qrcode
 	import QrCodeImage from "svelte-qrcode"
-	import { Icon, QrCode } from "svelte-hero-icons";
+	import { Icon, PencilSquare, QrCode, Trash } from "svelte-hero-icons";
 
   export let data : any;
 	let modal : any;
@@ -10,7 +10,17 @@
 
 
 <h2 class="text-3xl font-bold">Kurs</h2>
-<a href="/course/${data.course.id}/edit" class="btn btn-primary">Bearbeiten</a>
+<a href="/course/{data.course.id}/edit" >
+  <Icon src="{PencilSquare}" size="32"/>
+</a>
+
+<form action="?/deleteCourse" method="POST">
+  <input type="text" name="courseId" value={data.course.id} class="hidden"/>
+  <button type="submit" >
+    <Icon src="{Trash}" size="32"/>
+  </button>
+</form>
+
 <div class="w-full mt-4 flex flex-col items-center">
 	{#if !data.course}
 		<p class="text-center text-3xl">☹️</p>
