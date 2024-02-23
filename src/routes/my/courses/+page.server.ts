@@ -47,7 +47,6 @@ export const actions = {
 		}
 
 		try {
-			console.log(serialize(formData))
 			await locals.pb.collection('courses').create(serialize(formData));
 		} catch (err : any) {
 			console.log('Error: ', err);
@@ -55,5 +54,15 @@ export const actions = {
 		}
 
 		throw redirect(303, '/my/courses');
+	},
+	deleteCourse: async ({ request, locals } : any) => {
+		const body = await request.formData();
+
+		try {
+			await locals.pb.collection('courses').delete(body.get("courseId"));
+		} catch (err : any) {
+			console.log('Error: ', err);
+			throw error(err.status, err.message);
+		}
 	}
 }

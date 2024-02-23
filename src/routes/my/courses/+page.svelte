@@ -40,7 +40,7 @@
 		<a href="/projects/new" class="btn btn-primary max-w-md mt-4">Add One</a>
 	{:else}
 		{#each data.courses as course}
-			<CreatedCoursesItem course={course}/>
+			<CreatedCoursesItem deleteFormActionPath="?/deleteCourse" course={course}/>
 			<a href="/course/{course.id}" class="btn btn-primary max-w-md mt-4">{course.name}</a>
 			<div class="divider mt-0 mb-2" />
 		{/each}
