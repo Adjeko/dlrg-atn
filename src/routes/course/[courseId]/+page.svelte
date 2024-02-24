@@ -82,8 +82,8 @@
 </div>
 
 
-<button class="fixed bottom-12 right-12 btn btn-primary btn-circle" on:click={modal.showModal()}>
-	<Icon src="{QrCode}" size="32"/>
+<button class="fixed bottom-12 right-12 btn bg-[#DC0612] btn-circle" on:click={modal.showModal()}>
+	<Icon class="text-[#F5E41D]" src="{QrCode}" size="32"/>
 </button>
 <dialog class="modal" bind:this={modal}>
   <div class="modal-box">

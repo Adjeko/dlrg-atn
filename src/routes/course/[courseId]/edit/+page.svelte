@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
   import { JsonView } from '@zerodevx/svelte-json-view'
 	import { Input, TextArea } from '$lib/components';
+    import { ChevronLeft, Icon } from 'svelte-hero-icons';
   export let data : any;
   export let form : any;
 </script>
@@ -14,7 +15,13 @@
 			class="flex flex-col space-y-2 w-full items-center"
 			use:enhance
 		>
-			<h3 class="text-3xl font-bold">Kurs editieren</h3>
+		<div class="flex flex-row gap-10">
+			<a href="/course/{data.course.id}" >
+				<Icon src="{ChevronLeft}" size="32"/>
+			</a>
+				<h3 class="text-3xl font-bold">Kurs editieren</h3>
+		</div>
+		
 			<Input 
         id="name" 
         label="Kursname" 
