@@ -1,6 +1,4 @@
-import { validateData } from '$lib/utils';
-import { error, fail, redirect } from '@sveltejs/kit';
-import { serialize } from 'object-to-formdata';
+import { error, redirect } from '@sveltejs/kit';
 
 export async function load ({ locals, params } : any) {
 	if (!locals.pb.authStore.isValid) {
@@ -9,7 +7,22 @@ export async function load ({ locals, params } : any) {
 
 	const getCourse = async (courseId : any) => {
 		try {
-			const course = await locals.pb.collection('courses').getOne(courseId);
+			const course = await locals.pb.collection('courses').getOne(courseId, {
+				expand: 'creator',
+			});
+			return course;
+		} catch (err : any) {
+			console.log('Error: ', err);
+			throw error(err.status, err.message);
+		}
+	};
+
+	const getMember = async (courseId : any) => {
+		try {
+			const course = await locals.pb.collection('isMemberOf').getFullList({
+				filter: `course="${courseId}"`,
+				expand: 'user',
+			});
 			return course;
 		} catch (err : any) {
 			console.log('Error: ', err);
@@ -18,7 +31,8 @@ export async function load ({ locals, params } : any) {
 	};
 
 	return {
-		course: await getCourse(params.courseId)
+		course: await getCourse(params.courseId),
+		member: await getMember(params.courseId)
 	};
 };
 
