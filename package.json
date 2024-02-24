@@ -10,6 +10,7 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
   },
   "devDependencies": {
+    "@svelte-put/qr": "^1.0.3",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
@@ -32,7 +33,6 @@
   "dependencies": {
     "@zerodevx/svelte-json-view": "^1.0.9",
     "html5-qrcode": "^2.3.8",
-    "pocketbase": "^0.20.0-rc3",
-    "svelte-qrcode": "^1.0.0"
+    "pocketbase": "^0.20.0-rc3"
   }
 }
