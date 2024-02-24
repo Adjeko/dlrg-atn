@@ -72,9 +72,9 @@
 
 </script>
 
-<div role="tablist" class="tabs tabs-lifted py-6">
-  <a href="/my/timeline" role="tab" class="tab tab-active text-3xl font-bold">Timeline</a>
-  <a href="/my/courses" role="tab" class="tab text-2xl">Erstellte Kurse</a>
+<div role="tablist" class="tabs tabs-bordered py-6">
+  <a href="/my/timeline" role="tab" class="tab tab-active text-xl">Timeline</a>
+  <a href="/my/courses" role="tab" class="tab text-xl">Erstellte Kurse</a>
 </div>
 
 <div class="w-full mt-4 flex flex-col items-start">
