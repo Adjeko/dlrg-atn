@@ -7,10 +7,10 @@
 
 <Toaster></Toaster>
 <div class="min-h-full">
-  <nav class="navbar bg-base-100 border-b">
+  <nav class="navbar bg-[#dc0612] border-b">
     <div class="flex-1">
-      <a href="/" class="btn btn-ghost normal-case text-xl">
-        DLRG
+      <a href="/" class="btn btn-ghost normal-case text-xl text-[#f5e41d]">
+        DLRG Fortbildungs Tracker
       </a>
     </div>
     <div class="flex-none">

@@ -72,27 +72,25 @@
 
 </script>
 
-<h2 class="text-3xl font-bold">Timeline</h2>
-<div role="tablist" class="tabs tabs-lifted">
-  <a href="/my/timeline" role="tab" class="tab tab-active">Timeline</a>
-  <a href="/my/courses" role="tab" class="tab">Erstellte Kurse</a>
+<div role="tablist" class="tabs tabs-lifted py-6">
+  <a href="/my/timeline" role="tab" class="tab tab-active text-3xl font-bold">Timeline</a>
+  <a href="/my/courses" role="tab" class="tab text-2xl">Erstellte Kurse</a>
 </div>
 
-<div class="w-full mt-4 flex flex-col items-center">
+<div class="w-full mt-4 flex flex-col items-start">
 	{#if data.courses.length === 0}
 		<p class="text-center text-3xl">☹️</p>
-		<p class="text-center text-3xl">Looks like you don't have any projects.</p>
-		<a href="/projects/new" class="btn btn-primary max-w-md mt-4">Add One</a>
+		<p class="text-center text-3xl">Sieht so aus, wie wenn du noch keinem Kurs beigetreten bist.</p>
 	{:else}
 		{#each data.courses as course}
 			<TimelineItem course={course}/>
-			<div class="divider mt-0 mb-2" />
+			<div class="divider mt-2 mb-2" />
 		{/each}
 	{/if}
 </div>
 
-<button class="fixed bottom-12 right-12 btn btn-primary btn-circle" on:click={openModal}>
-	<Icon src="{Plus}" size="32"/>
+<button class="fixed bottom-12 right-12 btn bg-[#DC0612] btn-circle" on:click={openModal}>
+	<Icon class="text-[#F5E41D]" src="{Plus}" size="32"/>
 </button>
 <dialog class="modal" bind:this={modal}>
   <div class="modal-box">
@@ -107,7 +105,6 @@
 				</form>
 			</div>
 		</div>
-		<p>{scannedText}</p>
   </div>
   <form method="dialog" class="modal-backdrop">
     <button>close</button>
