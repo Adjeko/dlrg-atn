@@ -34,9 +34,9 @@
 
 <div class="w-full mt-4 flex flex-col items-center">
 	{#if data.courses.length === 0}
-		<p class="text-center text-3xl">☹️</p>
-		<p class="text-center text-3xl">Looks like you don't have any projects.</p>
-		<a href="/projects/new" class="btn btn-primary max-w-md mt-4">Add One</a>
+		<p class="text-center text-3xl">🤫</p>
+		<p class="text-center text-3xl">Sieht so aus wie wenn du noch keine Kurse angelegt hättest.</p>
+		<p class="text-center text-3xl">Mit dem Plus da unten ↘️ kannst du einen erstellen.</p>
 	{:else}
 		{#each data.courses as course}
 			<CreatedCoursesItem deleteFormActionPath="?/deleteCourse" course={course}/>

@@ -20,15 +20,15 @@ export const registerUserSchema = z
 			.email({ message: 'Email must be a valid email' }),
 		password: z
 			.string({ required_error: 'Password is required' })
-			.regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, {
+			.regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%-_*#?&])[A-Za-z\d@$!%-_*#?&]{5,}$/, {
 				message:
-					'Password must be a minimum of 8 characters & contain at least one letter, one number, and one special character.'
+					'Das Passwort muss mindestens 5 Stellen haben und mindestens einen Buchstaben, eine Zahl und ein Sonderzeichen enthalten.'
 			}),
 		passwordConfirm: z
 			.string({ required_error: 'Confirm Password is required' })
-			.regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, {
+			.regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%-_*#?&])[A-Za-z\d@$!%-_*#?&]{5,}$/, {
 				message:
-					'Password must be a minimum of 8 characters & contain at least one letter, one number, and one special character.'
+					'Das Passwort muss mindestens 5 Stellen haben und mindestens einen Buchstaben, eine Zahl und ein Sonderzeichen enthalten.'
 			})
 	})
 	.superRefine(({ passwordConfirm, password }, ctx) => {
