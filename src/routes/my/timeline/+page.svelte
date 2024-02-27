@@ -81,7 +81,7 @@
 	{#if data.courses.length === 0}
 		<p class="text-center text-3xl">🤫</p>
 		<p class="text-center text-3xl">Sieht so aus, wie wenn du noch keinem Kurs beigetreten bist.</p>
-		<p class="text-center text-3xl">Mit dem Plus da unten ↘️ kannst du einen Kurs beitreten.</p>
+		<p class="text-center text-3xl">Mit dem Plus da unten ↘️ kannst du einem Kurs beitreten.</p>
 	{:else}
 		{#each data.courses as course}
 			<TimelineItem course={course}/>
