@@ -29,7 +29,7 @@
         errors={form?.errors?.name} />
 			<Input
 				id="points"
-				label="Leistungspunkte"
+				label="Lerneinheiten"
 				value={form?.data?.points ? form?.data?.points : data.course.points}
 				errors={form?.errors?.points}
 			/>

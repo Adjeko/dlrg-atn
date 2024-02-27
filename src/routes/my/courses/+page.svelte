@@ -63,7 +63,7 @@
 					<Input id="name" label="Kursname" value={form?.data?.name} errors={form?.errors?.name} />
 					<Input
 						id="points"
-						label="Leistungspunkte"
+						label="Lerneinheiten"
 						value={form?.data?.points}
 						errors={form?.errors?.points}
 					/>
