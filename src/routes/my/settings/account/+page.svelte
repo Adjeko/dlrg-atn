@@ -5,9 +5,9 @@
 
 	export let form;
 	export let data;
-	let emailModalOpen;
-	let usernameModalOpen;
-	let loading;
+	let emailModalOpen : any;
+	let usernameModalOpen : any;
+	let loading : any;
 
 	$: emailModalOpen = false;
 	$: usernameModalOpen = false;
@@ -16,7 +16,7 @@
 	const submitUpdateEmail = () => {
 		loading = true;
 		emailModalOpen = true;
-		return async ({ result }) => {
+		return async ({ result } : any) => {
 			switch (result.type) {
 				case 'success':
 					await invalidateAll();
@@ -34,7 +34,7 @@
 	const submitUpdateUsername = () => {
 		loading = true;
 		usernameModalOpen = true;
-		return async ({ result }) => {
+		return async ({ result } : any) => {
 			switch (result.type) {
 				case 'success':
 					await invalidateAll();
@@ -52,34 +52,34 @@
 
 <div class="flex flex-col w-full h-full space-y-12">
 	<div class="w-full">
-		<h3 class="text-2xl font-medium">Change Email</h3>
+		<h3 class="text-2xl font-medium">Email ändern</h3>
 		<div class="divider" />
 		<Modal label="change-email" checked={emailModalOpen}>
-			<span slot="trigger" class="btn btn-primary">Change Email</span>
-			<h3 slot="heading">Change Your Email</h3>
+			<span slot="trigger" class="btn btn-primary">Email ändern</span>
+			<h3 slot="heading">Email ändern</h3>
 			<form action="?/updateEmail" method="POST" class="space-y-2" use:enhance={submitUpdateEmail}>
 				<Input
 					id="email"
 					type="email"
-					label="Enter your new email address"
+					label="Gib deine neue Email Addresse ein."
 					required={true}
 					value={form?.data?.email}
 					disabled={loading}
 					errors={form?.errors?.email}
 				/>
 				<button type="submit" class="btn btn-primary w-full" disabled={loading}
-					>Change my email</button
+					>Email ändern</button
 				>
 			</form>
 		</Modal>
 	</div>
 	<div class="w-full">
-		<h3 class="text-2xl font-medium">Change Username</h3>
+		<h3 class="text-2xl font-medium">Benutzernamen ändern</h3>
 		<div class="divider mb-0.5" />
-		<Input id="username" label="Username" value={data?.user?.username} disabled />
+		<Input id="username" label="Username" value={data?.user?.username} disabled errors={undefined}/>
 		<Modal label="change-username" checked={usernameModalOpen}>
-			<span slot="trigger" class="btn btn-primary">Change Username</span>
-			<h3 slot="heading">Change Your Username</h3>
+			<span slot="trigger" class="btn btn-primary">Benutzernamen ändern</span>
+			<h3 slot="heading">Benutzernamen ändern</h3>
 			<form
 				action="?/updateUsername"
 				method="POST"
@@ -89,14 +89,14 @@
 				<Input
 					id="username"
 					type="text"
-					label="Enter your new username"
+					label="Gib deinen neuen Benutzernamen ein"
 					required={true}
 					value={form?.data?.username}
 					errors={form?.errors?.username}
 					disabled={loading}
 				/>
 				<button type="submit" class="btn btn-primary w-full" disabled={loading}
-					>Change my username</button
+					>Benutzernamen ändern</button
 				>
 			</form>
 		</Modal>

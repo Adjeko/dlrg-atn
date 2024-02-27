@@ -10,7 +10,7 @@
 			href: '/my/settings/account'
 		},
 		{
-			title: 'Security',
+			title: 'Sicherheit',
 			href: '/my/settings/security'
 		}
 	];

@@ -59,8 +59,7 @@
 					enctype="multipart/form-data"
 					use:enhance={submitCreateCourse}
 				>
-					<h3 class="text-3xl font-bold">Tell us more about this project</h3>
-					<p class="mt-2 text-lg">We'll need the name, tagline, link, and description</p>
+					<h3 class="text-3xl font-bold">Beschreibe deinen Kurs</h3>
 					<Input id="name" label="Kursname" value={form?.data?.name} errors={form?.errors?.name} />
 					<Input
 						id="points"

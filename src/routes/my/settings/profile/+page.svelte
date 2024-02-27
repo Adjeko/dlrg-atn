@@ -7,10 +7,10 @@
 
 	export let data;
 	export let form;
-	let loading;
+	let loading : any;
 
 	$: loading = false;
-	const showPreview = (event) => {
+	const showPreview = (event : any) => {
 		const target = event.target;
 		const files = target.files;
 
@@ -23,7 +23,7 @@
 
 	const submitUpdateProfile = () => {
 		loading = true;
-		return async ({ result }) => {
+		return async ({ result } : any) => {
 			switch (result.type) {
 				case 'success':
 					await invalidateAll();
@@ -46,16 +46,16 @@
 		enctype="multipart/form-data"
 		use:enhance={submitUpdateProfile}
 	>
-		<h3 class="text-2xl font-medium">Update Profile</h3>
+		<h3 class="text-2xl font-medium">Dein Profil</h3>
 		<div class="form-control w-full max-w-lg">
 			<label for="avatar" class="label font-medium pb-1">
-				<span class="label-text">Profile Picture</span>
+				<span class="label-text">Profilbild</span>
 			</label>
 			<label for="avatar" class="avatar w-32 rounded-full hover:cursor-pointer">
 				<label for="avatar" class="absolute -bottom-0.5 -right-0.5 hover:cursor-pointer">
-					<span class="btn btn-circle btn-sm btn-secondary">
+					<!-- <span class="btn btn-circle btn-sm btn-secondary">
 						<Icon src={Pencil} class="w-4 h-4" />
-					</span>
+					</span> -->
 				</label>
 				<div class="w-32 rounded-full">
 					<img
@@ -67,7 +67,7 @@
 					/>
 				</div>
 			</label>
-			<input
+			<!-- <input
 				type="file"
 				name="avatar"
 				id="avatar"
@@ -85,7 +85,7 @@
 						</span>
 					</label>
 				{/each}
-			{/if}
+			{/if} -->
 		</div>
 		<Input
 			id="name"
@@ -96,7 +96,7 @@
 		/>
 		<div class="w-full max-w-lg pt-3">
 			<button class="btn btn-primary w-full max-w-lg" type="submit" disabled={loading}>
-				Update Profile
+				Profil ändern
 			</button>
 		</div>
 	</form>
