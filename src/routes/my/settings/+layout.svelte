@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+    import { ChevronLeft, Icon } from 'svelte-hero-icons';
 	const navigation = [
 		{
 			title: 'Profil',
@@ -17,7 +18,12 @@
 </script>
 
 <div class="w-full h-full px-2">
-	<h3 class="text-2xl font-medium">Einstellungen</h3>
+	<div class="flex flex-row gap-10">
+		<a href="/my/timeline" >
+			<Icon src="{ChevronLeft}" size="32"/>
+			<h3 class="text-2xl font-medium">Einstellungen</h3>
+		</a>
+	</div>
 	<div class="divider" />
 </div>
 <div class="flex w-full h-full space-x-4">
