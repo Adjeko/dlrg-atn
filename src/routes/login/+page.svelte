@@ -7,7 +7,7 @@
 
 	const submitLogin = () => {
 		loading = true;
-		return async ({ result, update }) => {
+		return async ({ result, update } : any) => {
 			switch (result.type) {
 				case 'success':
 					await update();
@@ -29,12 +29,12 @@
 
 <div class="flex flex-col items-center h-full w-full">
 	<h2 class="mt-2 text-center text-3xl font-bold tracking-tight text-base-content">
-		Login to your account
+		Melde dich mit deinem Konto an
 	</h2>
 	<p class="text-center mt-1">
-		Or <a href="/register" class="text-primary font-medium hover:cursor-pointer hover:underline"
-			>register</a
-		> if you don't already have an account.
+		oder <a href="/register" class="text-primary font-medium hover:cursor-pointer hover:underline"
+			>registriere dich</a
+		> wenn du noch kein Konto hast.
 	</p>
 	<form
 		action="?/login"
@@ -62,12 +62,12 @@
 				href="/reset-password"
 				class="font-medium text-primary hover:cursor-pointer hover:underline"
 			>
-				Forgot Password?</a
+				Passwort vergessen?</a
 			>
 		</div>
 
 		<div class="w-full max-w-lg pt-2">
-			<button type="submit" class="btn btn-primary w-full" disabled={loading}>Login</button>
+			<button type="submit" class="btn btn-primary w-full" disabled={loading}>Anmelden</button>
 		</div>
 		{#if form?.notVerified}
 			<div class="alert alert-error shadow-lg w-full max-w-lg">
@@ -84,7 +84,7 @@
 							d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
 						/></svg
 					>
-					<span>You must verify your email before you can login.</span>
+					<span>Du musst deine Email verifizieren, bevor du dich anmelden kannst.</span>
 				</div>
 			</div>
 		{/if}
