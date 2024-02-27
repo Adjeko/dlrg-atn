@@ -3,5 +3,5 @@
 </script>
 
 <div class="chat chat-start">
-  <div class="chat-bubble chat-bubble-warning">In Entwicklung!</div>
+  <div class="chat-bubble chat-bubble-warning">In der Entwicklung!</div>
 </div>
