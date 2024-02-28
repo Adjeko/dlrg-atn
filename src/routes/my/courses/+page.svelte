@@ -61,6 +61,19 @@
 				>
 					<h3 class="text-3xl font-bold">Beschreibe deinen Kurs</h3>
 					<Input id="name" label="Kursname" value={form?.data?.name} errors={form?.errors?.name} />
+					<label for="category" class="form-control w-full">
+						<div class="label font-medium pb-1">
+							<span class="label-text">Kategorie</span>
+						</div>
+						<select name="category" id="category" class="select {form?.errors?.name ? "select-error" : "select-bordered"}">
+							<option disabled selected>Wähle eine Kategorie!</option>
+							<option>Ausbildung</option>
+							<option>Fortbildung</option>
+							<option>Training</option>
+							<option>Tagung</option>
+							<option>Online</option>
+						</select>
+					</label>
 					<Input
 						id="points"
 						label="Lerneinheiten"

@@ -71,6 +71,8 @@ export const createCourseSchema = z.object({
 		.trim(),
 	creator: z.string(),
 	organizer: z.string(),
+	category: z
+		.enum(["Online", "Ausbildung", "Fortbildung", "Training", "Tagung"], { required_error: 'Wähle eine Kategorie!' })
 })
 
 export const createProjectSchema = z.object({
