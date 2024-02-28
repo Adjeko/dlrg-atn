@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Time from "svelte-time";
   import { CalendarDays, Icon, PencilSquare, Trash } from "svelte-hero-icons";
   import { JsonView } from '@zerodevx/svelte-json-view'
     import CategorieBadge from "./CategorieBadge.svelte";
@@ -22,12 +23,23 @@
       <CategorieBadge category={course.category}/>
     </div>
     <div class="flex-auto">
-      <p>{course.startDate.substring(0,10)}</p>
+      <p>Von</p>
+      <span class="flex flex-row gap-1">
+        <Time datetime={course.startDate} format="D.MM.YY"/>
+        <p>um</p>
+        <Time datetime={course.startDate} format="h:mm"/>
+        <p>Uhr</p>
+      </span>
       <p>bis</p>
-      <p>{course.endDate.substring(0,10)}</p>
+      <span class="flex flex-row gap-1">
+        <Time datetime={course.endDate} format="D.MM.YY"/>
+        <p>um</p>
+        <Time datetime={course.endDate} format="h:mm"/>
+        <p>Uhr</p>
+      </span>
     </div>
     <div class="min-w-0 flex-0 text-l font-bold">
-      <p>{course.points} LP</p>
+      <p>{course.points} LE</p>
     </div>
   </div>
 

@@ -19,7 +19,7 @@
 					break;
 				default:
 					await applyAction(result);
-			}
+			}			
 			
 			modal.close()
 		};
@@ -86,8 +86,8 @@
 						value={form?.data?.description}
 						errors={form?.errors?.description}
 					/>
-					<Input id="startDate" type="date" label="Startdatum" value={form?.data?.startDate} errors={form?.errors?.startDate} />
-					<Input id="endDate" type="date" label="Enddatum" value={form?.data?.endDate} errors={form?.errors?.endDate} />
+					<Input id="startDate" type="datetime-local" label="Startdatum" value={form?.data?.startDate} errors={form?.errors?.startDate} />
+					<Input id="endDate" type="datetime-local" label="Enddatum" value={form?.data?.endDate} errors={form?.errors?.endDate} />
 					<div class="w-full max-w-lg pt-3">
 						<button type="submit" class="btn btn-primary w-full max-w-lg">Kurs erstellen</button>
 					</div>

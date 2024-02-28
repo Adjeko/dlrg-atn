@@ -36,6 +36,8 @@ export const actions = {
 		body.set("points", 3)
 		body.append('creator', locals.user.id);
 		body.append('organizer', locals.user.id);
+		body.set("startDate", new Date(body.get("startDate")).toISOString())
+		body.set("endDate", new Date(body.get("endDate")).toISOString())
 
 		const { formData, errors } = await validateData(body, createCourseSchema);
 		

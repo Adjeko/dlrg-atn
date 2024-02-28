@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Time from "svelte-time";
   import InDevelopment from '$lib/components/InDevelopment.svelte';
   import { JsonView } from '@zerodevx/svelte-json-view'
 	import QR from '@svelte-put/qr/svg/QR.svelte';
@@ -45,11 +46,21 @@
         </div>
         <div class="bg-white px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-3">
           <dt class="text-sm font-medium leading-6 text-gray-900">Startdatum</dt>
-          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{data.course.startDate}</dd>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex flex-row gap-1">
+            <Time datetime={data.course.startDate} format="D.MM.YY"/>
+            <p>um</p>
+            <Time datetime={data.course.startDate} format="h:mm"/>
+            <p>Uhr</p>
+          </dd>
         </div>
         <div class="bg-gray-50 px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-3">
           <dt class="text-sm font-medium leading-6 text-gray-900">Enddatum</dt>
-          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{data.course.endDate}</dd>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex flex-row gap-1">
+            <Time datetime={data.course.endDate} format="D.MM.YY"/>
+            <p>um</p>
+            <Time datetime={data.course.endDate} format="h:mm"/>
+            <p>Uhr</p>
+          </dd>
         </div>
         <div class="bg-white px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-3">
           <dt class="text-sm font-medium leading-6 text-gray-900">Kategorie</dt>

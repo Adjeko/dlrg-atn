@@ -53,15 +53,15 @@
 			/>
 			<Input 
         id="startDate" 
-        type="date" 
+        type="datetime-local" 
         label="Startdatum" 
-        value={form?.data?.startDate ? form?.data?.startDate : data.course.startDate.substring(0,10)} 
+        value={form?.data?.startDate ? new Date(form?.data?.startDate).toISOString().slice(0,16) : new Date(data.course.startDate).toISOString().slice(0,16)} 
         errors={form?.errors?.startDate} />
 			<Input 
         id="endDate" 
-        type="date" 
+        type="datetime-local" 
         label="Enddatum" 
-        value={form?.data?.endDate ? form?.data?.endDate : data.course.endDate.substring(0,10)} 
+        value={form?.data?.endDate ? new Date(form?.data?.endDate).toISOString().slice(0,16) : new Date(data.course.endDate).toISOString().slice(0,16)} 
         errors={form?.errors?.endDate} />
       <input name="creator" type="text" value={data.course.creator} class="hidden"/>
       <input name="organizer" type="text" value={data.course.organizer} class="hidden"/>

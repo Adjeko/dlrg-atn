@@ -1,6 +1,7 @@
 <script lang="ts">
+  import Time from "svelte-time";
   import { Icon, CalendarDays } from 'svelte-hero-icons';
-    import CategorieBadge from './CategorieBadge.svelte';
+  import CategorieBadge from './CategorieBadge.svelte';
 	export let course : any;
 </script>
 
@@ -19,11 +20,22 @@
     <CategorieBadge category={course.expand.course.category}/>
   </div>
   <div class="flex-auto">
-    <p>{course.expand.course.startDate.substring(0,10)}</p>
+    <p>Von</p>
+    <span class="flex flex-row gap-1">
+      <Time datetime={course.expand.course.startDate} format="D.MM.YY"/>
+      <p>um</p>
+      <Time datetime={course.expand.course.startDate} format="h:mm"/>
+      <p>Uhr</p>
+    </span>
     <p>bis</p>
-    <p>{course.expand.course.endDate.substring(0,10)}</p>
+    <span class="flex flex-row gap-1">
+      <Time datetime={course.expand.course.endDate} format="D.MM.YY"/>
+      <p>um</p>
+      <Time datetime={course.expand.course.endDate} format="h:mm"/>
+      <p>Uhr</p>
+    </span>
   </div>
   <div class="min-w-0 flex-0 text-l font-bold">
-    <p>{course.expand.course.points} LP</p>
+    <p>{course.expand.course.points} LE</p>
   </div>
 </div>
