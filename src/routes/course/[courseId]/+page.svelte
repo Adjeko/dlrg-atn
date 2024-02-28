@@ -3,6 +3,7 @@
   import { JsonView } from '@zerodevx/svelte-json-view'
 	import QR from '@svelte-put/qr/svg/QR.svelte';
 	import { ChevronLeft, Icon, PencilSquare, QrCode, Trash, UserCircle } from "svelte-hero-icons";
+    import CategorieBadge from '$lib/components/CategorieBadge.svelte';
 
   export let data : any;
 	let modal : any;
@@ -49,6 +50,12 @@
         <div class="bg-gray-50 px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-3">
           <dt class="text-sm font-medium leading-6 text-gray-900">Enddatum</dt>
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{data.course.endDate}</dd>
+        </div>
+        <div class="bg-white px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-3">
+          <dt class="text-sm font-medium leading-6 text-gray-900">Kategorie</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <CategorieBadge category={data.course.category}/>
+          </dd>
         </div>
         <div class="bg-white px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-3">
           <dt class="text-sm font-medium leading-6 text-gray-900">Lerneinheiten</dt>
