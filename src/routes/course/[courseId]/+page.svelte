@@ -45,20 +45,20 @@
           </dd>
         </div>
         <div class="bg-white px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-3">
-          <dt class="text-sm font-medium leading-6 text-gray-900">Startdatum</dt>
+          <dt class="text-sm font-medium leading-6 text-gray-900">Startdatum {data.course.startDate}</dt>
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex flex-row gap-1">
-            <Time datetime={data.course.startDate} format="D.MM.YY"/>
+            <Time timestamp={data.course.startDate} format="DD.MM.YY"/>
             <p>um</p>
-            <Time datetime={data.course.startDate} format="h:mm"/>
+            <Time timestamp={data.course.startDate} format="hh:mm"/>
             <p>Uhr</p>
           </dd>
         </div>
         <div class="bg-gray-50 px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-3">
           <dt class="text-sm font-medium leading-6 text-gray-900">Enddatum</dt>
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex flex-row gap-1">
-            <Time datetime={data.course.endDate} format="D.MM.YY"/>
+            <Time timestamp={data.course.endDate} format="DD.MM.YY"/>
             <p>um</p>
-            <Time datetime={data.course.endDate} format="h:mm"/>
+            <Time timestamp={data.course.endDate} format="hh:mm"/>
             <p>Uhr</p>
           </dd>
         </div>

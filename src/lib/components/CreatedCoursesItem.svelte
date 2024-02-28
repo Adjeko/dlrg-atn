@@ -25,16 +25,16 @@
     <div class="flex-auto">
       <p>Von</p>
       <span class="flex flex-row gap-1">
-        <Time datetime={course.startDate} format="D.MM.YY"/>
+        <Time timestamp={course.startDate} format="DD.MM.YY"/>
         <p>um</p>
-        <Time datetime={course.startDate} format="h:mm"/>
+        <Time timestamp={course.startDate} format="hh:mm"/>
         <p>Uhr</p>
       </span>
       <p>bis</p>
       <span class="flex flex-row gap-1">
-        <Time datetime={course.endDate} format="D.MM.YY"/>
+        <Time timestamp={course.endDate} format="DD.MM.YY"/>
         <p>um</p>
-        <Time datetime={course.endDate} format="h:mm"/>
+        <Time timestamp={course.endDate} format="hh:mm"/>
         <p>Uhr</p>
       </span>
     </div>
