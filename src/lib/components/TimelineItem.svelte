@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Icon, CalendarDays } from 'svelte-hero-icons';
+    import CategorieBadge from './CategorieBadge.svelte';
 	export let course : any;
 </script>
 
@@ -7,12 +8,15 @@
   <div class="flex-shrink-0">
     <Icon src="{CalendarDays}" size="32" />
   </div>
-  <div class="min-w-0 flex-1">
+  <div class="min-w-0">
     <a href="/course/{course.course}" class="focus:outline-none">
       <span class="absolute inset-0" aria-hidden="true" />
       <p class="text-sm font-medium text-gray-900">{course.expand.course.name}</p>
       <p class="truncate text-sm text-gray-500">{course.expand.course.description}</p>
     </a>
+  </div>
+  <div class="min-w-0 flex-1">
+    <CategorieBadge category={course.expand.course.category}/>
   </div>
   <div class="flex-auto">
     <p>{course.expand.course.startDate.substring(0,10)}</p>

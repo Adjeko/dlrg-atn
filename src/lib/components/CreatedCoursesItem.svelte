@@ -1,6 +1,7 @@
 <script lang="ts">
   import { CalendarDays, Icon, PencilSquare, Trash } from "svelte-hero-icons";
   import { JsonView } from '@zerodevx/svelte-json-view'
+    import CategorieBadge from "./CategorieBadge.svelte";
 	export let course : any;
   export let deleteFormActionPath : any;
 </script>
@@ -10,12 +11,15 @@
     <div class="flex-shrink-0">
       <Icon src="{CalendarDays}" size="32" />
     </div>
-    <div class="min-w-0 flex-1">
+    <div class="min-w-0">
       <a href="/course/{course.id}" class="focus:outline-none">
         <span class="absolute inset-0" aria-hidden="true" />
         <p class="text-sm font-medium text-gray-900">{course.name}</p>
         <p class="truncate text-sm text-gray-500">{course.description}</p>
       </a>
+    </div>
+    <div class="min-w-0 flex-1">
+      <CategorieBadge category={course.category}/>
     </div>
     <div class="flex-auto">
       <p>{course.startDate.substring(0,10)}</p>
