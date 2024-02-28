@@ -1,0 +1,1 @@
+git pull && docker build --no-cache -t adjeko/dlrgtrack . && docker push adjeko/dlrgtrack && docker image rm adjeko/dlrgtrack
