@@ -27,6 +27,18 @@
         label="Kursname" 
         value={form?.data?.name ? form?.data?.name : data.course.name} 
         errors={form?.errors?.name} />
+			<label for="category" class="form-control w-full max-w-lg">
+				<div class="label font-medium pb-1">
+					<span class="label-text">Kategorie</span>
+				</div>
+				<select value={form?.data?.category ? form?.data?.category : data.course.category} name="category" id="category" class="select {form?.errors?.name ? "select-error" : "select-bordered"}">
+					<option value="Ausbildung">Ausbildung</option>
+					<option value="Fortbildung">Fortbildung</option>
+					<option value="Training">Training</option>
+					<option value="Tagung">Tagung</option>
+					<option value="Online">Online</option>
+				</select>
+			</label>
 			<Input
 				id="points"
 				label="Lerneinheiten"
