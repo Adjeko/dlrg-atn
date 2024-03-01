@@ -91,7 +91,7 @@
         <Icon src={UserCircle} size="32"/>
         <div class="min-w-0">
           <p class="text-sm font-semibold leading-6 text-gray-900">{member.expand.user.name}</p>
-          <p class="mt-1 truncate text-xs leading-5 text-gray-500">{member.expand.user.email}</p>
+          <!-- <p class="mt-1 truncate text-xs leading-5 text-gray-500">{member.expand.user.email}</p> -->
         </div>
       </li>
       {/if}      
