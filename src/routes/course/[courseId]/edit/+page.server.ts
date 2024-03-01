@@ -29,6 +29,9 @@ export const actions = {
 	updateCourse: async ({ request, locals, params } : any) => {
 		const body = await request.formData();
 
+		body.set("startDate", new Date(body.get("startDate")).toISOString())
+		body.set("endDate", new Date(body.get("endDate")).toISOString())
+
 		const { formData, errors } = await validateData(body, createCourseSchema);
 
 		if (errors) {

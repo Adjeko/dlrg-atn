@@ -24,14 +24,14 @@
     <span class="flex flex-row gap-1">
       <Time timestamp={course.expand.course.startDate} format="DD.MM.YY"/>
       <p>um</p>
-      <Time timestamp={course.expand.course.startDate} format="hh:mm"/>
+      <Time timestamp={course.expand.course.startDate} format="HH:mm"/>
       <p>Uhr</p>
     </span>
     <p>bis</p>
     <span class="flex flex-row gap-1">
       <Time timestamp={course.expand.course.endDate} format="DD.MM.YY"/>
       <p>um</p>
-      <Time timestamp={course.expand.course.endDate} format="hh:mm"/>
+      <Time timestamp={course.expand.course.endDate} format="HH:mm"/>
       <p>Uhr</p>
     </span>
   </div>

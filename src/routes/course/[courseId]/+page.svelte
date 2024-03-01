@@ -49,7 +49,7 @@
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex flex-row gap-1">
             <Time timestamp={data.course.startDate} format="DD.MM.YY"/>
             <p>um</p>
-            <Time timestamp={data.course.startDate} format="hh:mm"/>
+            <Time timestamp={data.course.startDate} format="HH:mm"/>
             <p>Uhr</p>
           </dd>
         </div>
@@ -58,7 +58,7 @@
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex flex-row gap-1">
             <Time timestamp={data.course.endDate} format="DD.MM.YY"/>
             <p>um</p>
-            <Time timestamp={data.course.endDate} format="hh:mm"/>
+            <Time timestamp={data.course.endDate} format="HH:mm"/>
             <p>Uhr</p>
           </dd>
         </div>
