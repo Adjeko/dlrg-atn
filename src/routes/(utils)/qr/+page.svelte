@@ -1,0 +1,15 @@
+<script lang="ts">
+
+  import QR from '@svelte-put/qr/svg/QR.svelte';
+</script>
+
+
+<div class="size-1/3 print:size-full">
+  <QR
+      data="https://app.dlrgtrack.de/"
+      moduleFill="black"
+      anchorOuterFill="black"
+      anchorInnerFill="black"
+      logo="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAgVBMVEXjBhP/7QD/9QDhABT/8gD/7wDqXhD/8QD/9gDsbg7tcw7xlgzzpgv0ogrsaw770gX93gP3uAjmMhHwiwz0qwr70wTnPRH4wQjymwv/+gD6zQbrZQ/kHRL/6gDpVxDpUBDvhA31sAn82gTueA7oShD5xwf4vwj+5ADugQ3lJhLmNxFojpzrAAADkUlEQVR4nO3ZfVuqMBzGcR42WKSF5hM+pKZl9f5f4KE6IJuMVoLHc13fz5+tH/NWxsbmeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvckiarbIRY8TLwy1un1yo4kaO7m5a3STJHeLaO+FtdXrxY3dR5ml7q9RFrhQKh1NKhcKe3qdemrqZebUiQrGDyelt2n+92/K5HzT0HlP+G6kyHrHFGFfr5P3TQlvHTuRgdxo13k7BNKhLFbp8PyEOTUru+8mYX4d9VypW65ix7rYX7aR0M/Kb6qrhL4v5sevcewaMI/4bPsAP0ooyvv0zISiFJ/chWpXlN0ps03GZZ3ZlE3aSCif2km46o0K23tzpMXFjxi+mDGCdNuffeo/mxnFrI2EvijKzkoo07Bi+KRHlKsiodHgi+Q4ZYXeXI9ovU3NhLLpBvJVMRDPTVhtHQZ6J1mRMNU/QDzQypaZ0BzcEspDcQP1RoODMjN2kjA86N3YEgp9tgxvR5q+pXMjYT4IKqKVEfESCWXsljD/B42t89OE1Us8GPdwNwl9LUk8dk3opjGhFxlDpIuE4YPeidoUDZdIuDdmpJYSVh8K+5Ee8DjjWxPWLl9c1zRGwkknCfOhVhJKa6uu2mwJ+8ZD9EtgW/v/k4QWMg7ih8rq3paw9mrl8L3ehFKm09fqq97PEsrrTrjKHe4H21ni/fY3vPKEn5fIR6cI1KB8ZPzPCaU6Cow2sSoi2hIWOwb6uvSqElbmw+UwGpkRB44z/lSL+MuEHc2H+oy/NX4M4bgubSXh4gJrGu/VfLco+rhAwtAcQJ0kTC6dsLJa35mviE0J61xhQrl6mX55mc7lyVaePeFhUOPlrcuEY/2lyzFhdclY947/Zkmo1ZWK3aF2EsZTPYP+FHRO2My6T1NPnZdwbHzFwazy0rs0thqNZ+QvE9r32jpJeLLXJvznYgDMT/baRm0kFOVeyCUSeknNfmnJbMrW9QF/lrAchpdJaG5RNRGt7Hlnt9Zzi3pnJvQmLucyn+LV+ecWUmTHg5kLJfTeD8H3Rxf5S0l2b8vnen6olEh7w4bzw3rFbGGcHyp983ZnXCqrNm7mQjUeICoVP20fG1ZUk2+OgD8OgaPH/bt5BrxOHOz+3jpD45L6Q+HN7FFrDb3hZL3LJbUHydHpRwMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA69Aeo5lGjaT5TXAAAAABJRU5ErkJggg=="
+    />
+</div>
