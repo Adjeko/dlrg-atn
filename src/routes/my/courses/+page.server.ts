@@ -14,7 +14,8 @@ export async function load ({ locals } : any) {
 			const courses = 
 				await locals.pb.collection('courses').getFullList(undefined, {
 					filter: `creator = "${userId}"`,
-          expand: `parent`
+          expand: `parent`,
+					sort: '-updated',
 				})
 			
 			return courses;
