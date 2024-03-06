@@ -4,7 +4,7 @@
   import { JsonView } from '@zerodevx/svelte-json-view'
 	import QR from '@svelte-put/qr/svg/QR.svelte';
 	import { ChevronLeft, Icon, PencilSquare, QrCode, Trash, UserCircle } from "svelte-hero-icons";
-    import CategorieBadge from '$lib/components/CategorieBadge.svelte';
+  import CategorieBadge from '$lib/components/CategorieBadge.svelte';
 
   export let data : any;
 	let modal : any;
@@ -16,9 +16,11 @@
   </a>
 
   <h2 class="text-3xl font-bold">{data.course.name}</h2>
-  <a href="/course/{data.course.id}/edit" >
-    <Icon src="{PencilSquare}" size="32"/>
-  </a>
+  {#if data.user.role == "organizer" || data.user.role == "admin"}
+    <a href="/course/{data.course.id}/edit" >
+      <Icon src="{PencilSquare}" size="32"/>
+    </a>
+  {/if}
 
   <form action="?/deleteCourse" method="POST">
     <input type="text" name="courseId" value={data.course.id} class="hidden"/>
