@@ -49,8 +49,6 @@ export const actions = {
     }
 
 		form.data.users.forEach(user => {
-			console.log(user)
-
 			locals.pb.collection("users").update(user.id, {role: user.role})
 		});
 
