@@ -32,8 +32,6 @@ export const actions = {
 		const body = await request.formData();
 
 		const courseId = body.get("courseId")
-		console.log(body.get("courseId"))
-		console.log(locals.user.id)
 
 		try{
 			await locals.pb.collection('isMemberOf').getFirstListItem(`user="${locals.user.id}" && course="${courseId}"`)

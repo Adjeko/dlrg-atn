@@ -75,6 +75,9 @@
 <div role="tablist" class="tabs tabs-bordered py-6">
   <a href="/my/timeline" role="tab" class="tab tab-active text-xl">Timeline</a>
   <a href="/my/courses" role="tab" class="tab text-xl">Erstellte Kurse</a>
+	{#if data.user.role == "admin"}
+		<a href="/my/admin" role="tab" class="tab text-xl">Admin</a>
+	{/if}
 </div>
 
 <div class="w-full mt-4 flex flex-col items-start">
