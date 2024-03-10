@@ -41,14 +41,18 @@ export async function load ({ locals } : any) {
 };
 
 export const actions = {
-	default: async ({ request }) => {
+	default: async ({ request, locals }) => {
     const form = await superValidate(request, zod(schema));
 
     if (!form.valid) {
       return fail(400, { form });
     }
 
-    // TODO: Do something with the validated form.data
+		form.data.users.forEach(user => {
+			console.log(user)
+
+			locals.pb.collection("users").update(user.id, {role: user.role})
+		});
 
     return { form: form };
   }
