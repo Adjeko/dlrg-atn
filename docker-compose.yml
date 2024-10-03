@@ -1,24 +1,28 @@
 version: '3'
 services:
-  proxy:
-    image: 'jc21/nginx-proxy-manager:latest'
+  caddy:
+    image: caddy:latest
+    container_name: caddy
     restart: unless-stopped
     ports:
-      - '80:80' # Public HTTP Port
-      - '443:443' # Public HTTPS Port
-      - '81:81' # Admin Web Port
-
+      - 80:80
+      - 443:443
     volumes:
-      - proxy-data:/data
-      - proxy-letsencrypt:/etc/letsencrypt
+      - ./dockervolumes/data:/data
+      - ./dockervolumes/config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    networks:
+      - proxy-network
 
   dlrgweb:
     container_name: dlrgWeb
     image: adjeko/dlrgtrack:latest
     privileged: false
+    restart: unless-stopped
     ports:
       - "3000:3000"
-    # volumes:
+    networks:
+      - proxy-network
   
   pocketbase:
     image: ghcr.io/muchobien/pocketbase:latest
@@ -32,17 +36,16 @@ services:
     ports:
       - "8090:8090"
     volumes:
-      - pocketbase_data:/pb_data
-      - pocketbase_public:/pb_public #optional
+      - /dockervolumes/pocketbase_data:/pb_data
+      - /dockervolumes/pocketbase_public:/pb_public #optional
     healthcheck: #optional (recommended) since v0.10.0
       test: wget --no-verbose --tries=1 --spider http://localhost:8090/api/health || exit 1
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - proxy-network
 
-      
-volumes:
-  proxy-data:
-  proxy-letsencrypt:
-  pocketbase_data:
-  pocketbase_public:
+networks:
+  proxy-network:
+    driver: bridge
