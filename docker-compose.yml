@@ -19,7 +19,9 @@ services:
 
   dlrgweb:
     container_name: dlrgWeb
-    image: adjeko/dlrgtrack:latest
+    #image: adjeko/dlrgtrack:latest
+    build:
+      context: .
     privileged: false
     restart: unless-stopped
     ports:
