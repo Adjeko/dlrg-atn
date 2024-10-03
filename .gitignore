@@ -9,5 +9,13 @@ node_modules
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+#pocketbase log files
+pocketbase/pb_data/logs.db
+pocketbase/pb_data/logs.db-wal
+pocketbase/pb_data/logs.db-shm
+pocketbase/pb_data/data.db-wal
+pocketbase/pb_data/data.db-shm
+
 
 /pocketbase
+dockervolumes
