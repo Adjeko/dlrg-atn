@@ -20,6 +20,6 @@ export const handle = async({event, resolve} : any)=>{
   //in diesem resolve passiert die Serverside Logik
   const response = await resolve(event)
 
-  response.headers.set('set-cookie', event.locals.pb.authStore.exportToCookie({secure: false, domain: '.dlrgatn.de'}))
+  response.headers.set('set-cookie', event.locals.pb.authStore.exportToCookie({secure: false, domain: 'dlrgatn.de'}))
   return response
 }
