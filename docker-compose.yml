@@ -30,8 +30,8 @@ services:
     container_name: pocketbase
     restart: unless-stopped
     command:
-      - --encryptionEnv #optional
-      - ENCRYPTION #optional
+      #- --encryptionEnv #optional
+      #- ENCRYPTION #optional
     environment:
       ENCRYPTION: example #optional
     ports:
