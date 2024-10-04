@@ -6,7 +6,7 @@
 
 <div class="size-1/3 print:size-full">
   <QR
-      data="https://app.dlrgtrack.de/"
+      data="https://dlrgatn.de/"
       moduleFill="black"
       anchorOuterFill="black"
       anchorInnerFill="black"
