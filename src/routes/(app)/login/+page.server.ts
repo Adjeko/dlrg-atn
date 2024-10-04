@@ -28,7 +28,7 @@ export const actions = {
 			}
 		} catch (err : any) {
 			console.log("Error: ", err);
-			throw error(err.status, err.message);
+			throw error(err.status, JSON.stringify(err));
 		}
 
 		throw redirect(303, "/");

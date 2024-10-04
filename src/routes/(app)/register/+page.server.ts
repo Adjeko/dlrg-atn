@@ -15,12 +15,14 @@ export const actions = {
 
 		let username = generateUsername(formData.name.split(' ').join('')).toLowerCase();
 
+		console.log(JSON.stringify({ username, ...formData }))
+
 		try {
 			await locals.pb.collection('users').create({ username, ...formData });
 			await locals.pb.collection('users').requestVerification(formData.email);
 		} catch (err : any) {
-			console.log('Error: ', err);
-			throw error(500, 'Something went wrong');
+			console.log('Error: ', JSON.stringify(err));
+			throw error(500, JSON.stringify(err));
 		}
 
 		throw redirect(303, '/login');
