@@ -1,5 +1,4 @@
 <script lang="ts">
-	import '../app.css';
     import Manifest from "@mnfst/sdk";
 
 	let { children } = $props();
