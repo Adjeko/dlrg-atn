@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Manifest from "@mnfst/sdk";
+	import { goto } from '$app/navigation';
 	import { Button } from "$lib/components/ui/button";
 	import { Input } from "$lib/components/ui/input";
 	import { Label } from "$lib/components/ui/label";
@@ -8,9 +10,9 @@
 	import * as z from "zod";
 
 	const schema = z.object({
-		username: z.string().min(3, "Benutzername muss mindestens 3 Zeichen lang sein"),
+		username: z.string(),
 		email: z.string().email("Ungültige E-Mail-Adresse"),
-		password: z.string().min(8, "Passwort muss mindestens 8 Zeichen lang sein"),
+		password: z.string().min(5, "Passwort muss mindestens 5 Zeichen lang sein"),
 	});
 
 	let username = $state("");
@@ -19,14 +21,16 @@
 	let errors = $state<{ [key: string]: string }>({});
 	let showPassword = $state(false);
 
-	function handleSubmit(event: Event) {
+	async function handleSubmit(event: Event) {
 		event.preventDefault();
 		errors = {};
 		try {
 			schema.parse({ username, email, password });
-			// Hier würde die Anmelde-Logik implementiert werden
-			console.log("Anmeldung erfolgreich", { username, email, password });
+			
+			await signup(email, password, username);
+
 			toast.success("Anmeldung erfolgreich!");
+			goto('/timeline', { replaceState: true });
 		} catch (error) {
 			if (error instanceof z.ZodError) {
 				error.errors.forEach((err) => {
@@ -34,11 +38,19 @@
 				});
 			}
 		}
+
 	}
 
 	function togglePasswordVisibility() {
 		showPassword = !showPassword;
 	}
+
+	async function signup(email : string, password : string, username: string) {
+        const manifest = new Manifest();
+        await manifest.signup('users', email, password);
+		const me = await manifest.from('users').me();
+		await manifest.from('users').update(me.id, { name: username });
+    }
 </script>
 
 <div class="flex min-h-screen items-center justify-center bg-gray-100">
