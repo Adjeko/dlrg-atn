@@ -5,6 +5,8 @@
 	import { Avatar, AvatarImage, AvatarFallback } from "$lib/components/ui/avatar";
 	import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "$lib/components/ui/dropdown-menu";
 	import { Settings, Users, Menu, ChevronLeft, ChevronRight, LogOut, CircleAlert } from "lucide-svelte";;
+    import Manifest from '@mnfst/sdk';
+    import { goto } from '$app/navigation';
 
 	let { children } = $props();
 
@@ -30,6 +32,13 @@
 		{ icon: Users, label: "Users" },
 		{ icon: Settings, label: "Settings" },
 	];
+
+	function logout(event: Event){
+		event.preventDefault();
+		const manifest = new Manifest();
+		manifest.logout();
+		goto('/login', { replaceState: true });
+	}
 </script>
 
 <div class="flex h-screen bg-gray-100">
@@ -97,7 +106,7 @@
 						<Settings class="mr-2 h-4 w-4" />
 						<span>Settings</span>
 					</DropdownMenuItem>
-					<DropdownMenuItem>
+					<DropdownMenuItem onclick={logout}>
 						<LogOut class="mr-2 h-4 w-4" />
 						<span>Log out</span>
 					</DropdownMenuItem>
