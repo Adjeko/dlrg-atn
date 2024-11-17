@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vite dev",
+    "dev": "vite dev --host",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@mnfst/sdk": "^1.0.5",
+    "html5-qrcode": "^2.1.5",
     "lucide-svelte": "^0.460.1",
     "manifest": "^4.0.5",
     "svelte-sonner": "^0.3.28",
