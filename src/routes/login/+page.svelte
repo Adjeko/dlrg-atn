@@ -4,8 +4,10 @@
 	import { Label } from "$lib/components/ui/label";
 	import { Alert, AlertDescription, AlertTitle } from "$lib/components/ui/alert";
 	import { Toaster, toast } from "svelte-sonner";
-	import { User, Mail, Lock, CircleAlert, Eye, EyeOff } from "lucide-svelte";;
+	import { Mail, Lock, CircleAlert, Eye, EyeOff } from "lucide-svelte";;
 	import * as z from "zod";
+    import Manifest from "@mnfst/sdk";
+    import { goto } from "$app/navigation";
 
 	const schema = z.object({
 		email: z.string().email("Ungültige E-Mail-Adresse"),
@@ -17,14 +19,17 @@
 	let errors = $state<{ [key: string]: string }>({});
 	let showPassword = $state(false);
 
-	function handleSubmit(event: Event) {
+	async function handleSubmit(event: Event) {
 		event.preventDefault();
 		errors = {};
 		try {
 			schema.parse({ email, password });
-			// Hier würde die Anmelde-Logik implementiert werden
-			console.log("Anmeldung erfolgreich", { email, password });
+			
+			await login(email, password);
+			
 			toast.success("Anmeldung erfolgreich!");
+
+			goto("/timeline", {	replaceState: true});
 		} catch (error) {
 			if (error instanceof z.ZodError) {
 				error.errors.forEach((err) => {
@@ -37,6 +42,11 @@
 	function togglePasswordVisibility() {
 		showPassword = !showPassword;
 	}
+
+	async function login(email : string, password : string) {
+        const manifest = new Manifest();
+        await manifest.login('users', email, password);
+    }
 </script>
 
 <div class="flex min-h-screen items-center justify-center bg-gray-100">
