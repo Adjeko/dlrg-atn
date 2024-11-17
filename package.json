@@ -26,6 +26,7 @@
     "globals": "^15.0.0",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
+    "svelte-radix": "^2.0.1",
     "svelte-toaster": "^0.0.2",
     "tailwind-merge": "^2.5.4",
     "tailwind-variants": "^0.3.0",
