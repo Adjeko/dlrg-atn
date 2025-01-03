@@ -1,26 +1,22 @@
-<script>
+<script lang="ts">
 // @ts-nocheck
 
 	import { Card, CardContent, CardHeader, CardTitle } from "$lib/components/ui/card";
 	import { Button } from "$lib/components/ui/button";
 	import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "$lib/components/ui/dialog";
-	import { Book, Code, Palette, Stethoscope, Calculator, Calendar, QrCode, Trophy, Star, Tag } from "lucide-svelte";;
+	import { Book, Code, Palette, Stethoscope, Calculator, Calendar, QrCode, Trophy, Star, Tag } from "lucide-svelte";
 	import { Separator } from "$lib/components/ui/separator";
 	import { Badge } from "$lib/components/ui/badge";
 	import { onMount } from "svelte";
+    import { PB } from "@/lib/stores/pocketbase.svelte";
+    import type { Schedule } from "@/lib/types/Schedule";
 
-	let courses = [
-		{ icon: Book, title: "Literature", description: "Explore classic and modern literature", score: 85, startDate: new Date("2023-09-01T09:00:00"), endDate: new Date("2023-09-01T10:30:00"), tags: ["Humanities", "Reading"] },
-		{ icon: Code, title: "Programming", description: "Learn to code with various languages", score: 92, startDate: new Date("2023-09-01T11:30:00"), endDate: new Date("2023-09-01T13:00:00"), tags: ["Computer Science", "Practical"] },
-		{ icon: Palette, title: "Art History", description: "Discover art through the ages", score: 78, startDate: new Date("2023-09-01T14:00:00"), endDate: new Date("2023-09-01T15:30:00"), tags: ["Arts", "History"] },
-		{ icon: Stethoscope, title: "Medical Science", description: "Introduction to human anatomy", score: 88, startDate: new Date("2024-02-15T16:15:00"), endDate: new Date("2024-02-15T17:45:00"), tags: ["Science", "Health"] },
-		{ icon: Calculator, title: "Mathematics", description: "Advanced calculus and algebra", score: 90, startDate: new Date("2024-03-10T18:30:00"), endDate: new Date("2024-03-10T20:00:00"), tags: ["STEM", "Analytical"] },
-	];
+	let courses = $state<Schedule[]>([]);
 
 	// Group courses by year
 	let groupedCourses = $derived(
-		courses.reduce((acc, course) => {
-			const year = course.startDate.getFullYear();
+		courses?.reduce((acc, course) => {
+			const year = course.startDateTime.getFullYear();
 			if (!acc[year]) {
 				acc[year] = [];
 			}
@@ -33,24 +29,27 @@
 	let joinedCourses = $state(3);
 	let totalPoints = $state(265);
 
-	function formatDateRange(start, end) {
-		const dateFormat = { month: "short", day: "numeric", year: "numeric" };
-		const timeFormat = { hour: "numeric", minute: "numeric", hour12: true };
+	function formatDateRange(start : Date, end : Date) {
+		const format = { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric", hour12: false };
 
-		const startDate = start.toLocaleDateString("en-US", dateFormat);
-		const startTime = start.toLocaleTimeString("en-US", timeFormat);
-		const endTime = end.toLocaleTimeString("en-US", timeFormat);
+		const startString = start.toLocaleString("de-DE", format);
+		const endString = end.toLocaleString("de-DE", format);
 
-		return `${startDate} ${startTime} - ${endTime}`;
+		console.log(groupedCourses);
+		return `${startString} - ${endString}`;
 	}
 
 	let videoStream;
 	let qrCodeReader;
 
-	onMount(() => {
-		import("html5-qrcode").then((module) => {
-			qrCodeReader = new module.Html5Qrcode("qr-reader");
-		});
+	onMount(async () => {
+		const user = PB.getCurrentUser();
+		const schedules : Schedule[] = await PB.getTimelineEntries();
+
+		courses = schedules;
+		// import("html5-qrcode").then((module) => {
+		// 	qrCodeReader = new module.Html5Qrcode("qr-reader");
+		// });
 	});
 
 	function startQrScanner() {
@@ -113,44 +112,6 @@
 			</Card>
 		</div>
 
-		<h3 class="text-lg font-semibold mb-4">Available Courses</h3>
-		{#each Object.entries(groupedCourses).sort(([a], [b]) => b - a) as [year, yearCourses]}
-			<div class="mb-4">
-				<h4 class="text-md font-semibold mb-2">{year}</h4>
-				<Separator class="mb-2" />
-				<ul class="space-y-4">
-					{#each yearCourses as course}
-						<li class="flex flex-col p-3 bg-secondary rounded-lg">
-							<div class="flex items-center justify-between">
-								<div class="flex items-center space-x-4">
-									<div class="p-2 bg-primary rounded-full">
-										<course.icon class="w-5 h-5 text-primary-foreground" />
-									</div>
-									<div>
-										<h3 class="font-semibold">{course.title}</h3>
-										<p class="text-sm text-muted-foreground">{course.description}</p>
-										<div class="flex items-center mt-1 text-xs text-muted-foreground">
-											<Calendar class="w-3 h-3 mr-1" />
-											{formatDateRange(course.startDate, course.endDate)}
-										</div>
-									</div>
-								</div>
-								<span class="text-lg font-bold">{course.score}</span>
-							</div>
-							<div class="mt-2 flex flex-wrap gap-2">
-								{#each course.tags as tag}
-									<Badge variant="secondary" class="flex items-center">
-										<Tag class="w-3 h-3 mr-1" />
-										{tag}
-									</Badge>
-								{/each}
-							</div>
-						</li>
-					{/each}
-				</ul>
-			</div>
-		{/each}
-
 		<Dialog>
 			<DialogTrigger>
 				<Button class="mt-4 w-full">
@@ -167,5 +128,47 @@
 				<Button variant="outline" onclick={stopQrScanner}>Stop Scanning</Button>
 			</DialogContent>
 		</Dialog>
+
+		<h3 class="text-lg font-semibold my-4">Available Courses</h3>
+		{#each Object.entries(groupedCourses).sort(([a], [b]) => b - a) as [year, yearCourses]}
+			<div class="mb-4">
+				<h4 class="text-md font-semibold mb-2">{year}</h4>
+				<Separator class="mb-2" />
+				<ul class="space-y-4">
+					{#each yearCourses as schedule}
+						
+						<li class="flex flex-col p-3 bg-secondary rounded-lg">
+							<a href="/course/{schedule.id}">
+								<div class="flex items-center justify-between">
+									<div class="flex items-center space-x-4">
+										<div class="p-2 bg-primary rounded-full">
+											<Code class="w-5 h-5 text-primary-foreground" />
+										</div>
+										<div>
+											<h3 class="font-semibold">{schedule.course.title}</h3>
+											<p class="text-sm text-muted-foreground">{schedule.course.shortDescription}</p>
+											<div class="flex items-center mt-1 text-xs text-muted-foreground">
+												<Calendar class="w-3 h-3 mr-1" />
+												{formatDateRange(schedule.startDateTime, schedule.endDateTime)}
+											</div>
+										</div>
+									</div>
+									<span class="text-lg font-bold">{schedule.score}</span>
+								</div>
+								<div class="mt-2 flex flex-wrap gap-2">
+									{#each schedule.category as category}
+										<Badge variant="secondary" class="flex items-center">
+											<Tag class="w-3 h-3 mr-1" />
+											{category}
+										</Badge>
+									{/each}
+								</div>
+							</a>
+						</li>
+						
+					{/each}
+				</ul>
+			</div>
+		{/each}
 	</CardContent>
 </Card>

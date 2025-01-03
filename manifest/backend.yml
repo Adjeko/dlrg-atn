@@ -1,6 +1,40 @@
-name: My pet app
+name: DLRG ATN
 entities:
-  🧌 User:
+
+  User:
     authenticable: true
+    seedCount: 15
     properties:
       - name
+      - { name: emailValidated, type: boolean }
+      - { name: rol, type: choice, options: { values: [member, organizer, admin] } }
+
+  Course:
+    seedCount: 50
+    properties:
+      - title
+      - description
+      - shortDescription
+      - { name: category, type: choice, options: { values: [Ausbildung, Fortbildung, Training, Tagung, Online ] }}
+    belongsTo:
+      - { name: creator, entity: User, eager: true }
+
+  Appointment:
+    seedCount: 200
+    properties:
+      - location
+      - { name: points, type: number }
+    belongsTo:
+      - { name: course, entity: Course, eager: true }
+    belongsToMany:
+      - { name: attendees, entity: User, eager: true }
+      - { name: organizer, entity: User, eager: true }
+  
+  Day:
+    seedCount: 300
+    properties:
+      - { name: date, type: date }
+      - { name: startTime, type: timestamp } 
+      - { name: endTime, type: timestamp }
+    belongsTo:
+      - { name: appointment, entity: Appointment, eager: true }

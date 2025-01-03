@@ -1,0 +1,24 @@
+Das hier ist eine ToDo Datei, die mit der Extension "Todo+" in VSCode verwaltet wird.
+
+
+Pocketbase Integration:
+    Seeding:
+        User:
+            ☐ Erstelle User Admin
+            ☐ Erstelle User Organizer
+            ☐ Erstelle 10 User Member
+        Course:
+            ☐ Erstelle 30 Kurse
+        Termin:
+            ☐ Erstelle 5 Termine pro Kurs
+            ☐ Joine 5 Teilnehmer pro Termin
+            ☐ Lege 2 Organizer pro Termin an
+
+
+
+Seiten Integrationen:
+
+
+Archive:
+
+

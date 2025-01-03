@@ -21,4 +21,5 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 public
-manifest/backend.db
+
+/pocketbase

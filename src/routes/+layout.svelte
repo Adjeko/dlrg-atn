@@ -5,8 +5,8 @@
 	import { Avatar, AvatarImage, AvatarFallback } from "$lib/components/ui/avatar";
 	import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "$lib/components/ui/dropdown-menu";
 	import { Settings, Users, Menu, ChevronLeft, ChevronRight, LogOut, CircleAlert } from "lucide-svelte";;
-    import Manifest from "@mnfst/sdk";
-    import { goto } from "$app/navigation";
+    import { goto } from "$app/navigation";	
+    import { PB } from "@/lib/stores/pocketbase.svelte";
 
 
 	let { children } = $props();
@@ -28,15 +28,15 @@
 	};
 
 	const navItems = [
-		{ icon: CircleAlert, label: "Dashboard" },
-		{ icon: Users, label: "Users" },
-		{ icon: Settings, label: "Settings" },
+		{ icon: CircleAlert, label: "Dashboard", href: "/timeline" },
+		{ icon: ChevronRight, label: "Meine Kurse", href: "/createdCourses" },
+		{ icon: Users, label: "Users", href: "/admin" },
+		{ icon: Settings, label: "Settings", href: "/settings" },
 	];
 
 	function logout(event: Event){
 		event.preventDefault();
-		const manifest = new Manifest();
-		manifest.logout();
+		PB.instance.authStore.clear();
 		goto('/login', { replaceState: true });
 	}
 </script>
@@ -53,7 +53,7 @@
 				<SheetContent side="left" class="w-[250px] sm:w-[300px]">
 					<nav class="flex flex-col gap-4">
 						{#each navItems as item}
-							<Button variant="ghost" class="justify-start">
+							<Button variant="ghost" class="justify-start" href={item.href}	>
 								<item.icon class="mr-2 h-4 w-4" />
 								{item.label}
 							</Button>
@@ -101,7 +101,7 @@
 					{/if}
 				</Button>
 				{#each navItems as item}
-					<Button variant="ghost" class="justify-start mb-2">
+					<Button variant="ghost" class="justify-start mb-2" href={item.href}>
 						<item.icon class="h-5 w-5" />
 						{#if sidebarExpanded}
 							<span class="ml-4">{item.label}</span>

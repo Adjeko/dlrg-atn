@@ -1,12 +1,12 @@
 <script lang="ts">
-	import Manifest from "@mnfst/sdk";
 	import { goto } from '$app/navigation';
 	import { Button } from "$lib/components/ui/button";
 	import { Input } from "$lib/components/ui/input";
 	import { Label } from "$lib/components/ui/label";
 	import { Alert, AlertDescription, AlertTitle } from "$lib/components/ui/alert";
 	import { Toaster, toast } from "svelte-sonner";
-	import { User, Mail, Lock, CircleAlert, Eye, EyeOff } from "lucide-svelte";;
+	import { User, Mail, Lock, CircleAlert, Eye, EyeOff } from "lucide-svelte";
+    import { PB } from '@/lib/stores/pocketbase.svelte.js';
 	import * as z from "zod";
 
 	const schema = z.object({
@@ -46,10 +46,21 @@
 	}
 
 	async function signup(email : string, password : string, username: string) {
-        const manifest = new Manifest();
-        await manifest.signup('users', email, password);
-		const me = await manifest.from('users').me();
-		await manifest.from('users').update(me.id, { name: username });
+		const data = {
+            "password": password,
+            "passwordConfirm": password,
+            "email": email.toLowerCase(),
+            "emailVisibility": true,
+            // "verified": true,
+            "name": username
+        };
+        try {
+            const record = await PB().collection('users').create(data);
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            }
+        }
     }
 </script>
 

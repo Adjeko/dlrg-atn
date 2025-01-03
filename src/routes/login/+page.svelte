@@ -5,9 +5,9 @@
 	import { Alert, AlertDescription, AlertTitle } from "$lib/components/ui/alert";
 	import { Toaster, toast } from "svelte-sonner";
 	import { Mail, Lock, CircleAlert, Eye, EyeOff } from "lucide-svelte";;
-	import * as z from "zod";
-    import Manifest from "@mnfst/sdk";
+	import * as z from "zod";	
     import { goto } from "$app/navigation";
+    import { PB } from "@/lib/stores/pocketbase.svelte";
 
 	const schema = z.object({
 		email: z.string().email("Ungültige E-Mail-Adresse"),
@@ -44,8 +44,7 @@
 	}
 
 	async function login(email : string, password : string) {
-        const manifest = new Manifest();
-        await manifest.login('users', email, password);
+        const record = await PB.instance.collection('users').authWithPassword(email.toLowerCase(), password);
     }
 </script>
 

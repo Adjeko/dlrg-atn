@@ -1,12 +1,20 @@
 <script lang="ts">
-    import Manifest from "@mnfst/sdk";
+    import { PB } from '@/lib/stores/pocketbase.svelte.js';
 
-	let { children } = $props();
-
+    let { children } = $props();
 
     async function login() {
-        const manifest = new Manifest();
-        await manifest.signup('users', 'herbert@ich.com', 'hp1955')
+        const data = {
+            "password": "12345678",
+            "passwordConfirm": "12345678",
+            "email": "test@example.com",
+            "emailVisibility": true,
+            // "verified": true,
+            "name": "test"
+        };
+
+        const record = PB().collection('users').create(data);
+        
     }
 </script>
 

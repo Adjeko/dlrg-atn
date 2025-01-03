@@ -9,8 +9,8 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "eslint .",
-    "manifest": "node node_modules/manifest/scripts/watch/watch.js",
-    "manifest:seed": "node node_modules/manifest/dist/manifest/src/seed/scripts/seed.js"
+    "pocketbase": ".\\pocketbase\\pocketbase.exe serve",
+    "seed-pocketbase": "node scripts\\seed-pocketbase.js"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^3.0.0",
@@ -36,10 +36,10 @@
     "vite": "^5.0.3"
   },
   "dependencies": {
-    "@mnfst/sdk": "^1.0.5",
     "html5-qrcode": "^2.1.5",
     "lucide-svelte": "^0.460.1",
     "manifest": "^4.0.5",
+    "pocketbase": "^0.22.0",
     "svelte-sonner": "^0.3.28",
     "zod": "^3.23.8"
   }
