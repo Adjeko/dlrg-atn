@@ -30,12 +30,11 @@
 	let totalPoints = $state(265);
 
 	function formatDateRange(start : Date, end : Date) {
-		const format = { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric", hour12: false };
+		const format = { month: "short", day: "numeric", hour: "numeric", minute: "numeric", hour12: false };
 
 		const startString = start.toLocaleString("de-DE", format);
 		const endString = end.toLocaleString("de-DE", format);
 
-		console.log(groupedCourses);
 		return `${startString} - ${endString}`;
 	}
 

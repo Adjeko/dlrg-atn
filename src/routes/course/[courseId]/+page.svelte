@@ -1,6 +1,7 @@
 <script>
 // @ts-nocheck
 
+	import { page } from '$app/stores';
 	import { onMount } from "svelte";
 	import { Button } from "$lib/components/ui/button";
 	import { Input } from "$lib/components/ui/input";
@@ -11,18 +12,9 @@
 	import { CircleAlert, Save } from "lucide-svelte";;
 	import { Alert, AlertDescription, AlertTitle } from "$lib/components/ui/alert";
 	import { toast } from "svelte-sonner";
+    import { PB } from "@/lib/stores/pocketbase.svelte";
 
-	let course = $state({
-		id: 1,
-		title: "Einführung in die Programmierung",
-		description: "Ein umfassender Kurs für Anfänger in der Welt des Programmierens.",
-		instructor: "Max Mustermann",
-		duration: "8 Wochen",
-		level: "Anfänger",
-		price: 99.99,
-		enrolledStudents: 250,
-		rating: 4.7,
-	});
+	let course = $state({});
 
 	let isEditing = $state(false);
 	let editedCourse = $state({});
@@ -42,7 +34,9 @@
 		toast.success("Kurs erfolgreich aktualisiert");
 	}
 
-	$effect(() => {
+	$effect(async () => {
+		const loadedCourse = await PB.getCourse($page.params.courseId);
+		course = loadedCourse;
 		if (isEditing) {
 			console.log("Bearbeitungsmodus aktiviert");
 		}
@@ -51,18 +45,18 @@
 
 <Card class="max-w-3xl mx-auto mt-8">
 	<CardHeader>
-		<CardTitle>{course.title}</CardTitle>
-		<CardDescription>{course.description}</CardDescription>
+		<CardTitle>{course?.course?.title}</CardTitle>
+		<CardDescription>{course?.course?.description}</CardDescription>
 	</CardHeader>
 	<CardContent>
 		{#if !isEditing}
 			<div class="space-y-4">
 				<div>
 					<strong>Kursleiter:</strong>
-					{course.instructor}
+					{course?.course?.creator?.name} : {course?.course?.creator?.email}
 				</div>
 				<div>
-					<strong>Dauer:</strong>
+					<strong>Termin:</strong>
 					{course.duration}
 				</div>
 				<div>
@@ -74,12 +68,8 @@
 					€{course.price}
 				</div>
 				<div>
-					<strong>Eingeschriebene Studenten:</strong>
+					<strong>Teilnehmer:</strong>
 					{course.enrolledStudents}
-				</div>
-				<div>
-					<strong>Bewertung:</strong>
-					{course.rating} / 5
 				</div>
 			</div>
 		{:else}

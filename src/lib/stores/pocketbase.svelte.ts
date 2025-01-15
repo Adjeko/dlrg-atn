@@ -11,6 +11,14 @@ export class PocketBaseStore {
         return user;
     }
 
+    async getCourse(id : string) : Promise<Schedule | undefined> {
+        const schedule = await this.instance.collection("schedule").getOne(id, {
+            expand: 'course, course.creator, days, attendees, organizers',
+        });
+
+        return toSchedule(schedule);
+    }
+
     async getTimelineEntries() : Promise<Schedule[]> {
         const user = this.getCurrentUser();
         const schedulesFromServer = await this.instance.collection("schedule").getFullList({
