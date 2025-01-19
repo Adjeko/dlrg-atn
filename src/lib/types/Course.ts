@@ -44,3 +44,23 @@ export function toCourse(object: any): Course | null {
         return null;
     }
 }
+
+//used to return something instead of undefined or null
+export const emptyCourse: Course = {
+    id: "",
+    title: "",
+    description: "",
+    shortDescription: "",
+    category: "Online",
+    creator: {
+        id: "",
+        email: "",
+        emailVisibility: false,
+        verified: false,
+        name: "",
+        created: new Date(),
+        updated: new Date(),
+    },
+    created: new Date(),
+    updated: new Date(),
+}

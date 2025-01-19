@@ -50,3 +50,34 @@ export function toSchedule(object: any): Schedule | undefined{
         console.error("Validation failed:", error);
     }
 }
+
+//used to return something instead of undefined or null
+export const emptySchedule: Schedule = {
+    id: "",
+    location: "",
+    points: 0,
+    participants: [],
+    organizers: [],
+    course: {
+        id: "",
+        title: "",
+        description: "",
+        shortDescription: "",
+        creator: {
+            id: "",
+            email: "",
+            emailVisibility: false,
+            verified: false,
+            name: "",
+            created: new Date(),
+            updated: new Date(),
+        },
+        category: "Online",
+        created: new Date(),
+        updated: new Date(),
+    },
+    startDateTime: new Date(),
+    endDateTime: new Date(),
+    created: new Date(),
+    updated: new Date(),
+};

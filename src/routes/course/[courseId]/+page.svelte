@@ -1,133 +1,349 @@
-<script>
-// @ts-nocheck
-
-	import { page } from '$app/stores';
-	import { onMount } from "svelte";
+<script lang="ts">
+	import { page } from '$app/stores'
+	import { fade, slide } from "svelte/transition";
 	import { Button } from "$lib/components/ui/button";
+	import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "$lib/components/ui/card";
 	import { Input } from "$lib/components/ui/input";
-	import { Textarea } from "$lib/components/ui/textarea";
 	import { Label } from "$lib/components/ui/label";
-	import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "$lib/components/ui/card";
-	import { Separator } from "$lib/components/ui/separator";
-	import { CircleAlert, Save } from "lucide-svelte";;
-	import { Alert, AlertDescription, AlertTitle } from "$lib/components/ui/alert";
-	import { toast } from "svelte-sonner";
+	import { Textarea } from "$lib/components/ui/textarea";
+	import { Avatar, AvatarFallback, AvatarImage } from "$lib/components/ui/avatar";
+	import { Calendar, Clock, Users, UserCircle, Trash2, Plus } from "lucide-svelte";
+	import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "$lib/components/ui/select";
+    import { onMount } from "svelte";
     import { PB } from "@/lib/stores/pocketbase.svelte";
+    import { emptySchedule, type Schedule } from '@/lib/types/Schedule';
 
-	let course = $state({});
-
-	let isEditing = $state(false);
-	let editedCourse = $state({});
-
-	function startEditing() {
-		editedCourse = { ...course };
-		isEditing = true;
-	}
-
-	function cancelEditing() {
-		isEditing = false;
-	}
-
-	function saveCourse() {
-		course = { ...editedCourse };
-		isEditing = false;
-		toast.success("Kurs erfolgreich aktualisiert");
-	}
-
-	$effect(async () => {
-		const loadedCourse = await PB.getCourse($page.params.courseId);
-		course = loadedCourse;
-		if (isEditing) {
-			console.log("Bearbeitungsmodus aktiviert");
-		}
+	// Course data passed as prop
+	let course = $state({
+		id: "1",
+		title: "Einführung in die Webentwicklung",
+		shortDescription: "Grundlagen der modernen Webentwicklung",
+		description: "In diesem Kurs lernen Sie die Grundlagen der Webentwicklung kennen. Wir behandeln HTML, CSS und JavaScript.",
+		startDate: "2024-02-01T09:00",
+		endDate: "2024-05-30T17:00",
+		score: 100,
+		creator: {
+			id: "1",
+			name: "Dr. Schmidt",
+			avatar: "$assets/ui-user.png",
+		},
+		organizers: [
+			{ id: "2", name: "Anna Meyer", avatar: "$assets/ui-user.png" },
+			{ id: "3", name: "Max Weber", avatar: "$assets/ui-user.png" },
+		],
+		participants: [
+			{ id: "4", name: "Lisa Müller", avatar: "$assets/ui-user.png" },
+			{ id: "5", name: "Tom Fischer", avatar: "$assets/ui-user.png" },
+			{ id: "6", name: "Sarah Koch", avatar: "$assets/ui-user.png" },
+		],
 	});
+
+    const availableOrganizers = [
+	{
+		id: "org1",
+		name: "Julia Wagner",
+		avatar: "$assets/ui-user.png",
+	},
+	{
+		id: "org2",
+		name: "Michael Bauer",
+		avatar: "$assets/ui-user.png",
+	},
+	{
+		id: "org3",
+		name: "Sophie Klein",
+		avatar: "$assets/ui-user.png",
+	},
+	{
+		id: "org4",
+		name: "David Hoffmann",
+		avatar: "$assets/ui-user.png",
+	},
+	{
+		id: "org5",
+		name: "Emma Schneider",
+		avatar: "$assets/ui-user.png",
+	},
+    ];
+    let courses = $state<Schedule>(emptySchedule);
+
+	// Edit mode state
+	let isEditing: boolean = $state(false);
+
+	// New organizer states
+	let showAddOrganizer: boolean = $state(false);
+	let selectedOrganizerId: any = $state("");
+
+	// Temporary states for editing
+	let editedTitle: string = $state("");
+	let editedShortDesc: string = $state("");
+	let editedDesc: string = $state("");
+	let editedStartDate: string = $state("");
+	let editedEndDate: string = $state("");
+	let editedScore: number = $state(0);
+
+	onMount(async () => {
+		const course = await PB.getCourse($page.params.courseId);
+
+		courses = course
+	});
+
+	/** Initialize edit form */
+	const startEditing = () => {
+		editedTitle = courses?.course.title ?? "";
+		editedShortDesc = courses?.course.shortDescription ?? "";
+		editedDesc = courses?.course.description ?? "";
+		editedStartDate = courses?.startDateTime.toISOString().slice(0, 16) ?? "";
+		editedEndDate = courses?.endDateTime.toISOString().slice(0, 16) ?? "";
+		editedScore = courses?.points ?? 0;
+		isEditing = true;
+	};
+
+	/** Save edited course data */
+	const saveChanges = async () => {
+		
+		const updatedCourse = {
+			title: editedTitle,
+			shortdescription: editedShortDesc,
+			description: editedDesc
+		}
+		const updatedSchedule = {
+			startDateTime: new Date(editedStartDate),
+			endDateTime: new Date(editedEndDate),
+			points: editedScore
+		}
+
+		const returnedSchedule = await PB.instance.collection("schedule").update(courses.id, updatedSchedule);
+		const returnedCourse = await PB.instance.collection("course").update(courses?.course.id ?? "", updatedCourse);
+
+		console.log("Updated course:", returnedCourse);
+		console.log("Updated schedule:", returnedSchedule);
+
+		courses.course.title = returnedCourse.title;
+		courses.course.shortDescription = returnedCourse.shortdescription;
+		courses.course.description = returnedCourse.description;
+		courses.startDateTime = returnedSchedule.startDateTime;
+		courses.endDateTime = returnedSchedule.endDateTime;
+		courses.points = returnedSchedule.points;
+
+		isEditing = false;
+	};
+
+	/** Remove participant from course */
+	const removeParticipant = (userId: string) => {
+		course.participants = course.participants.filter((p) => p.id !== userId);
+	};
+
+	/** Remove organizer from course */
+	const removeOrganizer = (userId: string) => {
+		course.organizers = course.organizers.filter((o) => o.id !== userId);
+	};
+
+	/** Add new organizer */
+	const addOrganizer = () => {
+		if (selectedOrganizerId) {
+            const organizer = availableOrganizers.find((o) => o.id === selectedOrganizerId.value);
+            if (organizer && !course.organizers.some((o) => o.id === organizer.id)) {
+                console.log("HI")
+				course.organizers = [...course.organizers, organizer];
+			}
+			selectedOrganizerId = "";
+			showAddOrganizer = false;
+		}
+	};
+
+	/** Format date to local string */
+	const formatDate = (dateString: string) => {
+		return new Date(dateString).toLocaleString("de-DE", {
+			dateStyle: "medium",
+			timeStyle: "short",
+		});
+	};
 </script>
 
-<Card class="max-w-3xl mx-auto mt-8">
+<Card class="w-full">
 	<CardHeader>
-		<CardTitle>{course?.course?.title}</CardTitle>
-		<CardDescription>{course?.course?.description}</CardDescription>
+		<CardTitle class="flex items-center justify-between">
+			{#if !isEditing}
+				<h1 class="text-2xl font-bold">{courses?.course.title}</h1>
+				<Button onclick={startEditing} variant="outline">Bearbeiten</Button>
+			{:else}
+				<h1 class="text-2xl font-bold">Kurs bearbeiten</h1>
+				<div class="space-x-2">
+					<Button onclick={() => (isEditing = false)} variant="outline">Abbrechen</Button>
+					<Button onclick={saveChanges}>Speichern</Button>
+				</div>
+			{/if}
+		</CardTitle>
 	</CardHeader>
-	<CardContent>
-		{#if !isEditing}
-			<div class="space-y-4">
-				<div>
-					<strong>Kursleiter:</strong>
-					{course?.course?.creator?.name} : {course?.course?.creator?.email}
+
+	<CardContent class="space-y-6">
+		{#if isEditing}
+			<div class="space-y-4" transition:fade>
+				<div class="space-y-2">
+					<Label for="title">Titel</Label>
+					<Input id="title" bind:value={editedTitle} />
 				</div>
-				<div>
-					<strong>Termin:</strong>
-					{course.duration}
+
+				<div class="space-y-2">
+					<Label for="shortDesc">Kurzbeschreibung</Label>
+					<Input id="shortDesc" bind:value={editedShortDesc} />
 				</div>
-				<div>
-					<strong>Niveau:</strong>
-					{course.level}
+
+				<div class="space-y-2">
+					<Label for="desc">Beschreibung</Label>
+					<Textarea id="desc" bind:value={editedDesc} />
 				</div>
-				<div>
-					<strong>Preis:</strong>
-					€{course.price}
+
+				<div class="grid gap-4 md:grid-cols-2">
+					<div class="space-y-2">
+						<Label for="startDate">Startdatum</Label>
+						<Input id="startDate" type="datetime-local" bind:value={editedStartDate} />
+					</div>
+
+					<div class="space-y-2">
+						<Label for="endDate">Enddatum</Label>
+						<Input id="endDate" type="datetime-local" bind:value={editedEndDate} />
+					</div>
 				</div>
-				<div>
-					<strong>Teilnehmer:</strong>
-					{course.enrolledStudents}
+
+				<div class="space-y-2">
+					<Label for="score">Punktzahl</Label>
+					<Input id="score" type="number" bind:value={editedScore} />
 				</div>
 			</div>
 		{:else}
-			<form class="space-y-4">
-				<div>
-					<Label for="title">Titel</Label>
-					<Input id="title" bind:value={editedCourse.title} />
+			<div class="space-y-6" transition:fade>
+				<!-- Course Info -->
+				<div class="space-y-2">
+					<p class="text-lg font-medium">{courses?.course.shortDescription}</p>
+					<p class="text-muted-foreground">{courses?.course.description}</p>
 				</div>
-				<div>
-					<Label for="description">Beschreibung</Label>
-					<Textarea id="description" bind:value={editedCourse.description} />
+
+				<!-- Dates -->
+				<div class="grid gap-4 md:grid-cols-2">
+					<div class="flex items-center gap-2">
+						<Calendar class="h-5 w-5 text-muted-foreground" />
+						<div>
+							<p class="font-medium">Startdatum</p>
+							<p class="text-sm text-muted-foreground">{formatDate(courses?.startDateTime.toString()?? "")}</p>
+						</div>
+					</div>
+					<div class="flex items-center gap-2">
+						<Clock class="h-5 w-5 text-muted-foreground" />
+						<div>
+							<p class="font-medium">Enddatum</p>
+							<p class="text-sm text-muted-foreground">{formatDate(courses?.endDateTime.toString() ?? "")}</p>
+						</div>
+					</div>
 				</div>
-				<div>
-					<Label for="instructor">Kursleiter</Label>
-					<Input id="instructor" bind:value={editedCourse.instructor} />
+
+				<!-- Score -->
+				<div class="flex items-center gap-2">
+					<p class="font-medium">Bewertung:</p>
+					<span class="rounded-full bg-primary/10 px-2 py-1 text-sm font-medium text-primary">
+						{courses?.points} LE
+					</span>
 				</div>
-				<div>
-					<Label for="duration">Dauer</Label>
-					<Input id="duration" bind:value={editedCourse.duration} />
+
+				<!-- Creator -->
+				<div class="space-y-2">
+					<h2 class="flex items-center gap-2 text-lg font-semibold">
+						<UserCircle class="h-5 w-5" />
+						Ersteller
+					</h2>
+					<div class="flex items-center gap-2">
+						<Avatar>
+							<AvatarImage src={course.creator.avatar} alt={course.creator.name} />
+							<AvatarFallback>{courses?.course.creator.name[0]}</AvatarFallback>
+						</Avatar>
+						<span>{courses?.course.creator.name}</span>
+					</div>
 				</div>
-				<div>
-					<Label for="level">Niveau</Label>
-					<Input id="level" bind:value={editedCourse.level} />
+
+				<!-- Organizers -->
+				<div class="space-y-4">
+					<div class="flex items-center justify-between">
+						<h2 class="flex items-center gap-2 text-lg font-semibold">
+							<Users class="h-5 w-5" />
+							Organisatoren
+						</h2>
+						<Button variant="outline" size="sm" onclick={() => (showAddOrganizer = true)}>
+							<Plus class="mr-2 h-4 w-4" />
+							Organisator hinzufügen
+						</Button>
+					</div>
+
+					{#if showAddOrganizer}
+						<div class="flex items-center gap-2" transition:slide>
+							<Select bind:selected={selectedOrganizerId}>
+								<SelectTrigger class="max-w-xs">
+									<SelectValue placeholder="Organisator auswählen" />
+								</SelectTrigger>
+								<SelectContent>
+									{#each courses?.organizers?? [] as organizer}
+										{#if !course.organizers.some((o) => o.id === organizer.id)}
+											<SelectItem value={organizer.id}>{organizer.name}</SelectItem>
+										{/if}
+									{/each}
+								</SelectContent>
+							</Select>
+							<Button onclick={addOrganizer} size="sm">Hinzufügen</Button>
+							<Button
+								variant="outline"
+								size="sm"
+								onclick={() => {
+									showAddOrganizer = false;
+									selectedOrganizerId = "";
+								}}
+							>
+								Abbrechen
+							</Button>
+						</div>
+					{/if}
+
+					<div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+						{#each courses?.organizers?? [] as organizer}
+							<div class="flex items-center justify-between gap-2 rounded-lg border p-2" transition:slide>
+								<div class="flex items-center gap-2">
+									<Avatar>
+										<AvatarImage src={organizer.name} alt={organizer.name} />
+										<AvatarFallback>{organizer.name[0]}</AvatarFallback>
+									</Avatar>
+									<span>{organizer.name}</span>
+								</div>
+								<Button variant="ghost" size="icon" onclick={() => removeOrganizer(organizer.id)}>
+									<Trash2 class="h-4 w-4 text-destructive" />
+								</Button>
+							</div>
+						{/each}
+					</div>
 				</div>
-				<div>
-					<Label for="price">Preis</Label>
-					<Input id="price" type="number" step="0.01" bind:value={editedCourse.price} />
+
+				<!-- Participants -->
+				<div class="space-y-2">
+					<h2 class="flex items-center gap-2 text-lg font-semibold">
+						<Users class="h-5 w-5" />
+						Teilnehmer
+					</h2>
+					<div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+						{#each courses?.participants?? [] as participant}
+							<div class="flex items-center justify-between gap-2 rounded-lg border p-2" transition:slide>
+								<div class="flex items-center gap-2">
+									<Avatar>
+										<AvatarImage src={participant.name} alt={participant.name} />
+										<AvatarFallback>{participant.name[0]}</AvatarFallback>
+									</Avatar>
+									<span>{participant.name}</span>
+								</div>
+								<Button variant="ghost" size="icon" onclick={() => removeParticipant(participant.id)}>
+									<Trash2 class="h-4 w-4 text-destructive" />
+								</Button>
+							</div>
+						{/each}
+					</div>
 				</div>
-				<div>
-					<Label for="enrolledStudents">Eingeschriebene Studenten</Label>
-					<Input id="enrolledStudents" type="number" bind:value={editedCourse.enrolledStudents} />
-				</div>
-				<div>
-					<Label for="rating">Bewertung</Label>
-					<Input id="rating" type="number" step="0.1" min="0" max="5" bind:value={editedCourse.rating} />
-				</div>
-			</form>
+			</div>
 		{/if}
 	</CardContent>
-	<Separator />
-	<CardFooter class="flex justify-between">
-		{#if !isEditing}
-			<Button onclick={startEditing}>
-				<CircleAlert class="mr-2 h-4 w-4" />
-				Bearbeiten
-			</Button>
-		{:else}
-			<Button variant="outline" onclick={cancelEditing}>Abbrechen</Button>
-			<Button onclick={saveCourse}>
-				<Save class="mr-2 h-4 w-4" />
-				Speichern
-			</Button>
-		{/if}
-	</CardFooter>
 </Card>
-
-<Alert class="max-w-3xl mx-auto mt-4">
-	<CircleAlert class="h-4 w-4" />
-	<AlertTitle>Hinweis</AlertTitle>
-	<AlertDescription>Änderungen an diesem Kurs werden sofort für alle Studenten sichtbar sein.</AlertDescription>
-</Alert>

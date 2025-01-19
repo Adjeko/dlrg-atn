@@ -1,7 +1,7 @@
 // src/lib/stores/pocketbase.js
 import PocketBase from 'pocketbase';
 import { toUser, type User } from '../types/User';
-import { toSchedule, type Schedule } from '../types/Schedule';
+import { emptySchedule, toSchedule, type Schedule } from '../types/Schedule';
 
 export class PocketBaseStore {
     instance: PocketBase = new PocketBase('http://127.0.0.1:8090');;
@@ -11,12 +11,12 @@ export class PocketBaseStore {
         return user;
     }
 
-    async getCourse(id : string) : Promise<Schedule | undefined> {
+    async getCourse(id : string) : Promise<Schedule> {
         const schedule = await this.instance.collection("schedule").getOne(id, {
             expand: 'course, course.creator, days, attendees, organizers',
         });
 
-        return toSchedule(schedule);
+        return toSchedule(schedule) ?? emptySchedule;
     }
 
     async getTimelineEntries() : Promise<Schedule[]> {

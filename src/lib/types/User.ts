@@ -31,3 +31,14 @@ export function toUser(object : any) : User | null {
         return null;
       }
 }
+
+//used to return something instead of undefined or null
+export const emptyUser: User = {
+    id: "",
+    email: "",
+    emailVisibility: false,
+    verified: false,
+    name: "",
+    created: new Date(),
+    updated: new Date(),
+  };
