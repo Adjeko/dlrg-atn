@@ -20,8 +20,8 @@ export const ScheduleSchema = z.object({
         message: "Invalid updated date format",
     }),
     expand: z.object({
-        attendees: z.array(UserSchema),
-        organizers: z.array(UserSchema),
+        attendees: z.array(UserSchema).optional(),
+        organizers: z.array(UserSchema).optional(),
         course: CourseSchema,
     }),
 })

@@ -12,59 +12,9 @@
     import { onMount } from "svelte";
     import { PB } from "@/lib/stores/pocketbase.svelte";
     import { emptySchedule, type Schedule } from '@/lib/types/Schedule';
+    import type { User } from '@/lib/types/User';
 
-	// Course data passed as prop
-	let course = $state({
-		id: "1",
-		title: "Einführung in die Webentwicklung",
-		shortDescription: "Grundlagen der modernen Webentwicklung",
-		description: "In diesem Kurs lernen Sie die Grundlagen der Webentwicklung kennen. Wir behandeln HTML, CSS und JavaScript.",
-		startDate: "2024-02-01T09:00",
-		endDate: "2024-05-30T17:00",
-		score: 100,
-		creator: {
-			id: "1",
-			name: "Dr. Schmidt",
-			avatar: "$assets/ui-user.png",
-		},
-		organizers: [
-			{ id: "2", name: "Anna Meyer", avatar: "$assets/ui-user.png" },
-			{ id: "3", name: "Max Weber", avatar: "$assets/ui-user.png" },
-		],
-		participants: [
-			{ id: "4", name: "Lisa Müller", avatar: "$assets/ui-user.png" },
-			{ id: "5", name: "Tom Fischer", avatar: "$assets/ui-user.png" },
-			{ id: "6", name: "Sarah Koch", avatar: "$assets/ui-user.png" },
-		],
-	});
-
-    const availableOrganizers = [
-	{
-		id: "org1",
-		name: "Julia Wagner",
-		avatar: "$assets/ui-user.png",
-	},
-	{
-		id: "org2",
-		name: "Michael Bauer",
-		avatar: "$assets/ui-user.png",
-	},
-	{
-		id: "org3",
-		name: "Sophie Klein",
-		avatar: "$assets/ui-user.png",
-	},
-	{
-		id: "org4",
-		name: "David Hoffmann",
-		avatar: "$assets/ui-user.png",
-	},
-	{
-		id: "org5",
-		name: "Emma Schneider",
-		avatar: "$assets/ui-user.png",
-	},
-    ];
+    let availableOrganizers = $state<Array<User>>([]);
     let courses = $state<Schedule>(emptySchedule);
 
 	// Edit mode state
@@ -84,8 +34,9 @@
 
 	onMount(async () => {
 		const course = await PB.getCourse($page.params.courseId);
-
 		courses = course
+
+		availableOrganizers = await PB.instance.collection("users").getFullList();
 	});
 
 	/** Initialize edit form */
@@ -131,21 +82,34 @@
 
 	/** Remove participant from course */
 	const removeParticipant = (userId: string) => {
-		course.participants = course.participants.filter((p) => p.id !== userId);
+		courses.participants = courses.participants?.filter((p) => p.id !== userId);
+
+		PB.instance.collection("schedule").update(courses.id, {
+			attendees: courses.participants
+		})
 	};
 
 	/** Remove organizer from course */
 	const removeOrganizer = (userId: string) => {
-		course.organizers = course.organizers.filter((o) => o.id !== userId);
+		courses.organizers = courses.organizers?.filter((o) => o.id !== userId);
+
+		PB.instance.collection("schedule").update(courses.id, {
+			organizers: courses.organizers
+		})
 	};
 
 	/** Add new organizer */
 	const addOrganizer = () => {
 		if (selectedOrganizerId) {
             const organizer = availableOrganizers.find((o) => o.id === selectedOrganizerId.value);
-            if (organizer && !course.organizers.some((o) => o.id === organizer.id)) {
-                console.log("HI")
-				course.organizers = [...course.organizers, organizer];
+            if (organizer && !courses.organizers?.some((o) => o.id === organizer.id)) {
+                
+				courses.organizers = [...courses.organizers?? [], organizer];
+
+				console.log("Updated organizers:", courses.organizers);
+				PB.instance.collection("schedule").update(courses.id, {
+					organizers: courses.organizers.map((o) => o.id)
+				})
 			}
 			selectedOrganizerId = "";
 			showAddOrganizer = false;
@@ -254,7 +218,7 @@
 					</h2>
 					<div class="flex items-center gap-2">
 						<Avatar>
-							<AvatarImage src={course.creator.avatar} alt={course.creator.name} />
+							<AvatarImage src={courses.course.creator.name} alt={courses.course.creator.name} />
 							<AvatarFallback>{courses?.course.creator.name[0]}</AvatarFallback>
 						</Avatar>
 						<span>{courses?.course.creator.name}</span>
@@ -281,8 +245,8 @@
 									<SelectValue placeholder="Organisator auswählen" />
 								</SelectTrigger>
 								<SelectContent>
-									{#each courses?.organizers?? [] as organizer}
-										{#if !course.organizers.some((o) => o.id === organizer.id)}
+									{#each availableOrganizers as organizer}
+										{#if !courses.organizers?.some((o) => o.id === organizer.id)}
 											<SelectItem value={organizer.id}>{organizer.name}</SelectItem>
 										{/if}
 									{/each}
