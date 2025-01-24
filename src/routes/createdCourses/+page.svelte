@@ -12,7 +12,8 @@
 		import { Input } from "$lib/components/ui/input";
 		import { Textarea } from "$lib/components/ui/textarea";
 		import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "$lib/components/ui/select";
-    import { PB } from "@/lib/stores/pocketbase.svelte";
+    	import { PB } from "@/lib/stores/pocketbase.svelte";
+		import AddCourseForm from "./AddCourseForm.svelte";
 	
 		let courses = [
 			{ icon: Book, title: "Literature", description: "Explore classic and modern literature", score: 85, startDate: new Date("2023-09-01T09:00:00"), endDate: new Date("2023-09-01T10:30:00"), tags: ["Humanities", "Reading"] },
@@ -101,47 +102,7 @@
 					</Button>
 				</DialogTrigger>
 				<DialogContent class="sm:max-w-[500px]">
-					<form onsubmit={handleSubmit}>
-						<DialogHeader>
-							<DialogTitle>Neuen Kurs erstellen</DialogTitle>
-						</DialogHeader>
-			
-						<div class="grid gap-4 py-4">
-							<div class="grid gap-2">
-								<Label for="title">Titel</Label>
-								<Input id="title" bind:value={title} placeholder="Kurs Titel eingeben..." required />
-							</div>
-			
-							<div class="grid gap-2">
-								<Label for="shortDescription">Kurzbeschreibung</Label>
-								<Input id="shortDescription" bind:value={shortDescription} placeholder="Kurze Beschreibung eingeben..." required />
-							</div>
-			
-							<div class="grid gap-2">
-								<Label for="description">Beschreibung</Label>
-								<Textarea id="description" bind:value={description} placeholder="Ausführliche Beschreibung eingeben..." required />
-							</div>
-			
-							<div class="grid gap-2">
-								<Label for="category">Kategorie</Label>
-								<Select onValueChange={(value) => (category = value)} required>
-									<SelectTrigger>
-										<SelectValue placeholder="Kategorie auswählen" />
-									</SelectTrigger>
-									<SelectContent>
-										{#each categories as cat}
-											<SelectItem value={cat.value}>{cat.label}</SelectItem>
-										{/each}
-									</SelectContent>
-								</Select>
-							</div>
-						</div>
-			
-						<DialogFooter>
-							<Button type="button" variant="outline" onclick={handleClose}>Abbrechen</Button>
-							<Button type="submit">Erstellen</Button>
-						</DialogFooter>
-					</form>
+					<AddCourseForm />
 				</DialogContent>
 			</Dialog>
 	
