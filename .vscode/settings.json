@@ -1,5 +1,8 @@
 {
   "yaml.schemas": {
     "https://schema.manifest.build/schema.json": "**/manifest/**/*.yml"
-  }
+  },
+  "[svelte]": {
+     "editor.defaultFormatter": "svelte.svelte-vscode"
+   },
 }
