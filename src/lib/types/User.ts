@@ -13,6 +13,7 @@ export const UserSchema = z.object({
   updated: z.string().refine((val) => !isNaN(new Date(val).getTime()), {
     message: "Invalid updated date format",
   }),
+  role: z.enum(["Admin", "Moderator", "Mitglied"]),
 }).transform((data) => ({
     ...data,
     created: new Date(data.created),
@@ -22,13 +23,12 @@ export const UserSchema = z.object({
 // Typ aus dem Schema ableiten
 export type User = z.infer<typeof UserSchema>; // Der Typ wird automatisch abgeleitet
 
-export function toUser(object : any) : User | null {
+export function toUser(object : any) : User | undefined {
     try {
         const user: User = UserSchema.parse(object);
         return user;
       } catch (error) {
         console.error("Validation failed:", error);
-        return null;
       }
 }
 
@@ -39,6 +39,7 @@ export const emptyUser: User = {
     emailVisibility: false,
     verified: false,
     name: "",
+    role: "Mitglied",
     created: new Date(),
     updated: new Date(),
   };

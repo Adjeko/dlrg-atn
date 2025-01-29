@@ -43,6 +43,14 @@ export class PocketBaseStore {
             .filter((schedule): schedule is Schedule => schedule !== undefined);
         return schedules;
     }
+
+    async getAllUsers() : Promise<User[]> {
+        const usersFromServer = await this.instance.collection("users").getFullList();
+        const users: User[] = usersFromServer
+            .map((user): User | undefined => toUser(user))
+            .filter((user): user is User => user !== undefined);
+        return users;
+    }
 }
 
 export const PB = new PocketBaseStore();

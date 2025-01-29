@@ -48,53 +48,6 @@
 	let dialogIsOpen = $state(false);
 
 	let courses = $state<Schedule[]>([]);
-	// [
-	// 	{
-	// 		icon: Book,
-	// 		title: "Literature",
-	// 		description: "Explore classic and modern literature",
-	// 		score: 85,
-	// 		startDate: new Date("2023-09-01T09:00:00"),
-	// 		endDate: new Date("2023-09-01T10:30:00"),
-	// 		tags: ["Humanities", "Reading"],
-	// 	},
-	// 	{
-	// 		icon: Code,
-	// 		title: "Programming",
-	// 		description: "Learn to code with various languages",
-	// 		score: 92,
-	// 		startDate: new Date("2023-09-01T11:30:00"),
-	// 		endDate: new Date("2023-09-01T13:00:00"),
-	// 		tags: ["Computer Science", "Practical"],
-	// 	},
-	// 	{
-	// 		icon: Palette,
-	// 		title: "Art History",
-	// 		description: "Discover art through the ages",
-	// 		score: 78,
-	// 		startDate: new Date("2023-09-01T14:00:00"),
-	// 		endDate: new Date("2023-09-01T15:30:00"),
-	// 		tags: ["Arts", "History"],
-	// 	},
-	// 	{
-	// 		icon: Stethoscope,
-	// 		title: "Medical Science",
-	// 		description: "Introduction to human anatomy",
-	// 		score: 88,
-	// 		startDate: new Date("2024-02-15T16:15:00"),
-	// 		endDate: new Date("2024-02-15T17:45:00"),
-	// 		tags: ["Science", "Health"],
-	// 	},
-	// 	{
-	// 		icon: Calculator,
-	// 		title: "Mathematics",
-	// 		description: "Advanced calculus and algebra",
-	// 		score: 90,
-	// 		startDate: new Date("2024-03-10T18:30:00"),
-	// 		endDate: new Date("2024-03-10T20:00:00"),
-	// 		tags: ["STEM", "Analytical"],
-	// 	},
-	// ];
 
 	// Group courses by year
 	let groupedCourses = $derived(
@@ -110,7 +63,7 @@
 
 	onMount(async () => {
 		const user = PB.getCurrentUser();
-		const schedules : Schedule[] = await PB.getTimelineEntries();
+		const schedules : Schedule[] = await PB.getCreatedCourses();
 
 		courses = schedules;
 	});
