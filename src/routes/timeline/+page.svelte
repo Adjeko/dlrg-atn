@@ -152,7 +152,7 @@
 											</div>
 										</div>
 									</div>
-									<span class="text-lg font-bold">{schedule.score}</span>
+									<span class="text-lg font-bold">{schedule.points}</span>
 								</div>
 								<div class="mt-2 flex flex-wrap gap-2">
 									{#each schedule.category as category}

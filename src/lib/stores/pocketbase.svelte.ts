@@ -31,6 +31,18 @@ export class PocketBaseStore {
             .filter((schedule): schedule is Schedule => schedule !== undefined);
         return schedules;
     }
+
+    async getCreatedCourses() : Promise<Schedule[]> {
+        const user = this.getCurrentUser();
+        const schedulesFromServer = await this.instance.collection("schedule").getFullList({
+            expand: 'course, course.creator, days, attendees, organizers',
+        });
+
+        const schedules: Schedule[] = schedulesFromServer
+            .map((schedule): Schedule | undefined => toSchedule(schedule))
+            .filter((schedule): schedule is Schedule => schedule !== undefined);
+        return schedules;
+    }
 }
 
 export const PB = new PocketBaseStore();
