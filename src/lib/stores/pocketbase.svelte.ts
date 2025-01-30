@@ -13,16 +13,28 @@ export class PocketBaseStore {
 
     async getCourse(id : string) : Promise<Schedule> {
         const schedule = await this.instance.collection("schedule").getOne(id, {
-            expand: 'course, course.creator, days, attendees, organizers',
+            expand: 'course, course.creator, attendees, organizers',
         });
 
         return toSchedule(schedule) ?? emptySchedule;
     }
 
+    async getSchedules(courseId : string) : Promise<Schedule[]> {
+        const schedulesFromServer = await this.instance.collection("schedule").getFullList({
+            expand: 'course',
+            filter: `course.id = '${courseId}'`,
+        });
+
+        const schedules: Schedule[] = schedulesFromServer
+            .map((schedule): Schedule | undefined => toSchedule(schedule))
+            .filter((schedule): schedule is Schedule => schedule !== undefined);
+        return schedules;
+    }
+
     async getTimelineEntries() : Promise<Schedule[]> {
         const user = this.getCurrentUser();
         const schedulesFromServer = await this.instance.collection("schedule").getFullList({
-			expand: 'course, course.creator, days, attendees, organizers',
+			expand: 'course, course.creator, attendees, organizers',
 			// filter: `course = ${PB().authStore.model.id}`,
 		});
 
@@ -35,7 +47,7 @@ export class PocketBaseStore {
     async getCreatedCourses() : Promise<Schedule[]> {
         const user = this.getCurrentUser();
         const schedulesFromServer = await this.instance.collection("schedule").getFullList({
-            expand: 'course, course.creator, days, attendees, organizers',
+            expand: 'course, course.creator, attendees, organizers',
         });
 
         const schedules: Schedule[] = schedulesFromServer

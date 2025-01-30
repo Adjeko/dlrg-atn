@@ -1,21 +1,52 @@
 <script lang="ts">
-	import { page } from '$app/stores'
+	import { page } from "$app/stores";
 	import { fade, slide } from "svelte/transition";
 	import { Button } from "$lib/components/ui/button";
-	import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "$lib/components/ui/card";
+	import {
+		Card,
+		CardContent,
+		CardFooter,
+		CardHeader,
+		CardTitle,
+	} from "$lib/components/ui/card";
 	import { Input } from "$lib/components/ui/input";
 	import { Label } from "$lib/components/ui/label";
 	import { Textarea } from "$lib/components/ui/textarea";
-	import { Avatar, AvatarFallback, AvatarImage } from "$lib/components/ui/avatar";
-	import { Calendar, Clock, Users, UserCircle, Trash2, Plus } from "lucide-svelte";
-	import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "$lib/components/ui/select";
-    import { onMount } from "svelte";
-    import { PB } from "@/lib/stores/pocketbase.svelte";
-    import { emptySchedule, type Schedule } from '@/lib/types/Schedule';
-    import type { User } from '@/lib/types/User';
+	import {
+		Avatar,
+		AvatarFallback,
+		AvatarImage,
+	} from "$lib/components/ui/avatar";
+	import {
+		Calendar,
+		Clock,
+		Users,
+		UserCircle,
+		Trash2,
+		Plus,
+		Trash2Icon,
+		PencilIcon,
+		CalendarIcon,
+        ClockIcon,
+        StarIcon,
+        Check,
+        MapPin,
+		
+	} from "lucide-svelte";
+	import {
+		Select,
+		SelectContent,
+		SelectItem,
+		SelectTrigger,
+		SelectValue,
+	} from "$lib/components/ui/select";
+	import { onMount } from "svelte";
+	import { PB } from "@/lib/stores/pocketbase.svelte";
+	import { emptySchedule, type Schedule } from "@/lib/types/Schedule";
+	import type { User } from "@/lib/types/User";
 
-    let availableOrganizers = $state<Array<User>>([]);
-    let courses = $state<Schedule>(emptySchedule);
+	let availableOrganizers = $state<Array<User>>([]);
+	let courses = $state<Schedule>(emptySchedule);
 
 	// Edit mode state
 	let isEditing: boolean = $state(false);
@@ -32,11 +63,22 @@
 	let editedEndDate: string = $state("");
 	let editedScore: number = $state(0);
 
+	let schedules: Array<Schedule & { isEditing: boolean }> = $state([]);
+
 	onMount(async () => {
 		const course = await PB.getCourse($page.params.courseId);
-		courses = course
+		courses = course;
 
-		availableOrganizers = await PB.instance.collection("users").getFullList();
+		schedules = (await PB.getSchedules(course.course.id)).map(
+			(schedule) => ({
+				...schedule,
+				isEditing: false,
+			}),
+		);
+
+		availableOrganizers = await PB.instance
+			.collection("users")
+			.getFullList();
 	});
 
 	/** Initialize edit form */
@@ -44,7 +86,8 @@
 		editedTitle = courses?.course.title ?? "";
 		editedShortDesc = courses?.course.shortDescription ?? "";
 		editedDesc = courses?.course.description ?? "";
-		editedStartDate = courses?.startDateTime.toISOString().slice(0, 16) ?? "";
+		editedStartDate =
+			courses?.startDateTime.toISOString().slice(0, 16) ?? "";
 		editedEndDate = courses?.endDateTime.toISOString().slice(0, 16) ?? "";
 		editedScore = courses?.points ?? 0;
 		isEditing = true;
@@ -52,20 +95,23 @@
 
 	/** Save edited course data */
 	const saveChanges = async () => {
-		
 		const updatedCourse = {
 			title: editedTitle,
 			shortdescription: editedShortDesc,
-			description: editedDesc
-		}
+			description: editedDesc,
+		};
 		const updatedSchedule = {
 			startDateTime: new Date(editedStartDate),
 			endDateTime: new Date(editedEndDate),
-			points: editedScore
-		}
+			points: editedScore,
+		};
 
-		const returnedSchedule = await PB.instance.collection("schedule").update(courses.id, updatedSchedule);
-		const returnedCourse = await PB.instance.collection("course").update(courses?.course.id ?? "", updatedCourse);
+		const returnedSchedule = await PB.instance
+			.collection("schedule")
+			.update(courses.id, updatedSchedule);
+		const returnedCourse = await PB.instance
+			.collection("course")
+			.update(courses?.course.id ?? "", updatedCourse);
 
 		console.log("Updated course:", returnedCourse);
 		console.log("Updated schedule:", returnedSchedule);
@@ -82,11 +128,13 @@
 
 	/** Remove participant from course */
 	const removeParticipant = (userId: string) => {
-		courses.participants = courses.participants?.filter((p) => p.id !== userId);
+		courses.participants = courses.participants?.filter(
+			(p) => p.id !== userId,
+		);
 
 		PB.instance.collection("schedule").update(courses.id, {
-			attendees: courses.participants
-		})
+			attendees: courses.participants,
+		});
 	};
 
 	/** Remove organizer from course */
@@ -94,27 +142,78 @@
 		courses.organizers = courses.organizers?.filter((o) => o.id !== userId);
 
 		PB.instance.collection("schedule").update(courses.id, {
-			organizers: courses.organizers
-		})
+			organizers: courses.organizers,
+		});
 	};
 
 	/** Add new organizer */
 	const addOrganizer = () => {
 		if (selectedOrganizerId) {
-            const organizer = availableOrganizers.find((o) => o.id === selectedOrganizerId.value);
-            if (organizer && !courses.organizers?.some((o) => o.id === organizer.id)) {
-                
-				courses.organizers = [...courses.organizers?? [], organizer];
+			const organizer = availableOrganizers.find(
+				(o) => o.id === selectedOrganizerId.value,
+			);
+			if (
+				organizer &&
+				!courses.organizers?.some((o) => o.id === organizer.id)
+			) {
+				courses.organizers = [...(courses.organizers ?? []), organizer];
 
 				console.log("Updated organizers:", courses.organizers);
 				PB.instance.collection("schedule").update(courses.id, {
-					organizers: courses.organizers.map((o) => o.id)
-				})
+					organizers: courses.organizers.map((o) => o.id),
+				});
 			}
 			selectedOrganizerId = "";
 			showAddOrganizer = false;
 		}
 	};
+
+	// Termin entfernen
+	function removeSchedule(schedule: Schedule) {
+		schedules = schedules.filter((s) => s.id !== schedule.id);
+
+		PB.instance.collection("schedule").delete(schedule.id);
+	}
+
+	// Neuen Termin hinzufügen
+	async function addSchedule() {
+		const now = new Date();
+		// Setze Standardendzeit auf 2 Stunden nach Startzeit
+		const endTime = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+
+		let addedSchedule = await PB.instance.collection("schedule").create({
+			location: "",
+			points: 0,
+			course: `${courses.course.id}`,
+    		startDateTime: now,
+			endDateTime: endTime
+		});
+
+		let tmpSchedule = emptySchedule
+		tmpSchedule.id = addedSchedule.id;
+		tmpSchedule.course = courses.course;
+		tmpSchedule.startDateTime = now;
+		tmpSchedule.endDateTime = endTime;
+
+		schedules = [
+			...schedules,
+			{
+				...tmpSchedule,
+				isEditing: false
+			}
+			,
+		];
+	}
+
+	function saveSchedule(schedule: Schedule & { isEditing: boolean }) {
+		schedule.isEditing = false;
+		PB.instance.collection("schedule").update(schedule.id, {
+			location: schedule.location,
+			points: schedule.points,
+			startDateTime: new Date(schedule.startDateTime),
+			endDateTime: new Date(schedule.endDateTime),
+		});
+	}
 
 	/** Format date to local string */
 	const formatDate = (dateString: string) => {
@@ -130,11 +229,16 @@
 		<CardTitle class="flex items-center justify-between">
 			{#if !isEditing}
 				<h1 class="text-2xl font-bold">{courses?.course.title}</h1>
-				<Button onclick={startEditing} variant="outline">Bearbeiten</Button>
+				<Button onclick={startEditing} variant="outline"
+					>Bearbeiten</Button
+				>
 			{:else}
 				<h1 class="text-2xl font-bold">Kurs bearbeiten</h1>
 				<div class="space-x-2">
-					<Button onclick={() => (isEditing = false)} variant="outline">Abbrechen</Button>
+					<Button
+						onclick={() => (isEditing = false)}
+						variant="outline">Abbrechen</Button
+					>
 					<Button onclick={saveChanges}>Speichern</Button>
 				</div>
 			{/if}
@@ -162,12 +266,20 @@
 				<div class="grid gap-4 md:grid-cols-2">
 					<div class="space-y-2">
 						<Label for="startDate">Startdatum</Label>
-						<Input id="startDate" type="datetime-local" bind:value={editedStartDate} />
+						<Input
+							id="startDate"
+							type="datetime-local"
+							bind:value={editedStartDate}
+						/>
 					</div>
 
 					<div class="space-y-2">
 						<Label for="endDate">Enddatum</Label>
-						<Input id="endDate" type="datetime-local" bind:value={editedEndDate} />
+						<Input
+							id="endDate"
+							type="datetime-local"
+							bind:value={editedEndDate}
+						/>
 					</div>
 				</div>
 
@@ -180,8 +292,12 @@
 			<div class="space-y-6" transition:fade>
 				<!-- Course Info -->
 				<div class="space-y-2">
-					<p class="text-lg font-medium">{courses?.course.shortDescription}</p>
-					<p class="text-muted-foreground">{courses?.course.description}</p>
+					<p class="text-lg font-medium">
+						{courses?.course.shortDescription}
+					</p>
+					<p class="text-muted-foreground">
+						{courses?.course.description}
+					</p>
 				</div>
 
 				<!-- Dates -->
@@ -190,24 +306,24 @@
 						<Calendar class="h-5 w-5 text-muted-foreground" />
 						<div>
 							<p class="font-medium">Startdatum</p>
-							<p class="text-sm text-muted-foreground">{formatDate(courses?.startDateTime.toString()?? "")}</p>
+							<p class="text-sm text-muted-foreground">
+								{formatDate(
+									courses?.startDateTime.toString() ?? "",
+								)}
+							</p>
 						</div>
 					</div>
 					<div class="flex items-center gap-2">
 						<Clock class="h-5 w-5 text-muted-foreground" />
 						<div>
 							<p class="font-medium">Enddatum</p>
-							<p class="text-sm text-muted-foreground">{formatDate(courses?.endDateTime.toString() ?? "")}</p>
+							<p class="text-sm text-muted-foreground">
+								{formatDate(
+									courses?.endDateTime.toString() ?? "",
+								)}
+							</p>
 						</div>
 					</div>
-				</div>
-
-				<!-- Score -->
-				<div class="flex items-center gap-2">
-					<p class="font-medium">Bewertung:</p>
-					<span class="rounded-full bg-primary/10 px-2 py-1 text-sm font-medium text-primary">
-						{courses?.points} LE
-					</span>
 				</div>
 
 				<!-- Creator -->
@@ -218,21 +334,190 @@
 					</h2>
 					<div class="flex items-center gap-2">
 						<Avatar>
-							<AvatarImage src={courses.course.creator.name} alt={courses.course.creator.name} />
-							<AvatarFallback>{courses?.course.creator.name[0]}</AvatarFallback>
+							<AvatarImage
+								src={courses.course.creator?.name}
+								alt={courses.course.creator?.name}
+							/>
+							<AvatarFallback
+								>{courses?.course.creator
+									?.name[0]}</AvatarFallback
+							>
 						</Avatar>
-						<span>{courses?.course.creator.name}</span>
+						<span>{courses?.course.creator?.name}</span>
 					</div>
+				</div>
+
+				<!-- Termine -->
+				<div class="space-y-4">
+					<div class="flex items-center justify-between">
+						<h3 class="text-lg font-semibold">Termine</h3>
+						<Button
+							type="button"
+							variant="outline"
+							onclick={addSchedule}
+						>
+							<Plus class="size-4 mr-2" />
+							Termin hinzufügen
+						</Button>
+					</div>
+
+					{#if schedules.length === 0}
+						<p class="text-muted-foreground text-sm">
+							Noch keine Termine hinzugefügt
+						</p>
+					{/if}
+
+					{#each schedules as session, index}
+						{#if session.isEditing}
+							<div
+								class="space-y-4 p-4 border rounded-lg relative"
+							>
+								<div class="absolute right-2 top-2 flex items-center gap-1">
+									<Button
+										type="button"
+										variant="ghost"
+										onclick={() => removeSchedule(session)}
+									>
+										<Trash2Icon
+											class="size-4 text-destructive"
+										/>
+									</Button>
+									<Button
+										type="button"
+										variant="ghost"
+										onclick={() => saveSchedule(session)}
+									>
+										<Check class="size-4 text-green-500" />
+									</Button>
+								</div>
+
+								<div class="space-y-4">
+									<div
+										class="grid grid-cols-1 md:grid-cols-2 gap-4"
+									>
+										<div class="space-y-2">
+											<Label for="startDate-{index}"
+												>Startdatum</Label
+											>
+											<Input
+												id="startDate-{index}"
+												type="datetime-local"
+												value={session.startDateTime.toISOString().slice(0, 16) ?? ""}
+												oninput={(e : any) => session.startDateTime = new Date(e.target?.value)}
+											/>
+										</div>
+										<div class="space-y-2">
+											<Label for="endDate-{index}"
+												>Enddatum</Label
+											>
+											<Input
+												id="endDate-{index}"
+												type="datetime-local"
+												bind:value={session.endDateTime}
+											/>
+										</div>
+									</div>
+
+									<div
+										class="grid grid-cols-1 md:grid-cols-2 gap-4"
+									>
+										<div class="space-y-2">
+											<Label for="location-{index}"
+												>Ort</Label
+											>
+											<Input
+												id="location-{index}"
+												bind:value={session.location}
+												placeholder="Ort eingeben"
+											/>
+										</div>
+										<div class="space-y-2">
+											<Label for="points-{index}"
+												>Punktzahl</Label
+											>
+											<Input
+												id="points-{index}"
+												type="number"
+												bind:value={session.points}
+												min="0"
+											/>
+										</div>
+									</div>
+								</div>
+							</div>
+						{:else}
+						<Card class="w-full hover:shadow-lg transition-shadow">
+							<CardContent class="p-6">
+								<div class="flex items-start justify-between gap-4">
+									<!-- Ort -->
+									<div class="flex items-center gap-2 text-muted-foreground">
+										<MapPin class="size-4" />
+										<span>{session.location}</span>
+									</div>
+
+									<!-- StartZeit -->
+									<div class="flex flex-row gap-3">
+										<!-- Datum -->
+										<div class="flex items-center gap-2 text-muted-foreground">
+											<CalendarIcon class="size-4" />
+											<span class="font-medium">{new Intl.DateTimeFormat('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(session.startDateTime))}</span>
+										</div>
+						
+										<!-- Uhrzeiten -->
+										<div class="flex items-center gap-2 text-muted-foreground">
+											<ClockIcon class="size-4" />
+											<span>{new Intl.DateTimeFormat('de-DE', { hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(session.startDateTime))} Uhr</span>
+										</div>
+									</div>
+
+									<!-- Endzeit -->
+									<div class="flex flex-row gap-3">
+										<!-- Datum -->
+										<div class="flex items-center gap-2 text-muted-foreground">
+											<CalendarIcon class="size-4" />
+											<span class="font-medium">{new Intl.DateTimeFormat('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(session.endDateTime))}</span>
+										</div>
+						
+										<!-- Uhrzeiten -->
+										<div class="flex items-center gap-2 text-muted-foreground">
+											<ClockIcon class="size-4" />
+											<span>{new Intl.DateTimeFormat('de-DE', { hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(session.endDateTime))} Uhr</span>
+										</div>
+									</div>
+						
+									<div class="flex items-center gap-2">
+										<!-- Punkte -->
+										<div class="flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1.5 rounded-full">
+											<StarIcon class="size-4" />
+											<span class="font-medium">{session.points} Punkte</span>
+										</div>
+						
+										<!-- Edit Button -->
+										<Button variant="ghost" size="icon" class="size-9" onclick={() => session.isEditing = true}>
+											<PencilIcon class="size-4" />
+										</Button>
+									</div>
+								</div>
+							</CardContent>
+						</Card>
+						{/if}
+					{/each}
 				</div>
 
 				<!-- Organizers -->
 				<div class="space-y-4">
 					<div class="flex items-center justify-between">
-						<h2 class="flex items-center gap-2 text-lg font-semibold">
+						<h2
+							class="flex items-center gap-2 text-lg font-semibold"
+						>
 							<Users class="h-5 w-5" />
 							Organisatoren
 						</h2>
-						<Button variant="outline" size="sm" onclick={() => (showAddOrganizer = true)}>
+						<Button
+							variant="outline"
+							size="sm"
+							onclick={() => (showAddOrganizer = true)}
+						>
 							<Plus class="mr-2 h-4 w-4" />
 							Organisator hinzufügen
 						</Button>
@@ -242,17 +527,23 @@
 						<div class="flex items-center gap-2" transition:slide>
 							<Select bind:selected={selectedOrganizerId}>
 								<SelectTrigger class="max-w-xs">
-									<SelectValue placeholder="Organisator auswählen" />
+									<SelectValue
+										placeholder="Organisator auswählen"
+									/>
 								</SelectTrigger>
 								<SelectContent>
 									{#each availableOrganizers as organizer}
 										{#if !courses.organizers?.some((o) => o.id === organizer.id)}
-											<SelectItem value={organizer.id}>{organizer.name}</SelectItem>
+											<SelectItem value={organizer.id}
+												>{organizer.name}</SelectItem
+											>
 										{/if}
 									{/each}
 								</SelectContent>
 							</Select>
-							<Button onclick={addOrganizer} size="sm">Hinzufügen</Button>
+							<Button onclick={addOrganizer} size="sm"
+								>Hinzufügen</Button
+							>
 							<Button
 								variant="outline"
 								size="sm"
@@ -267,16 +558,29 @@
 					{/if}
 
 					<div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-						{#each courses?.organizers?? [] as organizer}
-							<div class="flex items-center justify-between gap-2 rounded-lg border p-2" transition:slide>
+						{#each courses?.organizers ?? [] as organizer}
+							<div
+								class="flex items-center justify-between gap-2 rounded-lg border p-2"
+								transition:slide
+							>
 								<div class="flex items-center gap-2">
 									<Avatar>
-										<AvatarImage src={organizer.name} alt={organizer.name} />
-										<AvatarFallback>{organizer.name[0]}</AvatarFallback>
+										<AvatarImage
+											src={organizer.name}
+											alt={organizer.name}
+										/>
+										<AvatarFallback
+											>{organizer.name[0]}</AvatarFallback
+										>
 									</Avatar>
 									<span>{organizer.name}</span>
 								</div>
-								<Button variant="ghost" size="icon" onclick={() => removeOrganizer(organizer.id)}>
+								<Button
+									variant="ghost"
+									size="icon"
+									onclick={() =>
+										removeOrganizer(organizer.id)}
+								>
 									<Trash2 class="h-4 w-4 text-destructive" />
 								</Button>
 							</div>
@@ -291,16 +595,30 @@
 						Teilnehmer
 					</h2>
 					<div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-						{#each courses?.participants?? [] as participant}
-							<div class="flex items-center justify-between gap-2 rounded-lg border p-2" transition:slide>
+						{#each courses?.participants ?? [] as participant}
+							<div
+								class="flex items-center justify-between gap-2 rounded-lg border p-2"
+								transition:slide
+							>
 								<div class="flex items-center gap-2">
 									<Avatar>
-										<AvatarImage src={participant.name} alt={participant.name} />
-										<AvatarFallback>{participant.name[0]}</AvatarFallback>
+										<AvatarImage
+											src={participant.name}
+											alt={participant.name}
+										/>
+										<AvatarFallback
+											>{participant
+												.name[0]}</AvatarFallback
+										>
 									</Avatar>
 									<span>{participant.name}</span>
 								</div>
-								<Button variant="ghost" size="icon" onclick={() => removeParticipant(participant.id)}>
+								<Button
+									variant="ghost"
+									size="icon"
+									onclick={() =>
+										removeParticipant(participant.id)}
+								>
 									<Trash2 class="h-4 w-4 text-destructive" />
 								</Button>
 							</div>

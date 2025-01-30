@@ -52,10 +52,11 @@
             "email": email.toLowerCase(),
             "emailVisibility": true,
             // "verified": true,
-            "name": username
+            "name": username,
+			"role": "Mitglied"
         };
         try {
-            const record = await PB().collection('users').create(data);
+            const record = await PB.instance.collection('users').create(data);
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message);

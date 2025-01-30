@@ -54,7 +54,7 @@ export function toSchedule(object: any): Schedule | undefined{
 //used to return something instead of undefined or null
 export const emptySchedule: Schedule = {
     id: "",
-    location: "",
+    location: "Kein Ort vergeben",
     points: 0,
     participants: [],
     organizers: [],
@@ -71,6 +71,7 @@ export const emptySchedule: Schedule = {
             name: "",
             created: new Date(),
             updated: new Date(),
+            role: "Mitglied",
         },
         category: "Online",
         created: new Date(),

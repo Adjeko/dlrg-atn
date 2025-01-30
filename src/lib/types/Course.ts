@@ -19,13 +19,13 @@ export const CourseSchema = z.object({
       }),
     expand: z.object({
         creator: UserSchema,
-    }),
+    }).optional(),
 }).transform((data) => ({
     id: data.id,
     title: data.title,
     description: data.description,
     shortDescription: data.shortdescription,
-    creator: data.expand.creator, // Extrahiere `expand.creator` in `creator`
+    creator: data.expand?.creator, // Extrahiere `expand.creator` in `creator`
     category: data.category,
     created: new Date(data.created),
     updated: new Date(data.updated),
@@ -60,6 +60,7 @@ export const emptyCourse: Course = {
         name: "",
         created: new Date(),
         updated: new Date(),
+        role: "Mitglied",
     },
     created: new Date(),
     updated: new Date(),
