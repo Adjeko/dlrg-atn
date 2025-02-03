@@ -11,7 +11,7 @@ export class PocketBaseStore {
         return user;
     }
 
-    async getCourse(id : string) : Promise<Schedule> {
+    async getSchedule(id : string) : Promise<Schedule> {
         const schedule = await this.instance.collection("schedule").getOne(id, {
             expand: 'course, course.creator, attendees, organizers',
         });

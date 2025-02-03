@@ -66,7 +66,7 @@
 	let schedules: Array<Schedule & { isEditing: boolean }> = $state([]);
 
 	onMount(async () => {
-		const course = await PB.getCourse($page.params.courseId);
+		const course = await PB.getSchedule($page.params.courseId);
 		courses = course;
 
 		schedules = (await PB.getSchedules(course.course.id)).map(
@@ -262,31 +262,6 @@
 					<Label for="desc">Beschreibung</Label>
 					<Textarea id="desc" bind:value={editedDesc} />
 				</div>
-
-				<div class="grid gap-4 md:grid-cols-2">
-					<div class="space-y-2">
-						<Label for="startDate">Startdatum</Label>
-						<Input
-							id="startDate"
-							type="datetime-local"
-							bind:value={editedStartDate}
-						/>
-					</div>
-
-					<div class="space-y-2">
-						<Label for="endDate">Enddatum</Label>
-						<Input
-							id="endDate"
-							type="datetime-local"
-							bind:value={editedEndDate}
-						/>
-					</div>
-				</div>
-
-				<div class="space-y-2">
-					<Label for="score">Punktzahl</Label>
-					<Input id="score" type="number" bind:value={editedScore} />
-				</div>
 			</div>
 		{:else}
 			<div class="space-y-6" transition:fade>
@@ -300,37 +275,11 @@
 					</p>
 				</div>
 
-				<!-- Dates -->
-				<div class="grid gap-4 md:grid-cols-2">
-					<div class="flex items-center gap-2">
-						<Calendar class="h-5 w-5 text-muted-foreground" />
-						<div>
-							<p class="font-medium">Startdatum</p>
-							<p class="text-sm text-muted-foreground">
-								{formatDate(
-									courses?.startDateTime.toString() ?? "",
-								)}
-							</p>
-						</div>
-					</div>
-					<div class="flex items-center gap-2">
-						<Clock class="h-5 w-5 text-muted-foreground" />
-						<div>
-							<p class="font-medium">Enddatum</p>
-							<p class="text-sm text-muted-foreground">
-								{formatDate(
-									courses?.endDateTime.toString() ?? "",
-								)}
-							</p>
-						</div>
-					</div>
-				</div>
-
 				<!-- Creator -->
 				<div class="space-y-2">
 					<h2 class="flex items-center gap-2 text-lg font-semibold">
 						<UserCircle class="h-5 w-5" />
-						Ersteller
+						Kursersteller
 					</h2>
 					<div class="flex items-center gap-2">
 						<Avatar>
@@ -502,128 +451,6 @@
 						</Card>
 						{/if}
 					{/each}
-				</div>
-
-				<!-- Organizers -->
-				<div class="space-y-4">
-					<div class="flex items-center justify-between">
-						<h2
-							class="flex items-center gap-2 text-lg font-semibold"
-						>
-							<Users class="h-5 w-5" />
-							Organisatoren
-						</h2>
-						<Button
-							variant="outline"
-							size="sm"
-							onclick={() => (showAddOrganizer = true)}
-						>
-							<Plus class="mr-2 h-4 w-4" />
-							Organisator hinzufügen
-						</Button>
-					</div>
-
-					{#if showAddOrganizer}
-						<div class="flex items-center gap-2" transition:slide>
-							<Select bind:selected={selectedOrganizerId}>
-								<SelectTrigger class="max-w-xs">
-									<SelectValue
-										placeholder="Organisator auswählen"
-									/>
-								</SelectTrigger>
-								<SelectContent>
-									{#each availableOrganizers as organizer}
-										{#if !courses.organizers?.some((o) => o.id === organizer.id)}
-											<SelectItem value={organizer.id}
-												>{organizer.name}</SelectItem
-											>
-										{/if}
-									{/each}
-								</SelectContent>
-							</Select>
-							<Button onclick={addOrganizer} size="sm"
-								>Hinzufügen</Button
-							>
-							<Button
-								variant="outline"
-								size="sm"
-								onclick={() => {
-									showAddOrganizer = false;
-									selectedOrganizerId = "";
-								}}
-							>
-								Abbrechen
-							</Button>
-						</div>
-					{/if}
-
-					<div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-						{#each courses?.organizers ?? [] as organizer}
-							<div
-								class="flex items-center justify-between gap-2 rounded-lg border p-2"
-								transition:slide
-							>
-								<div class="flex items-center gap-2">
-									<Avatar>
-										<AvatarImage
-											src={organizer.name}
-											alt={organizer.name}
-										/>
-										<AvatarFallback
-											>{organizer.name[0]}</AvatarFallback
-										>
-									</Avatar>
-									<span>{organizer.name}</span>
-								</div>
-								<Button
-									variant="ghost"
-									size="icon"
-									onclick={() =>
-										removeOrganizer(organizer.id)}
-								>
-									<Trash2 class="h-4 w-4 text-destructive" />
-								</Button>
-							</div>
-						{/each}
-					</div>
-				</div>
-
-				<!-- Participants -->
-				<div class="space-y-2">
-					<h2 class="flex items-center gap-2 text-lg font-semibold">
-						<Users class="h-5 w-5" />
-						Teilnehmer
-					</h2>
-					<div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-						{#each courses?.participants ?? [] as participant}
-							<div
-								class="flex items-center justify-between gap-2 rounded-lg border p-2"
-								transition:slide
-							>
-								<div class="flex items-center gap-2">
-									<Avatar>
-										<AvatarImage
-											src={participant.name}
-											alt={participant.name}
-										/>
-										<AvatarFallback
-											>{participant
-												.name[0]}</AvatarFallback
-										>
-									</Avatar>
-									<span>{participant.name}</span>
-								</div>
-								<Button
-									variant="ghost"
-									size="icon"
-									onclick={() =>
-										removeParticipant(participant.id)}
-								>
-									<Trash2 class="h-4 w-4 text-destructive" />
-								</Button>
-							</div>
-						{/each}
-					</div>
 				</div>
 			</div>
 		{/if}
