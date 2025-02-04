@@ -126,48 +126,6 @@
 		isEditing = false;
 	};
 
-	/** Remove participant from course */
-	const removeParticipant = (userId: string) => {
-		courses.participants = courses.participants?.filter(
-			(p) => p.id !== userId,
-		);
-
-		PB.instance.collection("schedule").update(courses.id, {
-			attendees: courses.participants,
-		});
-	};
-
-	/** Remove organizer from course */
-	const removeOrganizer = (userId: string) => {
-		courses.organizers = courses.organizers?.filter((o) => o.id !== userId);
-
-		PB.instance.collection("schedule").update(courses.id, {
-			organizers: courses.organizers,
-		});
-	};
-
-	/** Add new organizer */
-	const addOrganizer = () => {
-		if (selectedOrganizerId) {
-			const organizer = availableOrganizers.find(
-				(o) => o.id === selectedOrganizerId.value,
-			);
-			if (
-				organizer &&
-				!courses.organizers?.some((o) => o.id === organizer.id)
-			) {
-				courses.organizers = [...(courses.organizers ?? []), organizer];
-
-				console.log("Updated organizers:", courses.organizers);
-				PB.instance.collection("schedule").update(courses.id, {
-					organizers: courses.organizers.map((o) => o.id),
-				});
-			}
-			selectedOrganizerId = "";
-			showAddOrganizer = false;
-		}
-	};
-
 	// Termin entfernen
 	function removeSchedule(schedule: Schedule) {
 		schedules = schedules.filter((s) => s.id !== schedule.id);
@@ -214,14 +172,6 @@
 			endDateTime: new Date(schedule.endDateTime),
 		});
 	}
-
-	/** Format date to local string */
-	const formatDate = (dateString: string) => {
-		return new Date(dateString).toLocaleString("de-DE", {
-			dateStyle: "medium",
-			timeStyle: "short",
-		});
-	};
 </script>
 
 <Card class="w-full">
@@ -362,7 +312,8 @@
 											<Input
 												id="endDate-{index}"
 												type="datetime-local"
-												bind:value={session.endDateTime}
+												value={session.endDateTime.toISOString().slice(0, 16) ?? ""}
+												oninput={(e : any) => session.endDateTime = new Date(e.target?.value)}
 											/>
 										</div>
 									</div>

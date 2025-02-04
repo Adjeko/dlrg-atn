@@ -31,6 +31,7 @@
         StarIcon,
         Check,
         MapPin,
+        Map,
 		
 	} from "lucide-svelte";
 	import {
@@ -56,12 +57,10 @@
 	let selectedOrganizerId: any = $state("");
 
 	// Temporary states for editing
-	let editedTitle: string = $state("");
-	let editedShortDesc: string = $state("");
-	let editedDesc: string = $state("");
 	let editedStartDate: string = $state("");
 	let editedEndDate: string = $state("");
 	let editedScore: number = $state(0);
+	let editedLocation: string = $state("");
 
 	let schedules: Array<Schedule & { isEditing: boolean }> = $state([]);
 
@@ -83,9 +82,6 @@
 
 	/** Initialize edit form */
 	const startEditing = () => {
-		editedTitle = schedule?.course.title ?? "";
-		editedShortDesc = schedule?.course.shortDescription ?? "";
-		editedDesc = schedule?.course.description ?? "";
 		editedStartDate =
 			schedule?.startDateTime.toISOString().slice(0, 16) ?? "";
 		editedEndDate = schedule?.endDateTime.toISOString().slice(0, 16) ?? "";
@@ -95,32 +91,20 @@
 
 	/** Save edited course data */
 	const saveChanges = async () => {
-		const updatedCourse = {
-			title: editedTitle,
-			shortdescription: editedShortDesc,
-			description: editedDesc,
-		};
 		const updatedSchedule = {
 			startDateTime: new Date(editedStartDate),
 			endDateTime: new Date(editedEndDate),
+			location: editedLocation,
 			points: editedScore,
 		};
 
 		const returnedSchedule = await PB.instance
 			.collection("schedule")
 			.update(schedule.id, updatedSchedule);
-		const returnedCourse = await PB.instance
-			.collection("course")
-			.update(schedule?.course.id ?? "", updatedCourse);
 
-		console.log("Updated course:", returnedCourse);
-		console.log("Updated schedule:", returnedSchedule);
-
-		schedule.course.title = returnedCourse.title;
-		schedule.course.shortDescription = returnedCourse.shortdescription;
-		schedule.course.description = returnedCourse.description;
 		schedule.startDateTime = returnedSchedule.startDateTime;
 		schedule.endDateTime = returnedSchedule.endDateTime;
+		schedule.location = returnedSchedule.location;
 		schedule.points = returnedSchedule.points;
 
 		isEditing = false;
@@ -168,53 +152,6 @@
 		}
 	};
 
-	// Termin entfernen
-	function removeSchedule(schedule: Schedule) {
-		schedules = schedules.filter((s) => s.id !== schedule.id);
-
-		PB.instance.collection("schedule").delete(schedule.id);
-	}
-
-	// Neuen Termin hinzufügen
-	async function addSchedule() {
-		const now = new Date();
-		// Setze Standardendzeit auf 2 Stunden nach Startzeit
-		const endTime = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-
-		let addedSchedule = await PB.instance.collection("schedule").create({
-			location: "",
-			points: 0,
-			course: `${schedule.course.id}`,
-    		startDateTime: now,
-			endDateTime: endTime
-		});
-
-		let tmpSchedule = emptySchedule
-		tmpSchedule.id = addedSchedule.id;
-		tmpSchedule.course = schedule.course;
-		tmpSchedule.startDateTime = now;
-		tmpSchedule.endDateTime = endTime;
-
-		schedules = [
-			...schedules,
-			{
-				...tmpSchedule,
-				isEditing: false
-			}
-			,
-		];
-	}
-
-	function saveSchedule(schedule: Schedule & { isEditing: boolean }) {
-		schedule.isEditing = false;
-		PB.instance.collection("schedule").update(schedule.id, {
-			location: schedule.location,
-			points: schedule.points,
-			startDateTime: new Date(schedule.startDateTime),
-			endDateTime: new Date(schedule.endDateTime),
-		});
-	}
-
 	/** Format date to local string */
 	const formatDate = (dateString: string) => {
 		return new Date(dateString).toLocaleString("de-DE", {
@@ -248,21 +185,6 @@
 	<CardContent class="space-y-6">
 		{#if isEditing}
 			<div class="space-y-4" transition:fade>
-				<div class="space-y-2">
-					<Label for="title">Titel</Label>
-					<Input id="title" bind:value={editedTitle} />
-				</div>
-
-				<div class="space-y-2">
-					<Label for="shortDesc">Kurzbeschreibung</Label>
-					<Input id="shortDesc" bind:value={editedShortDesc} />
-				</div>
-
-				<div class="space-y-2">
-					<Label for="desc">Beschreibung</Label>
-					<Textarea id="desc" bind:value={editedDesc} />
-				</div>
-
 				<div class="grid gap-4 md:grid-cols-2">
 					<div class="space-y-2">
 						<Label for="startDate">Startdatum</Label>
@@ -287,6 +209,11 @@
 					<Label for="score">Punktzahl</Label>
 					<Input id="score" type="number" bind:value={editedScore} />
 				</div>
+
+				<div class="space-y-2">
+					<Label for="location">Ort</Label>
+					<Input id="location" type="text" bind:value={editedLocation} />
+				</div>
 			</div>
 		{:else}
 			<div class="space-y-6" transition:fade>
@@ -298,6 +225,17 @@
 					<p class="text-muted-foreground">
 						{schedule?.course.description}
 					</p>
+				</div>
+
+				<!-- Location -->
+				<div class="space-y-2">
+					<h2 class="flex items-center gap-2 text-lg font-semibold">
+						<MapPin class="h-5 w-5" />
+						Ort
+					</h2>
+					<div class="flex items-center gap-2">
+						<span>{schedule?.location}</span>
+					</div>
 				</div>
 
 				<!-- Dates -->
