@@ -31,6 +31,7 @@
         StarIcon,
         Check,
         MapPin,
+        QrCodeIcon,
 		
 	} from "lucide-svelte";
 	import {
@@ -44,6 +45,8 @@
 	import { PB } from "@/lib/stores/pocketbase.svelte";
 	import { emptySchedule, type Schedule } from "@/lib/types/Schedule";
 	import type { User } from "@/lib/types/User";
+    import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/lib/components/ui/dialog";
+	import QrCode from "svelte-qrcode"
 
 	let availableOrganizers = $state<Array<User>>([]);
 	let courses = $state<Schedule>(emptySchedule);
@@ -385,6 +388,28 @@
 										</div>
 									</div>
 						
+									<!-- QR-Code -->
+									 <div class="flex items-center gap-2"> 
+										<Dialog>
+											<DialogTrigger>
+												<Button>
+													<QrCodeIcon class="mr-2 h-4 w-4" />
+													QR Code anzeigen
+												</Button>
+											</DialogTrigger>
+											<DialogContent>
+												<DialogHeader>
+													<DialogTitle>QR Code</DialogTitle>
+												</DialogHeader>
+												<div class="flex items-center justify-center p-4">
+													<div class="h-96 w-96 rounded-lg bg-muted">
+														<QrCode value="https://github.com/" size={384} />
+													</div>
+												</div>
+											</DialogContent>
+										</Dialog>
+									 </div>
+
 									<div class="flex items-center gap-2">
 										<!-- Punkte -->
 										<div class="flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1.5 rounded-full">

@@ -41,6 +41,7 @@
     "lucide-svelte": "^0.460.1",
     "manifest": "^4.0.5",
     "pocketbase": "^0.22.0",
+    "svelte-qrcode": "^1.0.1",
     "svelte-sonner": "^0.3.28",
     "zod": "^3.23.8"
   }
