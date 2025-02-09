@@ -46,9 +46,6 @@
 		const schedules : Schedule[] = await PB.getTimelineEntries();
 
 		courses = schedules;
-		// import("html5-qrcode").then((module) => {
-		// 	qrCodeReader = new module.Html5Qrcode("qr-reader");
-		// });
 	});
 
 	function startQrScanner() {
