@@ -10,6 +10,8 @@
 	import { onMount } from "svelte";
     import { PB } from "@/lib/stores/pocketbase.svelte";
     import type { Schedule } from "@/lib/types/Schedule";
+	import { Html5Qrcode } from 'html5-qrcode';
+    import QrScanner from "./qrScanner.svelte";
 
 	let courses = $state<Schedule[]>([]);
 
@@ -38,8 +40,6 @@
 		return `${startString} - ${endString}`;
 	}
 
-	let videoStream;
-	let qrCodeReader;
 
 	onMount(async () => {
 		const user = PB.getCurrentUser();
@@ -48,34 +48,6 @@
 		courses = schedules;
 	});
 
-	function startQrScanner() {
-		if (qrCodeReader) {
-			qrCodeReader.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, onScanSuccess, onScanFailure);
-		}
-	}
-
-	function stopQrScanner() {
-		if (qrCodeReader) {
-			qrCodeReader
-				.stop()
-				.then(() => {
-					console.log("QR Code scanning stopped");
-				})
-				.catch((err) => {
-					console.error("Failed to stop QR Code scanning", err);
-				});
-		}
-	}
-
-	function onScanSuccess(decodedText, decodedResult) {
-		console.log(`Code scanned = ${decodedText}`, decodedResult);
-		alert(`Joining course with code: ${decodedText}`);
-		stopQrScanner();
-	}
-
-	function onScanFailure(error) {
-		console.warn(`QR Code scanning failed: ${error}`);
-	}
 </script>
 
 <Card class="w-full max-w-2xl mx-auto">
@@ -119,9 +91,7 @@
 				<DialogHeader>
 					<DialogTitle>Scan QR Code to Join Course</DialogTitle>
 				</DialogHeader>
-				<div id="qr-reader" class="w-full h-64"></div>
-				<Button onclick={startQrScanner}>Start Scanning</Button>
-				<Button variant="outline" onclick={stopQrScanner}>Stop Scanning</Button>
+				<QrScanner />
 			</DialogContent>
 		</Dialog>
 

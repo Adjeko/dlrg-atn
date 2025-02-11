@@ -37,7 +37,7 @@
     "vite": "^5.0.3"
   },
   "dependencies": {
-    "html5-qrcode": "^2.1.5",
+    "html5-qrcode": "^2.3.8",
     "lucide-svelte": "^0.460.1",
     "manifest": "^4.0.5",
     "pocketbase": "^0.22.0",

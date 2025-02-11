@@ -403,7 +403,7 @@
 												</DialogHeader>
 												<div class="flex items-center justify-center p-4">
 													<div class="h-96 w-96 rounded-lg bg-muted">
-														<QrCode value="https://github.com/" size={384} />
+														<QrCode value={session.id} size={384} />
 													</div>
 												</div>
 											</DialogContent>
