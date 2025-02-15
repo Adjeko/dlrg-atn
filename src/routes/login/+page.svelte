@@ -11,7 +11,7 @@
 
 	const schema = z.object({
 		email: z.string().email("Ungültige E-Mail-Adresse"),
-		password: z.string().min(8, "Passwort muss mindestens 8 Zeichen lang sein"),
+		password: z.string().min(5, "Passwort muss mindestens 8 Zeichen lang sein"),
 	});
 
 	let email = $state("");
@@ -44,7 +44,17 @@
 	}
 
 	async function login(email : string, password : string) {
-        const record = await PB.instance.collection('users').authWithPassword(email.toLowerCase(), password);
+		try {
+			const record = await PB.instance.collection('users').authWithPassword(email.toLowerCase(), password)
+		}
+		catch (error : any) {
+			if (error.status === 400) {
+            	errors["password"] = "Falscher Benutzername oder Passwort.";
+       		} 
+			else {
+				errors["password"] = `Ein unbekannter Fehler ist aufgetreten. Fehler: ${error.status}: ${error.message}`;
+			}
+		}
     }
 </script>
 
@@ -83,14 +93,6 @@
 					{/if}
 				</div>
 			</div>
-
-			{#if Object.keys(errors).length > 0}
-				<Alert variant="destructive">
-					<CircleAlert class="h-4 w-4" />
-					<AlertTitle>Fehler</AlertTitle>
-					<AlertDescription>Bitte korrigieren Sie die angegebenen Fehler.</AlertDescription>
-				</Alert>
-			{/if}
 
 			<div>
 				<Button type="submit" class="w-full">Anmelden</Button>

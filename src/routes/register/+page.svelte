@@ -10,7 +10,7 @@
 	import * as z from "zod";
 
 	const schema = z.object({
-		username: z.string(),
+		username: z.string().min(1, "Benutzername darf nicht leer sein"),
 		email: z.string().email("Ungültige E-Mail-Adresse"),
 		password: z.string().min(5, "Passwort muss mindestens 5 Zeichen lang sein"),
 	});
@@ -57,10 +57,16 @@
         };
         try {
             const record = await PB.instance.collection('users').create(data);
-        } catch (error) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            }
+        } catch (error : any) {
+            if (error.status === 400) {
+            	errors["password"] = "Es ist ein Fehler beim Erstellen des Kontos aufgetretten.";
+       		} 
+			if (error.status === 403) {
+            	errors["password"] = "Sie haben nicht die Berechtigung diese Operation auszuführen.";
+       		} 
+			else {
+				errors["password"] = `Ein unbekannter Fehler ist aufgetreten. Fehler: ${error.status}: ${error.message}`;
+			}
         }
     }
 </script>
@@ -75,7 +81,7 @@
 				<div>
 					<Label for="username" class="block text-sm font-medium text-gray-700">Benutzername</Label>
 					<div class="mt-1 relative">
-						<Input id="username" bind:value={username} type="text" required class="pl-10" />
+						<Input id="username" bind:value={username} type="text" class="pl-10" />
 						<User class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
 					</div>
 					{#if errors.username}
@@ -85,7 +91,7 @@
 				<div>
 					<Label for="email" class="block text-sm font-medium text-gray-700">E-Mail-Adresse</Label>
 					<div class="mt-1 relative">
-						<Input id="email" bind:value={email} type="email" required class="pl-10" />
+						<Input id="email" bind:value={email} type="email" class="pl-10" />
 						<Mail class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
 					</div>
 					{#if errors.email}
@@ -95,7 +101,7 @@
 				<div>
 					<Label for="password" class="block text-sm font-medium text-gray-700">Passwort</Label>
 					<div class="mt-1 relative">
-						<Input id="password" bind:value={password} type={showPassword ? "text" : "password"} required class="pl-10 pr-10" />
+						<Input id="password" bind:value={password} type={showPassword ? "text" : "password"} class="pl-10 pr-10" />
 						<Lock class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
 						<button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" onclick={togglePasswordVisibility}>
 							{#if showPassword}
@@ -110,14 +116,6 @@
 					{/if}
 				</div>
 			</div>
-
-			{#if Object.keys(errors).length > 0}
-				<Alert variant="destructive">
-					<CircleAlert class="h-4 w-4" />
-					<AlertTitle>Fehler</AlertTitle>
-					<AlertDescription>Bitte korrigieren Sie die angegebenen Fehler.</AlertDescription>
-				</Alert>
-			{/if}
 
 			<div>
 				<Button type="submit" class="w-full">Registrieren</Button>
