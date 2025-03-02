@@ -4,12 +4,17 @@
     import { Html5Qrcode } from "html5-qrcode";
     import { onMount } from "svelte";
 
+    let { dialogOpen = $bindable() } = $props();
 	let html5Qrcode : any;
 	let scanning = $state(true);
 
-    onMount(async () => {
+    onMount(() => {
         html5Qrcode = new Html5Qrcode('reader')
         startQrScanner();
+        console.log(dialogOpen)
+        return () => {
+            stopQrScanner();
+        }
     });
 
 
@@ -33,7 +38,10 @@
 
 	function onScanSuccess(decodedText: any, decodedResult: any): void {
         PB.joinSchedule(decodedResult.decodedText);
+
         stopQrScanner();
+
+        setTimeout(() => dialogOpen = false, 1500);
 	}
 
 	function onScanFailure(error: any) {

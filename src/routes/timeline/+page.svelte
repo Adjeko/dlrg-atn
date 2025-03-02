@@ -14,6 +14,7 @@
     import QrScanner from "./qrScanner.svelte";
 
 	let courses = $state<Schedule[]>([]);
+	let qrDialogOpen = $state(false);
 
 	// Group courses by year
 	let groupedCourses = $derived(
@@ -80,18 +81,20 @@
 			</Card>
 		</div>
 
-		<Dialog>
+		<Dialog bind:open={qrDialogOpen}>
 			<DialogTrigger>
 				<Button class="mt-4 w-full">
 					<QrCode class="w-4 h-4 mr-2" />
 					Join Course via QR Code
 				</Button>
 			</DialogTrigger>
-			<DialogContent>
+			<DialogContent class="h-[500px]">
 				<DialogHeader>
 					<DialogTitle>Scan QR Code to Join Course</DialogTitle>
 				</DialogHeader>
-				<QrScanner />
+				{#if qrDialogOpen}
+					<QrScanner bind:dialogOpen={qrDialogOpen} />
+				{/if}
 			</DialogContent>
 		</Dialog>
 

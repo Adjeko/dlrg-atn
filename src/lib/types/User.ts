@@ -32,6 +32,18 @@ export function toUser(object : any) : User | undefined {
       }
 }
 
+export function isPrivilegedEnough(userRole : string, requiredRole : string): boolean {
+  const roleHierarchy = ["Mitglied", "Moderator", "Admin"];
+  const userIndex = roleHierarchy.indexOf(userRole);
+  const requiredIndex = roleHierarchy.indexOf(requiredRole);
+
+  if (userIndex === -1 || requiredIndex === -1) {
+    return false; // Rolle nicht gefunden
+  }
+
+  return userIndex >= requiredIndex;
+}
+
 //used to return something instead of undefined or null
 export const emptyUser: User = {
     id: "",

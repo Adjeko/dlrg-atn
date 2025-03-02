@@ -1,15 +1,15 @@
 // src/lib/stores/pocketbase.js
 import PocketBase from 'pocketbase';
-import { toUser, type User } from '../types/User';
+import { emptyUser, toUser, type User } from '../types/User';
 import { emptySchedule, toSchedule, type Schedule } from '../types/Schedule';
 
 export class PocketBaseStore {
     // instance: PocketBase = new PocketBase('http://127.0.0.1:8090');
-    instance: PocketBase = new PocketBase('http://192.168.68.73:8090');
+    instance: PocketBase = new PocketBase('http://192.168.68.72:8090');
 
-    getCurrentUser(): User | null {
+    getCurrentUser(): User {
         const user = toUser(this.instance.authStore.record);
-        return user;
+        return user ?? emptyUser;
     }
 
     async getSchedule(id : string) : Promise<Schedule> {

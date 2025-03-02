@@ -7,11 +7,18 @@
 	import { Settings, Users, Menu, ChevronLeft, ChevronRight, LogOut, CircleAlert } from "lucide-svelte";;
     import { goto } from "$app/navigation";	
     import { PB } from "@/lib/stores/pocketbase.svelte";
+    import { onMount } from 'svelte';
+    import { emptyUser, isPrivilegedEnough, type User } from '@/lib/types/User';
 
 
 	let { children } = $props();
 	let sidebarExpanded = $state(false);
 	let isMobile = $state(false);
+	let user: User = $state(emptyUser);
+
+	onMount(async () => {
+		user = PB.getCurrentUser();
+	});
 
 	$effect(() => {
 		const checkMobile = () => {
@@ -28,10 +35,10 @@
 	};
 
 	const navItems = [
-		{ icon: CircleAlert, label: "Dashboard", href: "/timeline" },
-		{ icon: ChevronRight, label: "Meine Kurse", href: "/createdCourses" },
-		{ icon: Users, label: "Users", href: "/admin" },
-		{ icon: Settings, label: "Settings", href: "/settings" },
+		{ icon: CircleAlert, label: "Dashboard", href: "/timeline", role: "Mitglied" },
+		{ icon: ChevronRight, label: "Meine Kurse", href: "/createdCourses", role: "Moderator" },
+		{ icon: Users, label: "Users", href: "/admin", role: "Admin" },
+		{ icon: Settings, label: "Settings", href: "/settings", role: "Mitglied" },
 	];
 
 	function logout(event: Event){
@@ -53,10 +60,12 @@
 				<SheetContent side="left" class="w-[250px] sm:w-[300px]">
 					<nav class="flex flex-col gap-4">
 						{#each navItems as item}
-							<Button variant="ghost" class="justify-start" href={item.href}	>
-								<item.icon class="mr-2 h-4 w-4" />
-								{item.label}
-							</Button>
+							{#if isPrivilegedEnough(user?.role, item.role)}
+								<Button variant="ghost" class="justify-start" href={item.href}	>
+									<item.icon class="mr-2 h-4 w-4" />
+									{item.label}
+								</Button>
+							{/if}
 						{/each}
 					</nav>
 				</SheetContent>
@@ -101,12 +110,14 @@
 					{/if}
 				</Button>
 				{#each navItems as item}
-					<Button variant="ghost" class="justify-start mb-2" href={item.href}>
-						<item.icon class="h-5 w-5" />
-						{#if sidebarExpanded}
-							<span class="ml-4">{item.label}</span>
-						{/if}
-					</Button>
+					{#if isPrivilegedEnough(user?.role, item.role)}
+						<Button variant="ghost" class="justify-start mb-2" href={item.href}>
+							<item.icon class="h-5 w-5" />
+							{#if sidebarExpanded}
+								<span class="ml-4">{item.label}</span>
+							{/if}
+						</Button>
+					{/if}
 				{/each}
 			</nav>
 		</aside>
