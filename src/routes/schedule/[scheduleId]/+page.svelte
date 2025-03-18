@@ -44,7 +44,7 @@
 	import { onMount } from "svelte";
 	import { PB } from "@/lib/stores/pocketbase.svelte";
 	import { emptySchedule, type Schedule } from "@/lib/types/Schedule";
-	import type { User } from "@/lib/types/User";
+	import { emptyUser, isPrivilegedEnough, type User } from "@/lib/types/User";
 
 	let availableOrganizers = $state<Array<User>>([]);
 	let schedule = $state<Schedule>(emptySchedule);
@@ -63,8 +63,10 @@
 	let editedLocation: string = $state("");
 
 	let schedules: Array<Schedule & { isEditing: boolean }> = $state([]);
+	let user: User = $state(emptyUser);
 
 	onMount(async () => {
+		user = PB.getCurrentUser();
 		const readSchedule = await PB.getSchedule($page.params.scheduleId);
 		schedule = readSchedule;
 
@@ -166,9 +168,11 @@
 		<CardTitle class="flex items-center justify-between">
 			{#if !isEditing}
 				<h1 class="text-2xl font-bold">{schedule?.course.title}</h1>
-				<Button onclick={startEditing} variant="outline"
-					>Bearbeiten</Button
-				>
+				{#if isPrivilegedEnough(user?.role, "Moderator")}
+					<Button onclick={startEditing} variant="outline"
+						>Bearbeiten</Button
+					>
+				{/if}
 			{:else}
 				<h1 class="text-2xl font-bold">Termin bearbeiten</h1>
 				<div class="space-x-2">

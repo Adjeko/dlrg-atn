@@ -107,7 +107,7 @@
 					{#each yearCourses as schedule}
 						
 						<li class="flex flex-col p-3 bg-secondary rounded-lg">
-							<a href="/course/{schedule.id}">
+							<a href="/schedule/{schedule.id}">
 								<div class="flex items-center justify-between">
 									<div class="flex items-center space-x-4">
 										<div class="p-2 bg-primary rounded-full">

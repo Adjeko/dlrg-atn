@@ -46,6 +46,19 @@
 		PB.instance.authStore.clear();
 		goto('/login', { replaceState: true });
 	}
+
+	function getInitials(inputString: string) {
+    	// Entfernt zusätzliche Leerzeichen am Anfang oder Ende
+    	inputString = inputString.trim();
+
+    	// Teilt den String in einzelne Wörter
+    	const words = inputString.split(' ');
+
+    	// Erstellt die Initialen
+    	const initials = words.map(word => word.charAt(0).toUpperCase()).join('');
+
+    	return initials;
+	}
 </script>
 
 <div class="flex h-screen bg-gray-100">
@@ -131,16 +144,15 @@
 					<DropdownMenuTrigger>
 						<Button variant="ghost" class="relative h-8 w-8 rounded-full">
 							<Avatar class="h-8 w-8">
-								<AvatarImage src="https://github.com/shadcn.png" alt="User" />
-								<AvatarFallback>U</AvatarFallback>
+								<AvatarFallback>{getInitials(user?.name)}</AvatarFallback>
 							</Avatar>
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent class="w-56" align="end">
 						<DropdownMenuLabel class="font-normal">
 							<div class="flex flex-col space-y-1">
-								<p class="text-sm font-medium leading-none">John Doe</p>
-								<p class="text-xs leading-none text-muted-foreground">john@example.com</p>
+								<p class="text-sm font-medium leading-none">{user?.name}</p>
+								<p class="text-xs leading-none text-muted-foreground">{user?.email}</p>
 							</div>
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />

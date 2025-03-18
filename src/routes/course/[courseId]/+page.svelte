@@ -44,7 +44,7 @@
 	import { onMount } from "svelte";
 	import { PB } from "@/lib/stores/pocketbase.svelte";
 	import { emptySchedule, type Schedule } from "@/lib/types/Schedule";
-	import type { User } from "@/lib/types/User";
+	import { emptyUser, isPrivilegedEnough, type User } from "@/lib/types/User";
     import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/lib/components/ui/dialog";
 	import QrCode from "svelte-qrcode"
 
@@ -68,7 +68,10 @@
 
 	let schedules: Array<Schedule & { isEditing: boolean }> = $state([]);
 
+	let user: User = $state(emptyUser);
+
 	onMount(async () => {
+		user = PB.getCurrentUser();
 		const course = await PB.getSchedule($page.params.courseId);
 		courses = course;
 
@@ -182,9 +185,11 @@
 		<CardTitle class="flex items-center justify-between">
 			{#if !isEditing}
 				<h1 class="text-2xl font-bold">{courses?.course.title}</h1>
-				<Button onclick={startEditing} variant="outline"
-					>Bearbeiten</Button
-				>
+				{#if isPrivilegedEnough(user?.role, "Moderator")}
+					<Button onclick={startEditing} variant="outline"
+						>Bearbeiten</Button
+					>
+				{/if}
 			{:else}
 				<h1 class="text-2xl font-bold">Kurs bearbeiten</h1>
 				<div class="space-x-2">
@@ -253,14 +258,16 @@
 				<div class="space-y-4">
 					<div class="flex items-center justify-between">
 						<h3 class="text-lg font-semibold">Termine</h3>
-						<Button
-							type="button"
-							variant="outline"
-							onclick={addSchedule}
-						>
-							<Plus class="size-4 mr-2" />
-							Termin hinzufügen
-						</Button>
+						{#if isPrivilegedEnough(user?.role, "Moderator")}
+							<Button
+								type="button"
+								variant="outline"
+								onclick={addSchedule}
+							>
+								<Plus class="size-4 mr-2" />
+								Termin hinzufügen
+							</Button>
+						{/if}
 					</div>
 
 					{#if schedules.length === 0}
@@ -418,9 +425,11 @@
 										</div>
 						
 										<!-- Edit Button -->
-										<Button variant="ghost" size="icon" class="size-9" onclick={() => session.isEditing = true}>
-											<PencilIcon class="size-4" />
-										</Button>
+										{#if isPrivilegedEnough(user?.role, "Moderator")}
+											<Button variant="ghost" size="icon" class="size-9" onclick={() => session.isEditing = true}>
+												<PencilIcon class="size-4" />
+											</Button>
+										{/if}
 									</div>
 								</div>
 							</CardContent>
