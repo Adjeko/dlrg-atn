@@ -53,10 +53,12 @@ export class PocketBaseStore {
         return schedules;
     }
 
-    async getPDFEntries() : Promise<Schedule[]> {
+    async getPDFEntries(start : Date, end : Date) : Promise<Schedule[]> {
+        console.log(start, end);
         const user = this.getCurrentUser();
         const schedulesFromServer = await this.instance.collection("schedule").getFullList({
             expand: 'course, course.creator, attendees, organizers',
+            filter: `startDateTime >= '${start}' && endDateTime <= '${end}'`,
         });
 
         const schedules: Schedule[] = schedulesFromServer

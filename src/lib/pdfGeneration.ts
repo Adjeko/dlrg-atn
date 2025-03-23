@@ -8,12 +8,14 @@ export function generateStyledPDF(schedules: Schedule[]) {
 
      // Überschrift hinzufügen
      doc.setFontSize(20);
-     doc.text("Ausbildungs- und Tätigkeitsnachweis", 50, 20);
+     doc.text("Ausbildungs- und Tätigkeitsnachweis", 50, 16);
+     doc.setFontSize(12);
+     doc.text("von Dez.2024 bis Mai.2025", 50, 21);
 
     // Briefkopf
     doc.addImage(logo, "PNG", 10, 10, 30, 30); // Logo hinzufügen
     doc.setFontSize(16);
-    doc.text("Herbert Pietrzyk", 50, 30);
+    doc.text("Herbert Pietrzyk", 50, 35);
     doc.setFontSize(12);
     doc.text("Herbert.Pietrzyk@gmail.com", 50, 40);
 

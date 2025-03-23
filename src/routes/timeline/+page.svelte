@@ -13,10 +13,15 @@
 	import { Html5Qrcode } from 'html5-qrcode';
     import QrScanner from "./qrScanner.svelte";
 	import { generateStyledPDF } from "@/lib/pdfGeneration";
+	import { Label } from "$lib/components/ui/label";
+	import { Input } from "$lib/components/ui/input";
 
 	let courses = $state<Schedule[]>([]);
 	let qrDialogOpen = $state(false);
 	let pdfDialogOpen = $state(false);
+
+	let pdfStartDate = $state(new Date(new Date().getFullYear(), 0, 2).toISOString().slice(0, 7));
+	let pdfEndDate = $state(new Date(new Date().getFullYear(), 11, 31).toISOString().slice(0, 7));
 
 	// Group courses by year
 	let groupedCourses = $derived(
@@ -53,7 +58,7 @@
 
 	async function createPDF() {
 		// TODO lies die Argumente aus dem Dialog
-		const schedules : Schedule[] = await PB.getPDFEntries();
+		const schedules : Schedule[] = await PB.getPDFEntries(pdfStartDate, pdfEndDate);
 		generateStyledPDF(schedules);
 	}
 </script>
@@ -112,12 +117,30 @@
 					Erstelle ein PDF
 				</Button>
 			</DialogTrigger>
-			<DialogContent class="h-[500px]">
+			<DialogContent class="">
 				<DialogHeader>
 					<DialogTitle>Exportiere einen PDF Bericht</DialogTitle>
 				</DialogHeader>
 				{#if pdfDialogOpen}
-					<p>WAS GEHHT?</p>
+				<div
+				class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div class="space-y-2">
+					<Label for="pdfStartDate">Startdatum</Label>
+					<Input
+						id="pdfStartDate"
+						type="month"
+						bind:value={pdfStartDate}
+					/>
+				</div>
+				<div class="space-y-2">
+					<Label for="pdfEndDate">Enddatum</Label>
+					<Input
+						id="pdfEnddate"
+						type="month"
+						bind:value={pdfEndDate}
+					/>
+				</div>
+			</div>
 					<button onclick={createPDF}>Bericht generieren</button>
 				{/if}
 			</DialogContent>
