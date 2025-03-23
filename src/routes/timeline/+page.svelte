@@ -141,7 +141,7 @@
 					/>
 				</div>
 			</div>
-					<button onclick={createPDF}>Bericht generieren</button>
+					<Button onclick={createPDF}>Bericht generieren</Button>
 				{/if}
 			</DialogContent>
 		</Dialog>
