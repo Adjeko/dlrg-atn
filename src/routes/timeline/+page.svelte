@@ -4,7 +4,7 @@
 	import { Card, CardContent, CardHeader, CardTitle } from "$lib/components/ui/card";
 	import { Button } from "$lib/components/ui/button";
 	import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "$lib/components/ui/dialog";
-	import { Book, Code, Palette, Stethoscope, Calculator, Calendar, QrCode, Trophy, Star, Tag } from "lucide-svelte";
+	import { Book, Code, Palette, Stethoscope, Calculator, Calendar, QrCode, Trophy, Star, Tag, FileText } from "lucide-svelte";
 	import { Separator } from "$lib/components/ui/separator";
 	import { Badge } from "$lib/components/ui/badge";
 	import { onMount } from "svelte";
@@ -12,9 +12,11 @@
     import type { Schedule } from "@/lib/types/Schedule";
 	import { Html5Qrcode } from 'html5-qrcode';
     import QrScanner from "./qrScanner.svelte";
+	import { generateStyledPDF } from "@/lib/pdfGeneration";
 
 	let courses = $state<Schedule[]>([]);
 	let qrDialogOpen = $state(false);
+	let pdfDialogOpen = $state(false);
 
 	// Group courses by year
 	let groupedCourses = $derived(
@@ -49,6 +51,11 @@
 		courses = schedules;
 	});
 
+	async function createPDF() {
+		// TODO lies die Argumente aus dem Dialog
+		const schedules : Schedule[] = await PB.getPDFEntries();
+		generateStyledPDF(schedules);
+	}
 </script>
 
 <Card class="w-full max-w-2xl mx-auto">
@@ -94,6 +101,24 @@
 				</DialogHeader>
 				{#if qrDialogOpen}
 					<QrScanner bind:dialogOpen={qrDialogOpen} />
+				{/if}
+			</DialogContent>
+		</Dialog>
+
+		<Dialog bind:open={pdfDialogOpen}>
+			<DialogTrigger>
+				<Button class="mt-4 w-full">
+					<FileText class="w-4 h-4 mr-2" />
+					Erstelle ein PDF
+				</Button>
+			</DialogTrigger>
+			<DialogContent class="h-[500px]">
+				<DialogHeader>
+					<DialogTitle>Exportiere einen PDF Bericht</DialogTitle>
+				</DialogHeader>
+				{#if pdfDialogOpen}
+					<p>WAS GEHHT?</p>
+					<button onclick={createPDF}>Bericht generieren</button>
 				{/if}
 			</DialogContent>
 		</Dialog>

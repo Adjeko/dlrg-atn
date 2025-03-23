@@ -38,6 +38,8 @@
   },
   "dependencies": {
     "html5-qrcode": "^2.3.8",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
     "lucide-svelte": "^0.460.1",
     "manifest": "^4.0.5",
     "pocketbase": "^0.22.0",

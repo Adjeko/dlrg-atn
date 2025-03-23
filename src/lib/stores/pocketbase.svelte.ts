@@ -44,12 +44,25 @@ export class PocketBaseStore {
         const user = this.getCurrentUser();
         const schedulesFromServer = await this.instance.collection("schedule").getFullList({
 			expand: 'course, course.creator, attendees, organizers',
-			// filter: `course = ${PB().authStore.model.id}`,
 		});
 
         const schedules: Schedule[] = schedulesFromServer
             .map((schedule): Schedule | undefined => toSchedule(schedule))
-            .filter((schedule): schedule is Schedule => schedule !== undefined);
+            .filter((schedule): schedule is Schedule => schedule !== undefined)
+            .filter((schedule) => schedule.participants?.some((participant) => participant.id === user?.id));
+        return schedules;
+    }
+
+    async getPDFEntries() : Promise<Schedule[]> {
+        const user = this.getCurrentUser();
+        const schedulesFromServer = await this.instance.collection("schedule").getFullList({
+            expand: 'course, course.creator, attendees, organizers',
+        });
+
+        const schedules: Schedule[] = schedulesFromServer
+            .map((schedule): Schedule | undefined => toSchedule(schedule))
+            .filter((schedule): schedule is Schedule => schedule !== undefined)
+            .filter((schedule) => schedule.participants?.some((participant) => participant.id === user?.id));
         return schedules;
     }
 
