@@ -9,6 +9,7 @@
     import { PB } from "@/lib/stores/pocketbase.svelte";
     import { onMount } from 'svelte';
     import { emptyUser, isPrivilegedEnough, type User } from '@/lib/types/User';
+	import {logo} from "@/lib/logo";
 
 
 	let { children } = $props();
@@ -63,7 +64,7 @@
 
 <div class="flex h-screen bg-gray-100">
 	{#if isMobile}
-		<header class="fixed top-0 left-0 right-0 bg-white shadow-sm p-4 flex justify-between items-center z-10">
+		<header class="fixed top-0 left-0 right-0 bg-white shadow-sm flex justify-between items-center z-10 pr-4">
 			<Sheet>
 				<SheetTrigger>
 					<Button variant="outline" size="icon">
@@ -83,13 +84,15 @@
 					</nav>
 				</SheetContent>
 			</Sheet>
-			<h1 class="text-xl font-semibold">Dashboard</h1>
+			<div class="flex items-center gap-4">
+				<img src={logo} alt="Logo" class="h-20 w-auto" />
+				<h1 class="text-l font-bold text-[#e30613]">Ausbildungs- und<br />Tätigskeitsnachweis</h1>
+			</div>
 			<DropdownMenu>
 				<DropdownMenuTrigger>
 					<Button variant="ghost" class="relative h-8 w-8 rounded-full">
-						<Avatar class="h-8 w-8">
-							<AvatarImage src="https://github.com/shadcn.png" alt="User" />
-							<AvatarFallback>U</AvatarFallback>
+						<Avatar class="h-10 w-10">
+							<AvatarFallback>{getInitials(user?.name)}</AvatarFallback>
 						</Avatar>
 					</Button>
 				</DropdownMenuTrigger>
@@ -114,8 +117,8 @@
 		</header>
 	{:else}
 		<aside class="{sidebarExpanded ? 'w-64' : 'w-20'} transition-all duration-300 ease-in-out bg-white shadow-md">
-			<nav class="flex flex-col h-full p-4">
-				<Button variant="ghost" onclick={toggleSidebar} class="self-end mb-6">
+			<nav class="flex flex-col h-full p-2">
+				<Button variant="ghost" onclick={toggleSidebar} class="self-end mb-24">
 					{#if sidebarExpanded}
 						<ChevronLeft />
 					{:else}
@@ -124,8 +127,8 @@
 				</Button>
 				{#each navItems as item}
 					{#if isPrivilegedEnough(user?.role, item.role)}
-						<Button variant="ghost" class="justify-start mb-2" href={item.href}>
-							<item.icon class="h-5 w-5" />
+						<Button variant="ghost" class="justify-start mb-4" href={item.href}>
+							<item.icon class="h-6 w-6" />
 							{#if sidebarExpanded}
 								<span class="ml-4">{item.label}</span>
 							{/if}
@@ -138,12 +141,15 @@
 
 	<main class="flex-1 flex flex-col overflow-hidden {isMobile ? 'pt-16' : ''}">
 		{#if !isMobile}
-			<header class="bg-white shadow-sm p-4 flex justify-between items-center">
-				<h1 class="text-xl font-semibold">Dashboard</h1>
+			<header class="bg-white shadow-sm flex justify-between items-center pr-4">
+				<div class="flex items-center gap-4">
+					<img src={logo} alt="Logo" class="h-20 w-auto" />
+					<h1 class="text-xl font-bold text-[#e30613]">Ausbildungs- und<br />Tätigskeitsnachweis</h1>
+				</div>				
 				<DropdownMenu>
 					<DropdownMenuTrigger>
 						<Button variant="ghost" class="relative h-8 w-8 rounded-full">
-							<Avatar class="h-8 w-8">
+							<Avatar class="h-10 w-10">
 								<AvatarFallback>{getInitials(user?.name)}</AvatarFallback>
 							</Avatar>
 						</Button>

@@ -23,7 +23,7 @@
 		Stethoscope,
 		Calculator,
 		Calendar,
-		QrCode,
+		CirclePlus,
 		Trophy,
 		Star,
 		Tag,
@@ -144,13 +144,13 @@
 
 <Card class="w-full max-w-2xl mx-auto">
 	<CardHeader>
-		<CardTitle>Course Dashboard</CardTitle>
+		<CardTitle>Von dir erstellte oder verwaltete Kurse</CardTitle>
 	</CardHeader>
 	<CardContent>
 		<Dialog bind:open={dialogIsOpen}>
 			<DialogTrigger>
-				<Button class="mt-4 w-full">
-					<QrCode class="w-4 h-4 mr-2" />
+				<Button class="w-full bg-[#e30613]">
+					<CirclePlus class="w-4 h-4 mr-2" />
 					Erstelle einen neuen Kurs
 				</Button>
 			</DialogTrigger>
@@ -328,46 +328,47 @@
 			</DialogContent>
 		</Dialog>
 
-		<h3 class="text-lg font-semibold my-4">Available Courses</h3>
-		{#each Object.entries(groupedCourses).sort(([a], [b]) => b - a) as [year, yearCourses]}
-			<div class="mb-4">
-				<h4 class="text-md font-semibold mb-2">{year}</h4>
-				<Separator class="mb-2" />
-				<ul class="space-y-4">
-					{#each yearCourses as schedule}
-						
-						<li class="flex flex-col p-3 bg-secondary rounded-lg">
-							<a href="/course/{schedule.id}">
-								<div class="flex items-center justify-between">
-									<div class="flex items-center space-x-4">
-										<div class="p-2 bg-primary rounded-full">
-											<Code class="w-5 h-5 text-primary-foreground" />
-										</div>
-										<div>
-											<h3 class="font-semibold">{schedule.course.title}</h3>
-											<p class="text-sm text-muted-foreground">{schedule.course.shortDescription}</p>
-											<div class="flex items-center mt-1 text-xs text-muted-foreground">
-												<Calendar class="w-3 h-3 mr-1" />
-												{formatDateRange(schedule.startDateTime, schedule.endDateTime)}
+		<div class="my-5">
+			{#each Object.entries(groupedCourses).sort(([a], [b]) => b - a) as [year, yearCourses]}
+				<div class="mb-4">
+					<h4 class="text-md font-semibold mb-2">{year}</h4>
+					<Separator class="mb-2" />
+					<ul class="space-y-4">
+						{#each yearCourses as schedule}
+
+							<li class="flex flex-col p-3 bg-secondary rounded-lg">
+								<a href="/course/{schedule.id}">
+									<div class="flex items-center justify-between">
+										<div class="flex items-center space-x-4">
+											<div class="p-2 bg-primary rounded-full">
+												<Code class="w-5 h-5 text-primary-foreground" />
+											</div>
+											<div>
+												<h3 class="font-semibold">{schedule.course.title}</h3>
+												<p class="text-sm text-muted-foreground">{schedule.course.shortDescription}</p>
+												<div class="flex items-center mt-1 text-xs text-muted-foreground">
+													<Calendar class="w-3 h-3 mr-1" />
+													{formatDateRange(schedule.startDateTime, schedule.endDateTime)}
+												</div>
 											</div>
 										</div>
+										<span class="text-lg font-bold">{schedule.points}</span>
 									</div>
-									<span class="text-lg font-bold">{schedule.points}</span>
-								</div>
-								<div class="mt-2 flex flex-wrap gap-2">
-									{#each schedule.category as category}
-										<Badge variant="secondary" class="flex items-center">
-											<Tag class="w-3 h-3 mr-1" />
-											{category}
-										</Badge>
-									{/each}
-								</div>
-							</a>
-						</li>
-						
-					{/each}
-				</ul>
-			</div>
-		{/each}
+									<div class="mt-2 flex flex-wrap gap-2">
+										{#each schedule.category as category}
+											<Badge variant="secondary" class="flex items-center">
+												<Tag class="w-3 h-3 mr-1" />
+												{category}
+											</Badge>
+										{/each}
+									</div>
+								</a>
+							</li>
+
+						{/each}
+					</ul>
+				</div>
+			{/each}
+		</div>
 	</CardContent>
 </Card>
