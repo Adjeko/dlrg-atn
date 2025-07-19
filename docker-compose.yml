@@ -9,7 +9,7 @@ services:
     volumes:
       - ./dockervolumes1/data:/data
       - ./dockervolumes1/config:/config
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./CaddyFile:/etc/caddy/Caddyfile:ro
     networks:
       - proxy-network
 
