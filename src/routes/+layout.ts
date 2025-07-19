@@ -7,6 +7,8 @@ export const load = async ({ url }) => {
     const publicRoutes = ['/login', '/register']; // Erlaubte öffentliche Routen
     const isPublicRoute = publicRoutes.includes(url.pathname);   
 
+    console.log(PB.instance.authStore.isValid);
+
     if (!isPublicRoute && !PB.instance.authStore.isValid) {
         // Clientseitige Weiterleitung
         goto('/login');

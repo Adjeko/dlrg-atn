@@ -63,8 +63,50 @@
 </script>
 
 <div class="flex h-screen bg-gray-100">
-	{#if isMobile}
-		<header class="fixed top-0 left-0 right-0 bg-white shadow-sm flex justify-between items-center z-10 pr-4">
+	
+
+	<main class="flex-1 flex flex-col overflow-hidden {isMobile ? 'pt-16' : ''}">
+		{#if !isMobile}
+			<header class="bg-white shadow-sm flex justify-between items-center pr-4">
+				<div class="flex items-center gap-4">
+					<img src={logo} alt="Logo" class="h-20 w-auto" />
+					<h1 class="text-xl font-bold text-[#e30613]">Ausbildungs- und<br />Tätigskeitsnachweis</h1>
+				</div>				
+				<DropdownMenu>
+					<DropdownMenuTrigger>
+						<Button variant="ghost" class="relative h-8 w-8 rounded-full">
+							<Avatar class="h-10 w-10">
+								<AvatarFallback>{getInitials(user?.name)}</AvatarFallback>
+							</Avatar>
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent class="w-56" align="end">
+						<DropdownMenuLabel class="font-normal">
+							<div class="flex flex-col space-y-1">
+								<p class="text-sm font-medium leading-none">{user?.name}</p>
+								<p class="text-xs leading-none text-muted-foreground">{user?.email}</p>
+							</div>
+						</DropdownMenuLabel>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem>
+							<Settings class="mr-2 h-4 w-4" />
+							<span>Settings</span>
+						</DropdownMenuItem>
+						<DropdownMenuItem onclick={logout}>
+							<LogOut class="mr-2 h-4 w-4" />
+							<span>Log out</span>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			</header>
+		{/if}
+
+		<div class="flex-1 overflow-auto h-full">
+
+			<div class="flex h-full">
+				<div class="{sidebarExpanded ? 'w-64' : 'w-20'} h-full border-r border-gray-200">
+					{#if isMobile}
+		<header class="fixed top-0 left-0 right-0 bg-white shadow-sm flex justify-between items-center z-10 px-4">
 			<Sheet>
 				<SheetTrigger>
 					<Button variant="outline" size="icon">
@@ -115,8 +157,8 @@
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</header>
-	{:else}
-		<aside class="{sidebarExpanded ? 'w-64' : 'w-20'} transition-all duration-300 ease-in-out bg-white shadow-md">
+			{:else}
+		<aside class="{sidebarExpanded ? 'w-64' : 'w-20'} transition-all duration-300 ease-in-out bg-white shadow-md h-full">
 			<nav class="flex flex-col h-full p-2">
 				<Button variant="ghost" onclick={toggleSidebar} class="self-end mb-24">
 					{#if sidebarExpanded}
@@ -137,45 +179,13 @@
 				{/each}
 			</nav>
 		</aside>
-	{/if}
-
-	<main class="flex-1 flex flex-col overflow-hidden {isMobile ? 'pt-16' : ''}">
-		{#if !isMobile}
-			<header class="bg-white shadow-sm flex justify-between items-center pr-4">
-				<div class="flex items-center gap-4">
-					<img src={logo} alt="Logo" class="h-20 w-auto" />
-					<h1 class="text-xl font-bold text-[#e30613]">Ausbildungs- und<br />Tätigskeitsnachweis</h1>
-				</div>				
-				<DropdownMenu>
-					<DropdownMenuTrigger>
-						<Button variant="ghost" class="relative h-8 w-8 rounded-full">
-							<Avatar class="h-10 w-10">
-								<AvatarFallback>{getInitials(user?.name)}</AvatarFallback>
-							</Avatar>
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent class="w-56" align="end">
-						<DropdownMenuLabel class="font-normal">
-							<div class="flex flex-col space-y-1">
-								<p class="text-sm font-medium leading-none">{user?.name}</p>
-								<p class="text-xs leading-none text-muted-foreground">{user?.email}</p>
-							</div>
-						</DropdownMenuLabel>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem>
-							<Settings class="mr-2 h-4 w-4" />
-							<span>Settings</span>
-						</DropdownMenuItem>
-						<DropdownMenuItem onclick={logout}>
-							<LogOut class="mr-2 h-4 w-4" />
-							<span>Log out</span>
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
-			</header>
-		{/if}
-		<div class="flex-1 overflow-auto p-6">
-			{@render children()}
+			{/if}
+				</div>
+				<div class="w-full h-full">
+					{@render children()}
+				</div>
+			</div>
+			
 		</div>
 	</main>
 </div>

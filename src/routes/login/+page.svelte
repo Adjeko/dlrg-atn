@@ -46,6 +46,7 @@
 	async function login(email : string, password : string) {
 		try {
 			const record = await PB.instance.collection('users').authWithPassword(email.toLowerCase(), password)
+			console.log(record)
 		}
 		catch (error : any) {
 			if (error.status === 400) {
