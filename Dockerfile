@@ -26,4 +26,4 @@ USER node:node
 
 # This is the command that will be run inside the image when you tell Docker to start the container
 EXPOSE 3000
-CMD ["node","build/index.js"]
+CMD ["npm","run","preview"]
