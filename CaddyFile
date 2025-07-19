@@ -1,0 +1,11 @@
+dlrgatn.de {
+    reverse_proxy dlrgWeb:3000
+}
+
+www.dlrgatn.de {
+    redir https://dlrgatn.de{uri}
+}
+
+db.dlrgatn.de {
+    reverse_proxy pocketbase:8090
+}
