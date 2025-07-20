@@ -12,8 +12,6 @@ WORKDIR /app
 # Copy all local files into the image
 COPY . .
 
-RUN rm -rf dockervolumes1/
-
 # Clean install all node modules
 RUN npm ci
 
