@@ -30,6 +30,7 @@ COPY --from=builder /app/.svelte-kit ./svelte-kit
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/static ./static
 COPY --from=builder /app/tsconfig.json ./
+COPY --from=builder /app/tsconfig.json ./svelte-kit/tsconfig.json
 COPY --from=builder /app/svelte.config.js ./
 
 # Nur Produktions-Abhängigkeiten installieren
