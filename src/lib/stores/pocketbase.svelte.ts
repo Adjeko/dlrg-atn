@@ -6,7 +6,7 @@ import { emptySchedule, toSchedule, type Schedule } from '../types/Schedule';
 export class PocketBaseStore {
     // instance: PocketBase = new PocketBase('http://127.0.0.1:8090');
     // instance: PocketBase = new PocketBase('http://192.168.68.69:8090');
-    instance: PocketBase = new PocketBase('http://db.dlrgatn.de');
+    instance: PocketBase = new PocketBase('https://db.dlrgatn.de');
 
     getCurrentUser(): User {
         const user = toUser(this.instance.authStore.record);
