@@ -62,7 +62,7 @@
 <div class="flex min-h-screen items-center justify-center bg-gray-100">
 	<div class="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow-md">
 		<div class="text-center">
-			<h2 class="mt-6 text-3xl font-bold text-gray-900">Konto erstellen</h2>
+			<h2 class="mt-6 text-3xl font-bold text-gray-900">Anmelden</h2>
 		</div>
 		<form onsubmit={handleSubmit} class="mt-8 space-y-6">
 			<div class="space-y-4">
