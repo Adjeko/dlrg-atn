@@ -9,7 +9,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "eslint .",
-    "pocketbase": ".\\pocketbase\\pocketbase.exe serve --http=\"192.168.68.69:8090\" ",
+    "pocketbase": ".\\pocketbase\\pocketbase.exe serve --http=\"192.168.68.53:8090\" ",
     "seed-pocketbase": "node scripts\\seed-pocketbase.js"
   },
   "devDependencies": {
