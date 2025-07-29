@@ -16,7 +16,7 @@ export function generateStyledPDF(user : User, start : Date, end : Date, schedul
      doc.setFontSize(20);
      doc.text("Ausbildungs- und Tätigkeitsnachweis", 50, 16);
      doc.setFontSize(12);
-     doc.text(`von ${start.toLocaleString('de-DE', { month: 'long'})}. ${start.toLocaleString('de-DE', { year: 'numeric'})} bis ${end.toLocaleString('de-DE', { month: 'long'})}. ${end.toLocaleString('de-DE', { year: 'numeric'})}`, 50, 21);
+     doc.text(`von ${start.toLocaleString('de-DE', { month: 'long'})} ${start.toLocaleString('de-DE', { year: 'numeric'})} bis ${end.toLocaleString('de-DE', { month: 'long'})} ${end.toLocaleString('de-DE', { year: 'numeric'})}`, 50, 21);
 
     // Briefkopf
     doc.addImage(logo, "PNG", 10, 10, 30, 30); // Logo hinzufügen

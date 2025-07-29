@@ -36,8 +36,8 @@
 	);
 
 	// Statistics
-	let joinedCourses = $state(3);
-	let totalPoints = $state(265);
+	let joinedCourses = $derived(courses?.length);
+	let totalPoints = $derived(courses?.reduce((acc, course) => acc + course.points, 0));
 
 	function formatDateRange(start : Date, end : Date) {
 		const format = { month: "short", day: "numeric", hour: "numeric", minute: "numeric", hour12: false };
