@@ -51,6 +51,8 @@ export class PocketBaseStore {
             .map((schedule): Schedule | undefined => toSchedule(schedule))
             .filter((schedule): schedule is Schedule => schedule !== undefined)
             .filter((schedule) => schedule.participants?.some((participant) => participant.id === user?.id));
+
+            console.log(schedules);
         return schedules;
     }
 
