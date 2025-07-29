@@ -4,7 +4,12 @@ import type { Schedule } from "./types/Schedule";
 import { logo } from "./logo";
 import type { User } from "./types/User";
 
-export function generateStyledPDF(user : User, start : Date, end : Date,schedules: Schedule[]) {
+export function generateStyledPDF(user : User, start : Date, end : Date, schedules: Schedule[]) {
+
+    // konvertiere die Start- und Enddaten in Date-Objekte, falls sie noch keine sind
+    start = new Date(start);
+    end = new Date(end);
+    
     const doc = new jsPDF();
 
      // Überschrift hinzufügen
