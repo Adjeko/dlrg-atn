@@ -75,7 +75,7 @@
 					<div class="flex items-center justify-between">
 						<div class="flex flex-col">
 							<span class="text-2xl font-bold">{joinedCourses}</span>
-							<span class="text-sm text-muted-foreground">Courses Joined</span>
+							<span class="text-sm text-muted-foreground">Kurse beigetreten</span>
 						</div>
 						<Trophy class="w-8 h-8 text-yellow-400" />
 					</div>
@@ -86,7 +86,7 @@
 					<div class="flex items-center justify-between">
 						<div class="flex flex-col">
 							<span class="text-2xl font-bold">{totalPoints}</span>
-							<span class="text-sm text-muted-foreground">Total Points</span>
+							<span class="text-sm text-muted-foreground">Punkte gesamt</span>
 						</div>
 						<Star class="w-8 h-8 text-yellow-400" />
 					</div>
@@ -116,7 +116,7 @@
 				<DialogTrigger>
 					<Button class="w-full bg-[#e30613]">
 						<FileText class="w-4 h-4 mr-2" />
-						Erstelle eine Übersicht
+						Erstelle eine Bericht
 					</Button>
 				</DialogTrigger>
 				<DialogContent>

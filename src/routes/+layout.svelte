@@ -39,7 +39,7 @@
 		{ icon: CircleAlert, label: "Dashboard", href: "/timeline", role: "Mitglied" },
 		{ icon: ChevronRight, label: "Meine Kurse", href: "/createdCourses", role: "Moderator" },
 		{ icon: Users, label: "Users", href: "/admin", role: "Admin" },
-		{ icon: Settings, label: "Settings", href: "/settings", role: "Mitglied" },
+		// { icon: Settings, label: "Settings", href: "/settings", role: "Mitglied" },
 	];
 
 	function logout(event: Event){
@@ -88,10 +88,10 @@
 							</div>
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>
+						<!-- <DropdownMenuItem>
 							<Settings class="mr-2 h-4 w-4" />
 							<span>Settings</span>
-						</DropdownMenuItem>
+						</DropdownMenuItem> -->
 						<DropdownMenuItem onclick={logout}>
 							<LogOut class="mr-2 h-4 w-4" />
 							<span>Log out</span>
@@ -146,10 +146,10 @@
 						</div>
 					</DropdownMenuLabel>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem>
+					<!-- <DropdownMenuItem>
 						<Settings class="mr-2 h-4 w-4" />
 						<span>Settings</span>
-					</DropdownMenuItem>
+					</DropdownMenuItem> -->
 					<DropdownMenuItem>
 						<LogOut class="mr-2 h-4 w-4" />
 						<span>Log out</span>
