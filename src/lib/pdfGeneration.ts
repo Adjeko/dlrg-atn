@@ -2,22 +2,23 @@ import { jsPDF } from "jspdf";
 import { autoTable } from 'jspdf-autotable'
 import type { Schedule } from "./types/Schedule";
 import { logo } from "./logo";
+import type { User } from "./types/User";
 
-export function generateStyledPDF(schedules: Schedule[]) {
+export function generateStyledPDF(user : User, start : Date, end : Date,schedules: Schedule[]) {
     const doc = new jsPDF();
 
      // Überschrift hinzufügen
      doc.setFontSize(20);
      doc.text("Ausbildungs- und Tätigkeitsnachweis", 50, 16);
      doc.setFontSize(12);
-     doc.text("von Dez.2024 bis Mai.2025", 50, 21);
+     doc.text(`von ${start.toLocaleString('de-DE', { year: 'numeric', month: 'long'})} bis ${end.toLocaleString('de-DE', { year: 'numeric', month: 'long'})}`, 50, 21);
 
     // Briefkopf
     doc.addImage(logo, "PNG", 10, 10, 30, 30); // Logo hinzufügen
     doc.setFontSize(16);
-    doc.text("Herbert Pietrzyk", 50, 35);
+    doc.text(user.name, 50, 35);
     doc.setFontSize(12);
-    doc.text("Herbert.Pietrzyk@gmail.com", 50, 40);
+    doc.text(user.email, 50, 40);
 
     // Linie unter dem Briefkopf
     doc.line(10, 50, 200, 50);

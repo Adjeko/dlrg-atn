@@ -57,9 +57,10 @@
 	});
 
 	async function createPDF() {
-		// TODO lies die Argumente aus dem Dialog
 		const schedules : Schedule[] = await PB.getPDFEntries(pdfStartDate, pdfEndDate);
-		generateStyledPDF(schedules);
+		const user : User = PB.getCurrentUser();
+
+		generateStyledPDF(user, pdfStartDate, pdfEndDate, schedules);
 	}
 </script>
 
@@ -125,7 +126,7 @@
 					{#if pdfDialogOpen}
 						<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 							<div class="space-y-2">
-								<Label for="pdfStartDate">Startdatum</Label>
+								<Label for="pdfStartDate">Von</Label>
 								<Input
 									id="pdfStartDate"
 									type="month"
@@ -133,7 +134,7 @@
 								/>
 							</div>
 							<div class="space-y-2">
-								<Label for="pdfEndDate">Enddatum</Label>
+								<Label for="pdfEndDate">Bis</Label>
 								<Input
 									id="pdfEnddate"
 									type="month"
