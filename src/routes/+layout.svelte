@@ -141,8 +141,8 @@
 				<DropdownMenuContent class="w-56" align="end">
 					<DropdownMenuLabel class="font-normal">
 						<div class="flex flex-col space-y-1">
-							<p class="text-sm font-medium leading-none">John Doe</p>
-							<p class="text-xs leading-none text-muted-foreground">john@example.com</p>
+							<p class="text-sm font-medium leading-none">{user?.name}</p>
+							<p class="text-xs leading-none text-muted-foreground">{user?.email}</p>
 						</div>
 					</DropdownMenuLabel>
 					<DropdownMenuSeparator />
