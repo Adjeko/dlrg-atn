@@ -5,7 +5,7 @@
 	import { Avatar, AvatarImage, AvatarFallback } from "$lib/components/ui/avatar";
 	import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "$lib/components/ui/dropdown-menu";
 	import { Settings, Users, Menu, ChevronLeft, ChevronRight, LogOut, CircleAlert } from "lucide-svelte";;
-    import { goto } from "$app/navigation";	
+    import { afterNavigate, goto } from "$app/navigation";	
     import { PB } from "@/lib/stores/pocketbase.svelte";
     import { onMount } from 'svelte';
     import { emptyUser, isPrivilegedEnough, type User } from '@/lib/types/User';
@@ -30,6 +30,10 @@
 		window.addEventListener("resize", checkMobile);
 		return () => window.removeEventListener("resize", checkMobile);
 	});
+
+	afterNavigate((nav) => {
+		user = PB.getCurrentUser();
+	})
 
 	const toggleSidebar = () => {
 		sidebarExpanded = !sidebarExpanded;
