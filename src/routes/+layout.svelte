@@ -104,7 +104,7 @@
 		<div class="flex-1 overflow-auto h-full">
 
 			<div class="flex h-full">
-				<div class="{sidebarExpanded ? 'w-64' : 'w-20'} h-full border-r border-gray-200">
+				<div class="{isMobile ? 'w-0' : sidebarExpanded ? 'w-64' : 'w-20'} h-full border-r border-gray-200">
 					{#if isMobile}
 		<header class="fixed top-0 left-0 right-0 bg-white shadow-sm flex justify-between items-center z-10 px-4">
 			<Sheet>
@@ -158,7 +158,7 @@
 			</DropdownMenu>
 		</header>
 			{:else}
-		<aside class="{sidebarExpanded ? 'w-64' : 'w-20'} transition-all duration-300 ease-in-out bg-white shadow-md h-full">
+		<aside class=" transition-all duration-300 ease-in-out bg-white shadow-md h-full">
 			<nav class="flex flex-col h-full p-2">
 				<Button variant="ghost" onclick={toggleSidebar} class="self-end mb-24">
 					{#if sidebarExpanded}

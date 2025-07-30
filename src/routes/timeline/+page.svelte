@@ -99,7 +99,7 @@
 				<DialogTrigger>
 					<Button class="w-full bg-[#e30613]">
 						<QrCode class="w-4 h-4 mr-2" />
-						Kurs beitretten
+						Kurs beitreten
 					</Button>
 				</DialogTrigger>
 				<DialogContent class="h-[500px]">
