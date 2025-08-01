@@ -2,6 +2,7 @@
 import PocketBase from 'pocketbase';
 import { emptyUser, toUser, type User } from '../types/User';
 import { emptySchedule, toSchedule, type Schedule } from '../types/Schedule';
+import { toCourse, type Course } from '../types/Course';
 
 export class PocketBaseStore {
     // instance: PocketBase = new PocketBase('http://127.0.0.1:8090');
@@ -71,16 +72,21 @@ export class PocketBaseStore {
         return schedules;
     }
 
-    async getCreatedCourses() : Promise<Schedule[]> {
+    async getCreatedCourses() : Promise<Course[]> {
         const user = this.getCurrentUser();
-        const schedulesFromServer = await this.instance.collection("schedule").getFullList({
-            expand: 'course, course.creator, attendees, organizers',
+        const coursesFromServer = await this.instance.collection("course").getFullList({
+            expand: 'creator',
         });
 
-        const schedules: Schedule[] = schedulesFromServer
-            .map((schedule): Schedule | undefined => toSchedule(schedule))
-            .filter((schedule): schedule is Schedule => schedule !== undefined);
-        return schedules;
+        console.log
+        console.log("Courses From Server:",coursesFromServer);
+
+        const courses: Course[] = coursesFromServer
+            .map((course): Course | undefined => toCourse(course))
+            .filter((course): course is Course => course !== undefined);
+
+        console.log("ToCourses:", courses);
+        return courses;
     }
 
     async getAllUsers() : Promise<User[]> {

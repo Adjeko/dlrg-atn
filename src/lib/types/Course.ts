@@ -35,13 +35,13 @@ export const CourseSchema = z.object({
 export type Course = z.infer<typeof CourseSchema>;
 
 
-export function toCourse(object: any): Course | null {
+export function toCourse(object: any): Course | undefined {
     try {
         const course: Course = CourseSchema.parse(object);
         return course;
     } catch (error) {
         console.error("Validation failed:", error);
-        return null;
+        return undefined;
     }
 }
 

@@ -44,37 +44,54 @@
 		SelectValue,
 	} from "$lib/components/ui/select";
 	import { PB } from "@/lib/stores/pocketbase.svelte";
+    import { CourseSchema, toCourse } from "@/lib/types/Course";
 
 	let dialogIsOpen = $state(false);
 
-	let courses = $state<Schedule[]>([]);
+	let courses = $state<Course[]>([]);
 
 	// Group courses by year
 	let groupedCourses = $derived(
-		courses?.reduce((acc, course) => {
-			const year = course.startDateTime.getFullYear();
-			if (!acc[year]) {
-				acc[year] = [];
-			}
-			acc[year].push(course);
+		Object.entries(
+			courses?.reduce((acc, course) => {
+				const year = course.created.getFullYear();
+				if (!acc[year]) {
+					acc[year] = [];
+				}
+				acc[year].push(course);
+				return acc;
+			}, {})
+		)
+		// Sortiere die Jahre absteigend
+		.sort(([a], [b]) => Number(b) - Number(a))
+		// Innerhalb jedes Jahres: Kurse nach created absteigend sortieren (neueste zuerst)
+		.map(([year, courses]) => [
+			year,
+			courses.sort((a, b) => b.created - a.created)
+		])
+		// Wieder in ein Objekt umwandeln
+		.reduce((acc, [year, courses]) => {
+			acc[year] = courses;
 			return acc;
 		}, {})
 	);
 
+
+
 	onMount(async () => {
 		const user = PB.getCurrentUser();
-		const schedules : Schedule[] = await PB.getCreatedCourses();
+		const createdCourses : Course[] = await PB.getCreatedCourses();
 
-		courses = schedules;
+		courses = createdCourses;
 	});
 
 	function formatDateRange(start, end) {
 		const dateFormat = { month: "short", day: "numeric", year: "numeric" };
 		const timeFormat = { hour: "numeric", minute: "numeric", hour12: true };
 
-		const startDate = start.toLocaleDateString("en-US", dateFormat);
-		const startTime = start.toLocaleTimeString("en-US", timeFormat);
-		const endTime = end.toLocaleTimeString("en-US", timeFormat);
+		const startDate = start.toLocaleDateString("de-DE", dateFormat);
+		const startTime = start.toLocaleTimeString("de-DE", timeFormat);
+		const endTime = end.toLocaleTimeString("de-DE", timeFormat);
 
 		return `${startDate} ${startTime} - ${endTime}`;
 	}
@@ -127,8 +144,10 @@
 			creator: PB.instance.authStore.record?.id,
 		});
 
+		let createdSessions;
+
 		sessions.forEach(async (session) => {
-			await PB.instance.collection("schedule").create(
+			returnedSession =await PB.instance.collection("schedule").create(
 				{
 					course: createdCourse.id,
 					startDateTime: new Date(session.startDate),
@@ -138,7 +157,11 @@
 				},
 				{ requestKey: null },
 			);
+
+			createdSessions.push(returnedSession);
 		});
+
+		courses = [...courses, toCourse(createdCourse)];
 	}
 </script>
 
@@ -334,33 +357,26 @@
 					<h4 class="text-md font-semibold mb-2">{year}</h4>
 					<Separator class="mb-2" />
 					<ul class="space-y-4">
-						{#each yearCourses as schedule}
+						{#each yearCourses as course}
 
 							<li class="flex flex-col p-3 bg-secondary rounded-lg">
-								<a href="/course/{schedule.id}">
+								<a href="/course/{course.id}">
 									<div class="flex items-center justify-between">
 										<div class="flex items-center space-x-4">
 											<div class="p-2 bg-primary rounded-full">
 												<Code class="w-5 h-5 text-primary-foreground" />
 											</div>
 											<div>
-												<h3 class="font-semibold">{schedule.course.title}</h3>
-												<p class="text-sm text-muted-foreground">{schedule.course.shortDescription}</p>
-												<div class="flex items-center mt-1 text-xs text-muted-foreground">
-													<Calendar class="w-3 h-3 mr-1" />
-													{formatDateRange(schedule.startDateTime, schedule.endDateTime)}
-												</div>
+												<h3 class="font-semibold">{course.title}</h3>
+												<p class="text-sm text-muted-foreground">{course.shortDescription}</p>
 											</div>
 										</div>
-										<span class="text-lg font-bold">{schedule.points}</span>
 									</div>
 									<div class="mt-2 flex flex-wrap gap-2">
-										{#each schedule.category as category}
-											<Badge variant="secondary" class="flex items-center">
-												<Tag class="w-3 h-3 mr-1" />
-												{category}
-											</Badge>
-										{/each}
+										<Badge variant="secondary" class="flex items-center">
+											<Tag class="w-3 h-3 mr-1" />
+											{course.category}
+										</Badge>
 									</div>
 								</a>
 							</li>
