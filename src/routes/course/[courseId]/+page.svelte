@@ -47,9 +47,10 @@
 	import { emptyUser, isPrivilegedEnough, type User } from "@/lib/types/User";
     import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/lib/components/ui/dialog";
 	import QrCode from "svelte-qrcode"
+    import { emptyCourse, type Course } from "@/lib/types/Course";
 
 	let availableOrganizers = $state<Array<User>>([]);
-	let courses = $state<Schedule>(emptySchedule);
+	let course = $state<Course>(emptyCourse);
 
 	// Edit mode state
 	let isEditing: boolean = $state(false);
@@ -72,10 +73,10 @@
 
 	onMount(async () => {
 		user = PB.getCurrentUser();
-		const course = await PB.getSchedule($page.params.courseId);
-		courses = course;
+		const returnedCourse : Course = await PB.getCourse($page.params.courseId);
+		course = returnedCourse;
 
-		schedules = (await PB.getSchedules(course.course.id)).map(
+		schedules = (await PB.getSchedules(course.id)).map(
 			(schedule) => ({
 				...schedule,
 				isEditing: false,
@@ -89,13 +90,9 @@
 
 	/** Initialize edit form */
 	const startEditing = () => {
-		editedTitle = courses?.course.title ?? "";
-		editedShortDesc = courses?.course.shortDescription ?? "";
-		editedDesc = courses?.course.description ?? "";
-		editedStartDate =
-			courses?.startDateTime.toISOString().slice(0, 16) ?? "";
-		editedEndDate = courses?.endDateTime.toISOString().slice(0, 16) ?? "";
-		editedScore = courses?.points ?? 0;
+		editedTitle = course.title ?? "";
+		editedShortDesc = course.shortDescription ?? "";
+		editedDesc = course.description ?? "";
 		isEditing = true;
 	};
 
@@ -114,21 +111,17 @@
 
 		const returnedSchedule = await PB.instance
 			.collection("schedule")
-			.update(courses.id, updatedSchedule);
+			.update(course.id, updatedSchedule);
 		const returnedCourse = await PB.instance
 			.collection("course")
-			.update(courses?.course.id ?? "", updatedCourse);
+			.update(course.id ?? "", updatedCourse);
 
 		console.log("Updated course:", returnedCourse);
 		console.log("Updated schedule:", returnedSchedule);
 
-		courses.course.title = returnedCourse.title;
-		courses.course.shortDescription = returnedCourse.shortdescription;
-		courses.course.description = returnedCourse.description;
-		courses.startDateTime = returnedSchedule.startDateTime;
-		courses.endDateTime = returnedSchedule.endDateTime;
-		courses.points = returnedSchedule.points;
-
+		course.title = returnedCourse.title;
+		course.shortDescription = returnedCourse.shortdescription;
+		course.description = returnedCourse.description;
 		isEditing = false;
 	};
 
@@ -148,14 +141,14 @@
 		let addedSchedule = await PB.instance.collection("schedule").create({
 			location: "",
 			points: 0,
-			course: `${courses.course.id}`,
+			course: `${course.id}`,
     		startDateTime: now,
 			endDateTime: endTime
 		});
 
 		let tmpSchedule = emptySchedule
 		tmpSchedule.id = addedSchedule.id;
-		tmpSchedule.course = courses.course;
+		tmpSchedule.course = course;
 		tmpSchedule.startDateTime = now;
 		tmpSchedule.endDateTime = endTime;
 
@@ -184,7 +177,7 @@
 	<CardHeader>
 		<CardTitle class="flex items-center justify-between">
 			{#if !isEditing}
-				<h1 class="text-2xl font-bold">{courses?.course.title}</h1>
+				<h1 class="text-2xl font-bold">{course.title}</h1>
 				{#if isPrivilegedEnough(user?.role, "Moderator")}
 					<Button onclick={startEditing} variant="outline"
 						>Bearbeiten</Button
@@ -226,31 +219,31 @@
 				<!-- Course Info -->
 				<div class="space-y-2">
 					<p class="text-lg font-medium">
-						{courses?.course.shortDescription}
+						{course.shortDescription}
 					</p>
 					<p class="text-muted-foreground">
-						{courses?.course.description}
+						{course.description}
 					</p>
 				</div>
 
 				<!-- Creator -->
 				<div class="space-y-2">
 					<h2 class="flex items-center gap-2 text-lg font-semibold">
-						<UserCircle class="h-5 w-5" />
+						<!-- <UserCircle class="h-5 w-5" /> -->
 						Kursersteller
 					</h2>
 					<div class="flex items-center gap-2">
 						<Avatar>
 							<AvatarImage
-								src={courses.course.creator?.name}
-								alt={courses.course.creator?.name}
+								src={course.creator?.name}
+								alt={course.creator?.name}
 							/>
 							<AvatarFallback
-								>{courses?.course.creator
+								>{course.creator
 									?.name[0]}</AvatarFallback
 							>
 						</Avatar>
-						<span>{courses?.course.creator?.name}</span>
+						<span>{course.creator?.name}</span>
 					</div>
 				</div>
 

@@ -2,7 +2,7 @@
 import PocketBase from 'pocketbase';
 import { emptyUser, toUser, type User } from '../types/User';
 import { emptySchedule, toSchedule, type Schedule } from '../types/Schedule';
-import { toCourse, type Course } from '../types/Course';
+import { emptyCourse, toCourse, type Course } from '../types/Course';
 
 export class PocketBaseStore {
     // instance: PocketBase = new PocketBase('http://127.0.0.1:8090');
@@ -20,6 +20,14 @@ export class PocketBaseStore {
         });
 
         return toSchedule(schedule) ?? emptySchedule;
+    }
+
+    async getCourse(id : string) : Promise<Course> {
+        const course = await this.instance.collection("course").getOne(id, {
+            expand: 'creator',
+        });
+
+        return toCourse(course) ?? emptyCourse;
     }
 
     async getSchedules(courseId : string) : Promise<Schedule[]> {
