@@ -27,11 +27,12 @@
 		Trash2Icon,
 		PencilIcon,
 		CalendarIcon,
-        ClockIcon,
-        StarIcon,
-        Check,
-        MapPin,
-        QrCodeIcon,
+		ClockIcon,
+		StarIcon,
+		Check,
+		MapPin,
+		QrCodeIcon,
+        ArrowRightIcon,
 		
 	} from "lucide-svelte";
 	import {
@@ -45,9 +46,9 @@
 	import { PB } from "@/lib/stores/pocketbase.svelte";
 	import { emptySchedule, type Schedule } from "@/lib/types/Schedule";
 	import { emptyUser, isPrivilegedEnough, type User } from "@/lib/types/User";
-    import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/lib/components/ui/dialog";
+	import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/lib/components/ui/dialog";
 	import QrCode from "svelte-qrcode"
-    import { emptyCourse, type Course } from "@/lib/types/Course";
+	import { emptyCourse, type Course } from "@/lib/types/Course";
 
 	let availableOrganizers = $state<Array<User>>([]);
 	let course = $state<Course>(emptyCourse);
@@ -142,7 +143,7 @@
 			location: "",
 			points: 0,
 			course: `${course.id}`,
-    		startDateTime: now,
+			startDateTime: now,
 			endDateTime: endTime
 		});
 
@@ -417,12 +418,17 @@
 											<span class="font-medium">{session.points} Punkte</span>
 										</div>
 						
-										<!-- Edit Button -->
-										{#if isPrivilegedEnough(user?.role, "Moderator")}
-											<Button variant="ghost" size="icon" class="size-9" onclick={() => session.isEditing = true}>
-												<PencilIcon class="size-4" />
-											</Button>
-										{/if}
+									   <!-- Edit Button -->
+									   {#if isPrivilegedEnough(user?.role, "Moderator")}
+										   <Button variant="ghost" size="icon" class="size-9" onclick={() => session.isEditing = true}>
+											   <PencilIcon class="size-4" />
+										   </Button>
+									   {/if}
+									   <a href={`/schedule/${session.id}`}>
+										   <Button variant="ghost" size="icon" class="size-9" title="Zur Session navigieren">
+											   <ArrowRightIcon class="size-4" />
+										   </Button>
+										</a>
 									</div>
 								</div>
 							</CardContent>
