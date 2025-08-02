@@ -42,12 +42,14 @@ export class PocketBaseStore {
         return schedules;
     }
 
-    async joinSchedule(scheduleId : string) {
+    async joinSchedule(scheduleId : string) : Promise<Schedule> {
         let scannedSchedule = await this.instance.collection("schedule").getOne(scheduleId);
         let newAttendees = [...scannedSchedule.attendees, this.getCurrentUser()?.id];
-        this.instance.collection("schedule").update(scheduleId, {
+        const returnedSchedule = await this.instance.collection("schedule").update(scheduleId, {
             attendees: newAttendees,
         });
+
+        return toSchedule(returnedSchedule) ?? emptySchedule;
     }
 
     async getTimelineEntries() : Promise<Schedule[]> {
