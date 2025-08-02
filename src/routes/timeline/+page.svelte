@@ -23,16 +23,24 @@
 	let pdfStartDate = $state(new Date(new Date().getFullYear(), 0, 2).toISOString().slice(0, 7));
 	let pdfEndDate = $state(new Date(new Date().getFullYear(), 11, 31).toISOString().slice(0, 7));
 
-	// Group courses by year
+	// Group and sort courses by year (newest first within each year)
 	let groupedSchedules = $derived(
-		schedules?.reduce((acc, course) => {
-			const year = course.startDateTime.getFullYear();
-			if (!acc[year]) {
-				acc[year] = [];
-			}
-			acc[year].push(course);
-			return acc;
-		}, {})
+		(() => {
+			const grouped = schedules?.reduce((acc, course) => {
+				const year = course.startDateTime.getFullYear();
+				if (!acc[year]) {
+					acc[year] = [];
+				}
+				acc[year].push(course);
+				return acc;
+			}, {}) || {};
+			return Object.fromEntries(
+				Object.entries(grouped).map(([year, courses]) => [
+					year,
+					[...courses].sort((a, b) => new Date(b.startDateTime).getTime() - new Date(a.startDateTime).getTime())
+				])
+			);
+		})()
 	);
 
 	// Statistics

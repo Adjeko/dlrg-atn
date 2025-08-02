@@ -47,6 +47,8 @@ export class PocketBaseStore {
         let newAttendees = [...scannedSchedule.attendees, this.getCurrentUser()?.id];
         const returnedSchedule = await this.instance.collection("schedule").update(scheduleId, {
             attendees: newAttendees,
+        }, {
+            expand: 'course',
         });
 
         return toSchedule(returnedSchedule) ?? emptySchedule;
