@@ -16,7 +16,7 @@
 	import { Label } from "$lib/components/ui/label";
 	import { Input } from "$lib/components/ui/input";
 
-	let courses = $state<Schedule[]>([]);
+	let schedules = $state<Schedule[]>([]);
 	let qrDialogOpen = $state(false);
 	let pdfDialogOpen = $state(false);
 
@@ -24,8 +24,8 @@
 	let pdfEndDate = $state(new Date(new Date().getFullYear(), 11, 31).toISOString().slice(0, 7));
 
 	// Group courses by year
-	let groupedCourses = $derived(
-		courses?.reduce((acc, course) => {
+	let groupedSchedules = $derived(
+		schedules?.reduce((acc, course) => {
 			const year = course.startDateTime.getFullYear();
 			if (!acc[year]) {
 				acc[year] = [];
@@ -36,8 +36,8 @@
 	);
 
 	// Statistics
-	let joinedCourses = $derived(courses?.length);
-	let totalPoints = $derived(courses?.reduce((acc, course) => acc + course.points, 0));
+	let joinedCourses = $derived(schedules?.length);
+	let totalPoints = $derived(schedules?.reduce((acc, course) => acc + course.points, 0));
 
 	function formatDateRange(start : Date, end : Date) {
 		const format = { month: "short", day: "numeric", hour: "numeric", minute: "numeric", hour12: false };
@@ -51,9 +51,9 @@
 
 	onMount(async () => {
 		const user = PB.getCurrentUser();
-		const schedules : Schedule[] = await PB.getTimelineEntries();
+		const returnedSchedules : Schedule[] = await PB.getTimelineEntries();
 
-		courses = schedules;
+		schedules = returnedSchedules;
 	});
 
 	async function createPDF() {
@@ -107,7 +107,7 @@
 						<DialogTitle>Scan den QR Code um einem Kurs beizutretten.</DialogTitle>
 					</DialogHeader>
 					{#if qrDialogOpen}
-						<QrScanner bind:dialogOpen={qrDialogOpen} />
+						<QrScanner bind:dialogOpen={qrDialogOpen} bind:schedules={schedules}/>
 					{/if}
 				</DialogContent>
 			</Dialog>
@@ -149,7 +149,7 @@
 		</div>
 
 		<div class="my-5">
-			{#each Object.entries(groupedCourses).sort(([a], [b]) => b - a) as [year, yearCourses]}
+			{#each Object.entries(groupedSchedules).sort(([a], [b]) => b - a) as [year, yearCourses]}
 				<div class="mb-4">
 					<h4 class="text-md font-semibold mb-2">{year}</h4>
 					<Separator class="mb-2" />

@@ -4,7 +4,7 @@
     import { Html5Qrcode } from "html5-qrcode";
     import { onMount } from "svelte";
 
-    let { dialogOpen = $bindable() } = $props();
+    let { dialogOpen = $bindable(), schedules = $bindable() } = $props();
 	let html5Qrcode : any;
 	let scanning = $state(true);
 
@@ -36,9 +36,9 @@
         scanning = false
 	}
 
-	function onScanSuccess(decodedText: any, decodedResult: any): void {
-        PB.joinSchedule(decodedResult.decodedText);
-
+	async function onScanSuccess(decodedText: any, decodedResult: any): Promise<void> {
+        const returnedSchedule = await PB.joinSchedule(decodedResult.decodedText);
+        schedules = [...schedules, returnedSchedule];
         stopQrScanner();
 
         setTimeout(() => dialogOpen = false, 1500);
