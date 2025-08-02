@@ -352,45 +352,45 @@
 						{:else}
 						<Card class="w-full hover:shadow-lg transition-shadow">
 							<CardContent class="p-6">
-								<div class="flex items-start justify-between gap-4">
+								<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
 									<!-- Ort -->
-									<div class="flex items-center gap-2 text-muted-foreground">
-										<MapPin class="size-4" />
-										<span>{session.location}</span>
+									<div class="flex items-center gap-2 text-muted-foreground min-w-0">
+										<MapPin class="size-4 shrink-0" />
+										<span class="truncate">{session.location}</span>
 									</div>
 
 									<!-- StartZeit -->
-									<div class="flex flex-row gap-3">
+									<div class="flex flex-row gap-3 min-w-0">
 										<!-- Datum -->
 										<div class="flex items-center gap-2 text-muted-foreground">
-											<CalendarIcon class="size-4" />
-											<span class="font-medium">{new Intl.DateTimeFormat('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(session.startDateTime))}</span>
+											<CalendarIcon class="size-4 shrink-0" />
+											<span class="font-medium truncate">{new Intl.DateTimeFormat('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(session.startDateTime))}</span>
 										</div>
-						
+							
 										<!-- Uhrzeiten -->
 										<div class="flex items-center gap-2 text-muted-foreground">
-											<ClockIcon class="size-4" />
+											<ClockIcon class="size-4 shrink-0" />
 											<span>{new Intl.DateTimeFormat('de-DE', { hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(session.startDateTime))} Uhr</span>
 										</div>
 									</div>
 
 									<!-- Endzeit -->
-									<div class="flex flex-row gap-3">
+									<div class="flex flex-row gap-3 min-w-0">
 										<!-- Datum -->
 										<div class="flex items-center gap-2 text-muted-foreground">
-											<CalendarIcon class="size-4" />
-											<span class="font-medium">{new Intl.DateTimeFormat('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(session.endDateTime))}</span>
+											<CalendarIcon class="size-4 shrink-0" />
+											<span class="font-medium truncate">{new Intl.DateTimeFormat('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(session.endDateTime))}</span>
 										</div>
-						
+							
 										<!-- Uhrzeiten -->
 										<div class="flex items-center gap-2 text-muted-foreground">
-											<ClockIcon class="size-4" />
+											<ClockIcon class="size-4 shrink-0" />
 											<span>{new Intl.DateTimeFormat('de-DE', { hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(session.endDateTime))} Uhr</span>
 										</div>
 									</div>
-						
+							
 									<!-- QR-Code -->
-									 <div class="flex items-center gap-2"> 
+									<div class="flex items-center gap-2">
 										<Dialog>
 											<DialogTrigger>
 												<Button>
