@@ -64,10 +64,7 @@
 	let editedTitle: string = $state("");
 	let editedShortDesc: string = $state("");
 	let editedDesc: string = $state("");
-	let editedStartDate: string = $state("");
-	let editedEndDate: string = $state("");
-	let editedScore: number = $state(0);
-
+	
 	let schedules: Array<Schedule & { isEditing: boolean }> = $state([]);
 
 	let user: User = $state(emptyUser);
@@ -104,21 +101,12 @@
 			shortdescription: editedShortDesc,
 			description: editedDesc,
 		};
-		const updatedSchedule = {
-			startDateTime: new Date(editedStartDate),
-			endDateTime: new Date(editedEndDate),
-			points: editedScore,
-		};
-
-		const returnedSchedule = await PB.instance
-			.collection("schedule")
-			.update(course.id, updatedSchedule);
+		
 		const returnedCourse = await PB.instance
 			.collection("course")
 			.update(course.id ?? "", updatedCourse);
 
 		console.log("Updated course:", returnedCourse);
-		console.log("Updated schedule:", returnedSchedule);
 
 		course.title = returnedCourse.title;
 		course.shortDescription = returnedCourse.shortdescription;
