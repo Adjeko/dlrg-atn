@@ -86,19 +86,35 @@ export class PocketBaseStore {
 
     async getCreatedCourses() : Promise<Course[]> {
         const user = this.getCurrentUser();
+
+        // 1. Eigene Kurse (als Creator)
         const coursesFromServer = await this.instance.collection("course").getFullList({
             expand: 'creator',
+            filter: `creator.id = '${user.id}'`,
         });
 
-        console.log
-        console.log("Courses From Server:",coursesFromServer);
+        // 2. Kurse, bei denen der Nutzer Organizer in einem Schedule ist
+        const schedulesFromServer = await this.instance.collection("schedule").getFullList({
+            expand: 'course, organizers',
+            filter: `organizers.id ?= '${user.id}'`,
+        });
 
-        const courses: Course[] = coursesFromServer
+        // Extrahiere die Kurse aus den Schedules
+        const organizerCourses = schedulesFromServer
+            .map((schedule) => schedule.expand?.course)
+            .filter((course) => !!course);
+
+        // Kombiniere beide Kurslisten und entferne Duplikate anhand der Kurs-ID
+        const allCoursesMap = new Map<string, any>();
+        [...coursesFromServer, ...organizerCourses].forEach((course) => {
+            if (course) allCoursesMap.set(course.id, course);
+        });
+
+        const allCourses = Array.from(allCoursesMap.values())
             .map((course): Course | undefined => toCourse(course))
             .filter((course): course is Course => course !== undefined);
 
-        console.log("ToCourses:", courses);
-        return courses;
+        return allCourses;
     }
 
     async getAllUsers() : Promise<User[]> {
