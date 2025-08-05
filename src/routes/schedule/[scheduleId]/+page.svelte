@@ -89,6 +89,7 @@
 		editedEndDate = schedule?.endDateTime.toISOString().slice(0, 16) ?? "";
 		editedScore = schedule?.points ?? 0;
 		isEditing = true;
+		editedLocation = schedule?.location ?? "";
 	};
 
 	/** Save edited course data */
