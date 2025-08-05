@@ -28,7 +28,7 @@
 			schema.parse({ username, email, password });
 			
 			await signup(email, password, username);
-
+			await login(email, password);
 			toast.success("Anmeldung erfolgreich!");
 			goto('/timeline', { replaceState: true });
 		} catch (error) {
@@ -68,6 +68,21 @@
 				errors["password"] = `Ein unbekannter Fehler ist aufgetreten. Fehler: ${error.status}: ${error.message}`;
 			}
         }
+    }
+
+	async function login(email : string, password : string) {
+		try {
+			const record = await PB.instance.collection('users').authWithPassword(email.toLowerCase(), password)
+			console.log(record)
+		}
+		catch (error : any) {
+			if (error.status === 400) {
+            	errors["password"] = "Falscher Benutzername oder Passwort.";
+       		} 
+			else {
+				errors["password"] = `Ein unbekannter Fehler ist aufgetreten. Fehler: ${error.status}: ${error.message}`;
+			}
+		}
     }
 </script>
 
