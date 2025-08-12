@@ -9,3 +9,7 @@ www.dlrgatn.de {
 db.dlrgatn.de {
     reverse_proxy pocketbase:8090
 }
+
+sync.dlrgatn.de {
+    reverse_proxy syncthing:8384
+}
