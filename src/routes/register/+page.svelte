@@ -133,7 +133,7 @@
 			</div>
 
 			<div>
-				<Button type="submit" class="w-full">Registrieren</Button>
+				<Button type="submit" class="w-full bg-[#e30613] hover:bg-[#b8000f] text-white">Registrieren</Button>
 			</div>
 		</form>
 		<div class="mt-4 text-center">

@@ -4,7 +4,7 @@
 	import { Sheet, SheetContent, SheetTrigger } from "$lib/components/ui/sheet";
 	import { Avatar, AvatarImage, AvatarFallback } from "$lib/components/ui/avatar";
 	import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "$lib/components/ui/dropdown-menu";
-	import { Settings, Users, Menu, ChevronLeft, ChevronRight, LogOut, CircleAlert } from "lucide-svelte";;
+	import { Settings, Users, Menu, ChevronLeft, ChevronRight, LogOut, CircleAlert, LayoutDashboard, BookOpen, UserCog, } from "lucide-svelte";;
     import { afterNavigate, goto } from "$app/navigation";	
     import { PB } from "@/lib/stores/pocketbase.svelte";
     import { onMount } from 'svelte';
@@ -40,9 +40,9 @@
 	};
 
 	const navItems = [
-		{ icon: CircleAlert, label: "Dashboard", href: "/timeline", role: "Mitglied" },
-		{ icon: ChevronRight, label: "Meine Kurse", href: "/createdCourses", role: "Moderator" },
-		{ icon: Users, label: "Users", href: "/admin", role: "Admin" },
+		{ icon: LayoutDashboard , label: "Dashboard", href: "/timeline", role: "Mitglied" },
+		{ icon: BookOpen , label: "Meine Kurse", href: "/createdCourses", role: "Moderator" },
+		{ icon: UserCog , label: "Users", href: "/admin", role: "Admin" },
 		// { icon: Settings, label: "Settings", href: "/settings", role: "Mitglied" },
 	];
 

@@ -150,7 +150,7 @@
 								/>
 							</div>
 						</div>
-						<Button onclick={createPDF}>Bericht generieren</Button>
+						<Button onclick={createPDF} class="bg-[#e30613] hover:bg-[#b8000f] text-white">Bericht generieren</Button>
 					{/if}
 				</DialogContent>
 			</Dialog>

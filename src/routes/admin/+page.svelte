@@ -4,11 +4,17 @@
 	import { Separator } from "$lib/components/ui/separator";
     import { PB } from "@/lib/stores/pocketbase.svelte";
     import type { User } from "@/lib/types/User";
-	import { UserCogIcon, ShieldIcon } from "lucide-svelte";
+	import { UserCogIcon, ShieldIcon, User as UserIcon } from "lucide-svelte";
     import { onMount } from "svelte";
 
-	// Verfügbare Rollen
-	const roles = ["Admin", "Moderator", "Mitglied"];
+	// Verfügbare Rollen und zugehörige Icons
+	const roles = ["Admin", "Moderator", "Mitglied"] as const;
+	type Role = typeof roles[number];
+	const roleIcons: Record<Role, typeof ShieldIcon | typeof UserCogIcon | typeof UserIcon> = {
+		Admin: ShieldIcon,
+		Moderator: UserCogIcon,
+		Mitglied: UserIcon
+	};
 
 	// Aktuelle Rolle für jeden Benutzer
 	let users = $state<User[]>([]);
@@ -78,7 +84,10 @@
 								<td colspan="3" class="pt-6 pb-2">
 									<div class="flex items-center gap-4">
 										<div class="font-medium text-sm text-muted-foreground flex items-center gap-2">
-											<ShieldIcon class="size-4" />
+											{#if roleIcons[role]}
+												{@const Icon = roleIcons[role]}
+												<Icon class="size-4" />
+											{/if}
 											{role}
 										</div>
 										<Separator class="flex-1" />
@@ -93,7 +102,10 @@
 										<Select selected={user.role} selectedType="string" onSelectedChange={(value : any) => updateRole(user.id, value)}>
 											<SelectTrigger class="w-[140px]">
 												<div class="flex items-center gap-2">
-													<ShieldIcon class="size-4" />
+													{#if roleIcons[user.role]}
+														{@const Icon = roleIcons[user.role]}
+														<Icon class="size-4" />
+													{/if}
 													{user.role}
 												</div>
 											</SelectTrigger>
@@ -101,7 +113,10 @@
 												{#each roles as roleOption}
 													<SelectItem value={roleOption}>
 														<div class="flex items-center gap-2">
-															<ShieldIcon class="size-4" />
+															{#if roleIcons[roleOption]}
+																{@const Icon = roleIcons[roleOption]}
+																<Icon class="size-4" />
+															{/if}
 															{roleOption}
 														</div>
 													</SelectItem>
