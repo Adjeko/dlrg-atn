@@ -367,7 +367,7 @@
 									onclick={() =>
 										removeOrganizer(organizer.id)}
 								>
-									<Trash2 class="h-4 w-4 text-destructive" />
+									<Trash2 class="h-4 w-4 text-[#e30613]" />
 								</Button>
 							</div>
 						{/each}
@@ -405,7 +405,7 @@
 									onclick={() =>
 										removeParticipant(participant.id)}
 								>
-									<Trash2 class="h-4 w-4 text-destructive" />
+									<Trash2 class="h-4 w-4 text-[#e30613]" />
 								</Button>
 							</div>
 						{/each}

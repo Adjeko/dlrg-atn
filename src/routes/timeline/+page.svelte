@@ -105,7 +105,7 @@
 		<div class="flex justify-between mt-4">
 			<Dialog bind:open={qrDialogOpen}>
 				<DialogTrigger>
-					<Button class="w-full bg-destructive text-destructive-foreground hover:opacity-90">
+					<Button class="w-full bg-[#e30613] hover:bg-[#b8000f] text-white">
 						<QrCode class="w-4 h-4 mr-2" />
 						Kurs beitreten
 					</Button>
@@ -122,7 +122,7 @@
 
 			<Dialog bind:open={pdfDialogOpen}>
 				<DialogTrigger>
-					<Button class="w-full bg-destructive text-destructive-foreground hover:opacity-90">
+					<Button class="w-full bg-[#e30613] hover:bg-[#b8000f] text-white">
 						<FileText class="w-4 h-4 mr-2" />
 						Erstelle eine Bericht
 					</Button>
@@ -150,7 +150,7 @@
 								/>
 							</div>
 						</div>
-						<Button onclick={createPDF} class="bg-destructive text-destructive-foreground hover:opacity-90">Bericht generieren</Button>
+						<Button onclick={createPDF} class="bg-[#e30613] hover:bg-[#b8000f] text-white">Bericht generieren</Button>
 					{/if}
 				</DialogContent>
 			</Dialog>
@@ -164,7 +164,7 @@
 					<ul class="space-y-4">
 						{#each yearCourses as schedule}
 
-							<li class="flex flex-col p-3 bg-card border border-border rounded-lg hover:shadow-sm hover:bg-destructive/5 transition-colors">
+							<li class="flex flex-col p-3 bg-card border border-border rounded-lg hover:shadow-sm hover:bg-[#ffecec] transition-colors">
 								<a href="/schedule/{schedule.id}" class="block">
 									<div class="flex items-center justify-between">
 										<div class="flex-1 min-w-0">
@@ -178,7 +178,7 @@
 											</div>
 										</div>
 										<span class="ml-4 flex-shrink-0">
-											<span class="inline-flex items-center px-3 py-1 rounded-full bg-destructive text-destructive-foreground text-sm font-semibold">{schedule.points}</span>
+											<span class="inline-flex items-center px-3 py-1 rounded-full bg-[#e30613] text-white text-sm font-semibold">{schedule.points}</span>
 										</span>
 									</div>
 									<div class="mt-2 flex flex-wrap gap-2">

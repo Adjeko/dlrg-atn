@@ -170,12 +170,12 @@
 	</CardHeader>
 	<CardContent>
 		<Dialog bind:open={dialogIsOpen}>
-			<DialogTrigger>
-				<Button class="w-full bg-[#e30613]">
-					<CirclePlus class="w-4 h-4 mr-2" />
-					Erstelle einen neuen Kurs
-				</Button>
-			</DialogTrigger>
+                <DialogTrigger>
+                	<Button class="w-full bg-[#e30613] hover:bg-[#b8000f] text-white">
+                		<CirclePlus class="w-4 h-4 mr-2" />
+                		Erstelle einen neuen Kurs
+                	</Button>
+                </DialogTrigger>
 			<DialogContent class="sm:max-w-[500px]">
 				<form
 					onsubmit={(e) => {
@@ -282,7 +282,7 @@
 										class="absolute right-2 top-2"
 									>
 										<Trash2Icon
-											class="size-4 text-destructive"
+											class="size-4 text-[#e30613]"
 										/>
 									</Button>
 
@@ -358,7 +358,7 @@
 					<ul class="space-y-4">
 						{#each yearCourses as course}
 
-							<li class="flex flex-col p-3 bg-card border border-border rounded-lg hover:shadow-sm hover:bg-destructive/5 transition-colors">
+							<li class="flex flex-col p-3 bg-card border border-border rounded-lg hover:shadow-sm hover:bg-[#ffecec] transition-colors">
 								<a href="/course/{course.id}" class="block">
 									<div class="flex items-center justify-between">
 										<div class="flex-1 min-w-0">

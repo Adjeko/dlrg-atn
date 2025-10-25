@@ -270,7 +270,7 @@
 										onclick={() => removeSchedule(session)}
 									>
 										<Trash2Icon
-											class="size-4 text-destructive"
+											class="size-4 text-[#e30613]"
 										/>
 									</Button>
 									<Button
