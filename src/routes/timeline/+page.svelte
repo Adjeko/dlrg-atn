@@ -169,11 +169,11 @@
 									<div class="flex items-center justify-between">
 										<div class="flex-1 min-w-0">
 											<div class="min-w-0">
-												<h3 class="font-semibold text-foreground truncate">{schedule.course.title}</h3>
-												<p class="text-sm text-muted-foreground truncate">{schedule.course.shortDescription}</p>
-												<div class="flex items-center mt-1 text-xs text-muted-foreground">
-													<Calendar class="w-3 h-3 mr-1" />
-													{formatDateRange(schedule.startDateTime, schedule.endDateTime)}
+												<h3 class="font-semibold text-foreground truncate text-base md:text-lg">{schedule.course.title}</h3>
+												<p class="text-sm text-muted-foreground mt-1 truncate">{schedule.course.shortDescription}</p>
+												<div class="mt-2 flex items-center text-xs text-muted-foreground">
+													<Calendar class="w-3 h-3 mr-2" />
+													<span class="whitespace-nowrap">{formatDateRange(schedule.startDateTime, schedule.endDateTime)}</span>
 												</div>
 											</div>
 										</div>
