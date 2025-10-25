@@ -18,7 +18,6 @@
 	} from "$lib/components/ui/dialog";
 	import {
 		Book,
-		Code,
 		Palette,
 		Stethoscope,
 		Calculator,
@@ -359,22 +358,21 @@
 					<ul class="space-y-4">
 						{#each yearCourses as course}
 
-							<li class="flex flex-col p-3 bg-secondary rounded-lg">
-								<a href="/course/{course.id}">
+							<li class="flex flex-col p-3 bg-card border border-border rounded-lg hover:shadow-sm hover:bg-destructive/5 transition-colors">
+								<a href="/course/{course.id}" class="block">
 									<div class="flex items-center justify-between">
-										<div class="flex items-center space-x-4">
-											<div class="p-2 bg-primary rounded-full">
-												<Code class="w-5 h-5 text-primary-foreground" />
-											</div>
-											<div>
-												<h3 class="font-semibold">{course.title}</h3>
-												<p class="text-sm text-muted-foreground">{course.shortDescription}</p>
+										<div class="flex-1 min-w-0">
+											<h3 class="font-semibold text-foreground truncate text-base md:text-lg">{course.title}</h3>
+											<p class="text-sm text-muted-foreground mt-1 truncate">{course.shortDescription}</p>
+											<div class="mt-2 text-xs text-muted-foreground flex items-center">
+												<Calendar class="w-3 h-3 mr-2" />
+												<span class="whitespace-nowrap">{new Date(course.created).toLocaleDateString('de-DE')}</span>
 											</div>
 										</div>
 									</div>
 									<div class="mt-2 flex flex-wrap gap-2">
-										<Badge variant="secondary" class="flex items-center">
-											<Tag class="w-3 h-3 mr-1" />
+										<Badge variant="secondary" class="flex items-center bg-transparent text-muted-foreground border border-border px-2 py-0.5 text-xs">
+											<Tag class="w-3 h-3 mr-1 text-muted-foreground" />
 											{course.category}
 										</Badge>
 									</div>
