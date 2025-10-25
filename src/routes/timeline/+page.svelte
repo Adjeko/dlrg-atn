@@ -4,7 +4,7 @@
 	import { Card, CardContent, CardHeader, CardTitle } from "$lib/components/ui/card";
 	import { Button } from "$lib/components/ui/button";
 	import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "$lib/components/ui/dialog";
-	import { Book, Code, Palette, Stethoscope, Calculator, Calendar, QrCode, Trophy, Star, Tag, FileText } from "lucide-svelte";
+	import { Book, Palette, Stethoscope, Calculator, Calendar, QrCode, Trophy, Star, Tag, FileText } from "lucide-svelte";
 	import { Separator } from "$lib/components/ui/separator";
 	import { Badge } from "$lib/components/ui/badge";
 	import { onMount } from "svelte";
@@ -105,7 +105,7 @@
 		<div class="flex justify-between mt-4">
 			<Dialog bind:open={qrDialogOpen}>
 				<DialogTrigger>
-					<Button class="w-full bg-[#e30613]">
+					<Button class="w-full bg-destructive text-destructive-foreground hover:opacity-90">
 						<QrCode class="w-4 h-4 mr-2" />
 						Kurs beitreten
 					</Button>
@@ -122,7 +122,7 @@
 
 			<Dialog bind:open={pdfDialogOpen}>
 				<DialogTrigger>
-					<Button class="w-full bg-[#e30613]">
+					<Button class="w-full bg-destructive text-destructive-foreground hover:opacity-90">
 						<FileText class="w-4 h-4 mr-2" />
 						Erstelle eine Bericht
 					</Button>
@@ -150,7 +150,7 @@
 								/>
 							</div>
 						</div>
-						<Button onclick={createPDF} class="bg-[#e30613] hover:bg-[#b8000f] text-white">Bericht generieren</Button>
+						<Button onclick={createPDF} class="bg-destructive text-destructive-foreground hover:opacity-90">Bericht generieren</Button>
 					{/if}
 				</DialogContent>
 			</Dialog>
@@ -164,27 +164,26 @@
 					<ul class="space-y-4">
 						{#each yearCourses as schedule}
 
-							<li class="flex flex-col p-3 bg-secondary rounded-lg">
-								<a href="/schedule/{schedule.id}">
+							<li class="flex flex-col p-3 bg-card border border-border rounded-lg hover:shadow-sm hover:bg-destructive/5 transition-colors">
+								<a href="/schedule/{schedule.id}" class="block">
 									<div class="flex items-center justify-between">
-										<div class="flex items-center space-x-4">
-											<div class="p-2 bg-primary rounded-full">
-												<Code class="w-5 h-5 text-primary-foreground" />
-											</div>
-											<div>
-												<h3 class="font-semibold">{schedule.course.title}</h3>
-												<p class="text-sm text-muted-foreground">{schedule.course.shortDescription}</p>
+										<div class="flex-1 min-w-0">
+											<div class="min-w-0">
+												<h3 class="font-semibold text-foreground truncate">{schedule.course.title}</h3>
+												<p class="text-sm text-muted-foreground truncate">{schedule.course.shortDescription}</p>
 												<div class="flex items-center mt-1 text-xs text-muted-foreground">
 													<Calendar class="w-3 h-3 mr-1" />
 													{formatDateRange(schedule.startDateTime, schedule.endDateTime)}
 												</div>
 											</div>
 										</div>
-										<span class="text-lg font-bold">{schedule.points}</span>
+										<span class="ml-4 flex-shrink-0">
+											<span class="inline-flex items-center px-3 py-1 rounded-full bg-destructive text-destructive-foreground text-sm font-semibold">{schedule.points}</span>
+										</span>
 									</div>
 									<div class="mt-2 flex flex-wrap gap-2">
-										<Badge variant="secondary" class="flex items-center">
-											<Tag class="w-3 h-3 mr-1" />
+										<Badge variant="secondary" class="flex items-center bg-transparent text-muted-foreground border border-border">
+											<Tag class="w-3 h-3 mr-1 text-muted-foreground" />
 											{schedule.course.category}
 										</Badge>
 									</div>
