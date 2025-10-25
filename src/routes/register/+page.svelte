@@ -29,7 +29,7 @@
 			
 			await signup(email, password, username);
 			await login(email, password);
-			toast.success("Anmeldung erfolgreich!");
+			
 			goto('/timeline', { replaceState: true });
 		} catch (error) {
 			if (error instanceof z.ZodError) {
