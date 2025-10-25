@@ -183,12 +183,10 @@
 										<span class="text-lg font-bold">{schedule.points}</span>
 									</div>
 									<div class="mt-2 flex flex-wrap gap-2">
-										{#each schedule.category as category}
-											<Badge variant="secondary" class="flex items-center">
-												<Tag class="w-3 h-3 mr-1" />
-												{category}
-											</Badge>
-										{/each}
+										<Badge variant="secondary" class="flex items-center">
+											<Tag class="w-3 h-3 mr-1" />
+											{schedule.course.category}
+										</Badge>
 									</div>
 								</a>
 							</li>
