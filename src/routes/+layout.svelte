@@ -15,6 +15,7 @@
 	let { children } = $props();
 	let sidebarExpanded = $state(false);
 	let isMobile = $state(false);
+	let sheetOpen = $state(false);
 	let user: User = $state(emptyUser);
 
 	onMount(async () => {
@@ -111,24 +112,24 @@
 				<div class="{isMobile ? 'w-0' : sidebarExpanded ? 'w-64' : 'w-20'} h-full border-r border-gray-200">
 					{#if isMobile}
 		<header class="fixed top-0 left-0 right-0 bg-white shadow-sm flex justify-between items-center z-10 px-4">
-			<Sheet>
+				<Sheet bind:open={sheetOpen}>
 				<SheetTrigger>
 					<Button variant="outline" size="icon">
 						<Menu class="h-[1.2rem] w-[1.2rem]" />
 					</Button>
 				</SheetTrigger>
-				<SheetContent side="left" class="w-[250px] sm:w-[300px]">
-					<nav class="flex flex-col gap-4">
-						{#each navItems as item}
-							{#if isPrivilegedEnough(user?.role, item.role)}
-								<Button variant="ghost" class="justify-start" href={item.href}	>
-									<item.icon class="mr-2 h-4 w-4" />
-									{item.label}
-								</Button>
-							{/if}
-						{/each}
-					</nav>
-				</SheetContent>
+					<SheetContent side="left" class="w-[250px] sm:w-[300px]">
+						<nav class="flex flex-col gap-4">
+							{#each navItems as item}
+								{#if isPrivilegedEnough(user?.role, item.role)}
+									<Button variant="ghost" class="justify-start" on:click={() => { sheetOpen = false; goto(item.href); }}>
+										<item.icon class="mr-2 h-4 w-4" />
+										{item.label}
+									</Button>
+								{/if}
+							{/each}
+						</nav>
+					</SheetContent>
 			</Sheet>
 			<div class="flex items-center gap-4">
 				<img src={logo} alt="Logo" class="h-20 w-auto" />
